@@ -64,8 +64,15 @@ get_header(); ?>
 <script type="text/javascript">
    jQuery(document).ready(function() {
 	jQuery(".filter").click(function() {
-			jQuery("article[class^=filter-]").hide();
-			jQuery(".filter-" + jQuery(this)[0].innerText).show();
+			if(jQuery(this).hasClass("selected")) {
+				jQuery("article[class^=filter-]").show();
+				jQuery(".filter").removeClass("selected");
+			} else {
+				jQuery("article[class^=filter-]").hide();
+				jQuery(".filter-" + jQuery(this)[0].innerText).show();
+				jQuery(".filter").removeClass("selected");
+				jQuery(this).addClass("selected");
+			}
 		});
 	});
 </script>
