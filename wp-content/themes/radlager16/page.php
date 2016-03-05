@@ -25,7 +25,7 @@ get_header(); ?>
 				loadmore = 'off';
 				jQuery('#spinner').css('visibility', 'visible');
 				// do the funny string concatination because whenever this js gets pulled in by the following ajax call, the very same string is found and the cleanup job cannot determine if there are more sites to load. Hence, leaven the '+' out results in an infinite loop.
-				jQuery('#main').append(jQuery('<div class'+'="page" id="p' + page + '">').load(window.location + '?page=' + page + ' .page', function() {
+				jQuery('#main').append(jQuery('<div class'+'="page" id="p' + page + '">').load(window.location + '?page=' + page + ' .page > *', function() {
 					page++;
 					loadmore = 'on';
 					jQuery('#spinner').css('visibility', 'hidden');
