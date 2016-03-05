@@ -15,26 +15,35 @@ get_header(); ?>
 
 <script>
 	jQuery(function(){
-		var page = 2;
-		var loadmore = 'on';
-		jQuery(document).on('scroll resize', function() {
-			if (jQuery(window).scrollTop() + jQuery(window).height() + 60 > jQuery('#spinner').offset().top) {
-			  if (loadmore == 'on') {
+		var page = 2; // start at page 2
+		var loadmore = 'on'; // ready to go
+
+		// hook the scroll, resize and ready events to see if the spinner is visible
+		jQuery(document).on('scroll resize ready', function() {
+			if ('on' == loadmore && jQuery(window).scrollTop() + jQuery(window).height() + 60 > jQuery('#spinner').offset().top) {
 				loadmore = 'off';
 				jQuery('#spinner').css('visibility', 'visible');
-				jQuery('#main').append(jQuery('<div class="page" id="p' + page + '">').load('http://localhost/?page=' + page + ' .page > *', function() {
+				// do the funny string concatination because whenever this js gets pulled in by the following ajax call, the very same string is found and the cleanup job cannot determine if there are more sites to load. Hence, leaven the '+' out results in an infinite loop.
+				jQuery('#main').append(jQuery('<div class'+'="page" id="p' + page + '">').load('http://localhost/?page=' + page + ' .page', function() {
 					page++;
 					loadmore = 'on';
 					jQuery('#spinner').css('visibility', 'hidden');
 				}));
-			  }
 			}
 		});
+
+		// also hook the ajaxComplete event in order to clean up after each ajax load
 		jQuery( document ).ajaxComplete(function( event, xhr, options ) {
-			  if (xhr.responseText.indexOf('class="page"') == -1) {
-			loadmore = 'off';
-		  }
+			// do the funny string concatination because whenever this js gets delivered via ajax, the very same string is found which of course results in an infinite loop
+			if (xhr.responseText.indexOf('<div class'+'="page"') == -1) {
+				// disable ajax loading if there is nothing more to get
+				loadmore = 'off';
+			} else if ('on' == loadmore) {
+				// retrigger the check event. the event will seize creating new ajax events as soon as the spinner is out of sight
+				jQuery(document).trigger("resize");
+			}
 		});
+
 	});
 </script>
 
@@ -55,7 +64,7 @@ get_header(); ?>
 
 		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
 		$query = new WP_Query( array ('category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
- 
+		if($query->have_posts()) :
 ?>
 		<div class="page" id="p<?php echo $paged; ?>">
 <?php
@@ -85,6 +94,7 @@ get_header(); ?>
 		wp_reset_postdata(); //resetting the post query
 		?>
 		</div>
+<?php		endif; ?>
 
 	</main><!-- .site-main -->
 	<div id="spinner">
