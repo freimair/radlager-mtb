@@ -13,6 +13,31 @@
 
 get_header(); ?>
 
+<script>
+	jQuery(function(){
+		var page = 2;
+		var loadmore = 'on';
+		jQuery(document).on('scroll resize', function() {
+			if (jQuery(window).scrollTop() + jQuery(window).height() + 60 > jQuery('#spinner').offset().top) {
+			  if (loadmore == 'on') {
+				loadmore = 'off';
+				jQuery('#spinner').css('visibility', 'visible');
+				jQuery('#main').append(jQuery('<div class="page" id="p' + page + '">').load('http://localhost/?page=' + page + ' .page > *', function() {
+					page++;
+					loadmore = 'on';
+					jQuery('#spinner').css('visibility', 'hidden');
+				}));
+			  }
+			}
+		});
+		jQuery( document ).ajaxComplete(function( event, xhr, options ) {
+			  if (xhr.responseText.indexOf('class="page"') == -1) {
+			loadmore = 'off';
+		  }
+		});
+	});
+</script>
+
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">
 		<?php
@@ -31,6 +56,9 @@ get_header(); ?>
 		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
 		$query = new WP_Query( array ('category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
  
+?>
+		<div class="page" id="p<?php echo $paged; ?>">
+<?php
 		// Start the loop.
 		while ( $query->have_posts() ) : $query->the_post();
 			// tag each article
@@ -54,27 +82,14 @@ get_header(); ?>
 			// End of the loop.
 		endwhile;
 
-		// Previous/next page navigation.
-		if ($query->max_num_pages > 1) { // custom pagination
-			$orig_query = $wp_query; // fix for pagination to work
-			$wp_query = $query;
-			?>
-			<nav class="prev-next-posts">
-			    <div class="prev-posts-link">
-				<?php echo get_next_posts_link( 'Older Entries', $query->max_num_pages ); ?>
-			    </div>
-			    <div class="next-posts-link">
-				<?php echo get_previous_posts_link( 'Newer Entries' ); ?>
-			    </div>
-			</nav>
-			<?php
-			$wp_query = $orig_query; // fix for pagination to work
-		}
-
 		wp_reset_postdata(); //resetting the post query
 		?>
+		</div>
 
 	</main><!-- .site-main -->
+	<div id="spinner">
+	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+	</div>
 
 	<?php get_sidebar( 'content-bottom' ); ?>
 
