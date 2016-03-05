@@ -53,19 +53,34 @@ updateFilter();
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">
 		<?php
+		// read the configuration
+		// - fetch the configuration and check for malicious contents
+		$configuration = $post->post_content;
+		if(!preg_match("/^[a-z,]+;[a-z_]+$/", $configuration)) {
+			echo("Configuration error in: ".$post->post_title);
+			exit;
+		}
+
+		// - find categories to be displayed
+		$categories = preg_split("/;/", $configuration)[0];
+
+		// - find filter configuration and prepare filter gui
+		$filterconfiguration = preg_split("/;/", $configuration)[1];
+		if(preg_match("/^use_categories$/", $filterconfiguration)) { // use categories as tags
+			$filtermode = "categories";
+			$tmp = preg_split("/,/", $categories);
+			foreach($tmp as $current) {
+				$filters[$current] = get_category_by_slug($current)->name;
+			}
+		} else if(preg_match("/^use_titles$/", $filterconfiguration)) { // use post id as tags
+			$filtermode = "titles";
+			$posts_array = get_posts( array( 'post_status' => 'publish', 'category_name' => $categories ));
+			foreach($posts_array as $current) {
+				$filters[$current->ID] = $current->post_title;
+			}
+		}
 
 		// create new loop based on the categories named in the title of the post
-		// - but first make sure nothing can go sideways
-		$categories = $post->post_title;
-		if(preg_match("/^[a-zA-Z0-9,]+$/", $categories))
-			$categories = $post->post_title;
-		else
-			// do not show anything in case of an error
-			$categories = "category_that_d0es_n0t_exist_almost_100_perZent";
-
-		// save the page content before the $post variable gets overridden by the custom loop below
-		$post_content = $post->post_content;
-
 		// - now start the query
 		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
 		$query = new WP_Query( array ('category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
@@ -80,11 +95,11 @@ updateFilter();
 			// - reset the tags variable first to avoid erroneos behaviour with ajax pagination
 			$tags = "";
 			// - decide, which mode to use
-			if(preg_match("/^use_categories$/", $post_content)) { // use categories as tags
+			if("categories" == $filtermode) { // use categories as tags
 				foreach(get_the_category() as $current) {
 					$tags .= "filter-".$current->slug." ";
 				}
-			} else if(preg_match("/^use_titles$/", $post_content)) { // use post id as tags
+			} else if("titles" == $filtermode) { // use post id as tags
 				$tags .= "filter-".$post->ID." ";
 			}
 ?>
@@ -146,7 +161,7 @@ updateFilter();
 			jQuery("article[class^=filter-]").show();
 		} else {
 			jQuery("article[class^=filter-]").hide();
-			jQuery(".filter-" + selected[0].innerText).show();
+			jQuery(".filter-" + selected[0].getAttribute('value')).show();
 		}
 	}
 </script>
@@ -154,23 +169,10 @@ updateFilter();
 		<ul>
 		<?php
 		// create the filter controls
-		$post_content = $post->post_content;
-		// decide, which mode to use
-		if(preg_match("/^use_categories$/", $post_content)) { // use categories
-			$items = preg_split("/,/", $categories);
-		} else if(preg_match("/^use_titles$/", $post_content)) { // use titles
-			$posts_array = get_posts( array( 'post_status' => 'publish', 'category_name' => $categories ));
-			foreach($posts_array as $current) {
-				$items[] = $current->ID;
-			}
-		} else
-			// do not show anything in case of an error
-			$items = array ();
-
 		// do a listitem for each filter
-		foreach ($items as $current):
+		foreach ($filters as $key => $value):
 		?>
-			<li class="filter"><?php echo $current; ?></li>
+			<li class="filter" value="<?php echo $key.'">'.$value; ?></li>
 		<?php
 		endforeach;
 		?>
