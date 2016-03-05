@@ -31,10 +31,23 @@ get_header(); ?>
 
 		// Start the loop.
 		while ( $query->have_posts() ) : $query->the_post();
-
-			// Include the page content template.
-			get_template_part( 'template-parts/content', 'page' );
-
+			// tag each article
+			// - start with a default tagging by category
+			foreach(get_the_category() as $current) {
+				$tags .= "filter-".$current->slug." ";
+			}
+?>
+			<article id="post-<?php the_ID(); ?>" <?php post_class($tags); ?>>
+<?php
+			/*
+			 * Include the Post-Format-specific template for the content.
+			 * If you want to override this in a child theme, then include a file
+			 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
+			 */
+			get_template_part( 'template-parts/content', get_post_format() );
+?>
+			</article>
+<?php
 			// End of the loop.
 		endwhile;
 
@@ -46,6 +59,37 @@ get_header(); ?>
 	<?php get_sidebar( 'content-bottom' ); ?>
 
 </div><!-- .content-area -->
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+<script type="text/javascript">
+   jQuery(document).ready(function() {
+	jQuery(".filter").click(function() {
+			jQuery("article[class^=filter-]").hide();
+			jQuery(".filter-" + jQuery(this)[0].innerText).show();
+		});
+	});
+</script>
+
+		<ul>
+		<?php
+		// create the filter controls
+		// - but first make sure nothing can go sideways
+		$post_content = $post->post_content;
+		if(preg_match("/^[a-zA-Z0-9;]+$/", $post_content))
+			$items = preg_split("/;/", $post->post_content);
+		else
+			// do not show anything in case of an error
+			$items = array ();
+
+		foreach ($items as $current):
+		?>
+			<li class="filter"><?php echo $current; ?></li>
+		<?php
+		endforeach;
+		?>
+		</ul>
+
+	</aside><!-- .sidebar .widget-area -->
 
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>
