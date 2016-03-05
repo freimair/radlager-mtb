@@ -27,12 +27,15 @@ get_header(); ?>
 			$categories = "category_that_d0es_n0t_exist_almost_100_perZent";
 
 		// - now start the query
-		$query = new WP_Query( array ('category_name' => $categories ) );
 
+		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
+		$query = new WP_Query( array ('category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
+ 
 		// Start the loop.
 		while ( $query->have_posts() ) : $query->the_post();
 			// tag each article
 			// - start with a default tagging by category
+			$tags = "";
 			foreach(get_the_category() as $current) {
 				$tags .= "filter-".$current->slug." ";
 			}
@@ -50,6 +53,23 @@ get_header(); ?>
 <?php
 			// End of the loop.
 		endwhile;
+
+		// Previous/next page navigation.
+		if ($query->max_num_pages > 1) { // custom pagination
+			$orig_query = $wp_query; // fix for pagination to work
+			$wp_query = $query;
+			?>
+			<nav class="prev-next-posts">
+			    <div class="prev-posts-link">
+				<?php echo get_next_posts_link( 'Older Entries', $query->max_num_pages ); ?>
+			    </div>
+			    <div class="next-posts-link">
+				<?php echo get_previous_posts_link( 'Newer Entries' ); ?>
+			    </div>
+			</nav>
+			<?php
+			$wp_query = $orig_query; // fix for pagination to work
+		}
 
 		wp_reset_postdata(); //resetting the post query
 		?>
