@@ -63,10 +63,13 @@ updateFilter();
 			// do not show anything in case of an error
 			$categories = "category_that_d0es_n0t_exist_almost_100_perZent";
 
-		// - now start the query
+		// save the page content before the $post variable gets overridden by the custom loop below
+		$post_content = $post->post_content;
 
+		// - now start the query
 		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
 		$query = new WP_Query( array ('category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
+
 		if($query->have_posts()) :
 ?>
 		<div class="page" id="p<?php echo $paged; ?>">
@@ -74,10 +77,15 @@ updateFilter();
 		// Start the loop.
 		while ( $query->have_posts() ) : $query->the_post();
 			// tag each article
-			// - start with a default tagging by category
+			// - reset the tags variable first to avoid erroneos behaviour with ajax pagination
 			$tags = "";
-			foreach(get_the_category() as $current) {
-				$tags .= "filter-".$current->slug." ";
+			// - decide, which mode to use
+			if(preg_match("/^use_categories$/", $post_content)) { // use categories as tags
+				foreach(get_the_category() as $current) {
+					$tags .= "filter-".$current->slug." ";
+				}
+			} else if(preg_match("/^use_titles$/", $post_content)) { // use post id as tags
+				$tags .= "filter-".$post->ID." ";
 			}
 ?>
 			<article id="post-<?php the_ID(); ?>" <?php post_class($tags); ?>>
@@ -146,11 +154,16 @@ updateFilter();
 		<ul>
 		<?php
 		// create the filter controls
-		// - but first make sure nothing can go sideways
 		$post_content = $post->post_content;
-		if(preg_match("/^[a-zA-Z0-9;]+$/", $post_content))
-			$items = preg_split("/;/", $post->post_content);
-		else
+		// decide, which mode to use
+		if(preg_match("/^use_categories$/", $post_content)) { // use categories
+			$items = preg_split("/,/", $categories);
+		} else if(preg_match("/^use_titles$/", $post_content)) { // use titles
+			$posts_array = get_posts( array( 'post_status' => 'publish', 'category_name' => $categories ));
+			foreach($posts_array as $current) {
+				$items[] = $current->ID;
+			}
+		} else
 			// do not show anything in case of an error
 			$items = array ();
 
