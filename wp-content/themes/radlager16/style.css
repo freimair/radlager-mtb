@@ -293,7 +293,6 @@ input,
 select,
 textarea {
 	color: #1a1a1a;
-	font-family: Merriweather, Georgia, serif;
 	font-size: 16px;
 	font-size: 1rem;
 	line-height: 1.75;
@@ -2321,7 +2320,6 @@ body.search-no-results .page-header {
 
 .required {
 	color: #007acc;
-	font-family: Merriweather, Georgia, serif;
 }
 
 .comment-reply-title small {

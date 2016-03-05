@@ -788,7 +788,7 @@ class WP_Press_This {
 		/* translators: If there are characters in your language that are not supported
 		 * by Open Sans, translate this to 'off'. Do not translate into your own language.
 		 */
-		if ( 'off' !== _x( 'on', 'Open Sans font: on or off' ) ) {
+		if ( 'off' !== 'off' ) {
 			$subsets = 'latin,latin-ext';
 
 			/* translators: To add an additional Open Sans character subset specific to your language,
