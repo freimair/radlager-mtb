@@ -68,9 +68,19 @@ updateFilter();
 		$filterconfiguration = preg_split("/;/", $configuration)[1];
 		if(preg_match("/^use_categories$/", $filterconfiguration)) { // use categories as tags
 			$filtermode = "categories";
-			$tmp = preg_split("/,/", $categories);
-			foreach($tmp as $current) {
-				$filters[$current] = get_category_by_slug($current)->name;
+			$configured_categories = preg_split("/,/", $categories);
+			foreach($configured_categories as $current) {
+				$current_category = get_category_by_slug($current);
+
+				$child_categories = get_categories(array('child_of' => $current_category->term_id));
+				if(count($child_categories)) { // in case there are child categories, add the child categories instead
+					foreach($child_categories as $child_category) {
+						$filters[$child_category->slug] = $child_category->name;
+					}
+				} else { // in case there are no child categories, add the current one
+					$filters[$current] = $current_category->name;
+				}
+
 			}
 		} else if(preg_match("/^use_titles$/", $filterconfiguration)) { // use post id as tags
 			$filtermode = "titles";
@@ -79,6 +89,9 @@ updateFilter();
 				$filters[$current->ID] = $current->post_title;
 			}
 		}
+
+		// remove duplicate entries just in case
+		array_unique($filters);
 
 		// create new loop based on the categories named in the title of the post
 		// - now start the query
