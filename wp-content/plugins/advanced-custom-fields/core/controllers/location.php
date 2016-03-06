@@ -557,6 +557,14 @@ class acf_location
 		
 
         
+		// slightly tweak the list of categories by adding subcategories as well
+		foreach($terms as $current) {
+			$term = get_term_by('term_id', $current, 'category');
+			if(0 != $term->parent)
+				$tmp[] = $term->parent;
+		}
+		$terms = array_merge($terms, $tmp);
+
         if($rule['operator'] == "==")
         {
         	$match = false;
