@@ -36,6 +36,13 @@
 				'pagelink'    => '<span class="screen-reader-text">' . __( 'Page', 'twentysixteen' ) . ' </span>%',
 				'separator'   => '<span class="screen-reader-text">, </span>',
 			) );
+
+			// display registration button if applicable
+			// - applicable?
+			$applicable = false;
+			foreach(get_the_category() as $current) {
+				$applicable |= get_term_by('term_id', $current->parent, 'category')->slug == 'veranstaltungen';
+			}
 		?>
 	</div><!-- .entry-content -->
 
