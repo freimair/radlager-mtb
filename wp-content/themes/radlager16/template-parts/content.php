@@ -43,6 +43,19 @@
 			foreach(get_the_category() as $current) {
 				$applicable |= get_term_by('term_id', $current->parent, 'category')->slug == 'veranstaltungen';
 			}
+
+			// - if applicable
+			if($applicable) :
+				// - create database if it does not exist
+ 				// TODO
+
+				// - display button
+?>
+				<input type="button" onclick="alert('join in')" value="Bin dabei!" />
+<?php
+				// - do ajax join/leave
+				// TODO
+			endif;
 		?>
 	</div><!-- .entry-content -->
 
