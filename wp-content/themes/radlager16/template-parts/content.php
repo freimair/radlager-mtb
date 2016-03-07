@@ -47,7 +47,19 @@
 			// - if applicable
 			if($applicable) :
 				// - create database if it does not exist
- 				// TODO
+				// Creating the like post table on activating the plugin
+				$wti_like_post_table_name = $wpdb->prefix . "post_participants";
+				if ($wpdb->get_var("show tables like '$wti_like_post_table_name'") != $wti_like_post_table_name) {
+					$sql = "CREATE TABLE " . $wti_like_post_table_name . " (
+						`id` bigint(11) NOT NULL AUTO_INCREMENT,
+						`post_id` int(11) NOT NULL,
+						`date_time` datetime NOT NULL,
+						`user_id` int(11) NOT NULL DEFAULT '0',
+						PRIMARY KEY (`id`)
+						)";
+					require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+					dbDelta($sql);
+				}
 
 				// - display button
 ?>
