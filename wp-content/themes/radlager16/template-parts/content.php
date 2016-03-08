@@ -48,10 +48,8 @@
 			if($applicable) :
 				// - display button
 ?>
-				<input type="button" onclick="alert('join in')" value="Bin dabei!" />
+				<input type="button" class="post_participate" data-post_id="<?php echo the_ID(); ?>" value="Bin dabei!" />
 <?php
-				// - do ajax join/leave
-				// TODO
 			endif;
 		?>
 	</div><!-- .entry-content -->
