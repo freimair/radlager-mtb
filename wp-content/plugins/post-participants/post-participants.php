@@ -77,9 +77,13 @@ function PostUserParticipationIntent() {
 	// notify the user
 	// TODO
 
+	ReportAndExit("ok");
+}
+
+function ReportAndExit($result) {
 	// Check for method of processing the data
 	if ( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
-		$result = array("message" => $message);
+		$result = array("result" => $result);
 
 		echo json_encode($result);
 	} else {
