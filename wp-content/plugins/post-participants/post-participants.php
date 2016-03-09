@@ -177,3 +177,38 @@ function PostParticipantsScripts() {
 }
 
 add_action('init', 'PostParticipantsScripts');
+
+//[post_participants_manage_own_events]
+function ManageEventsUI( $atts ) {
+	// start gathering the HTML output
+	ob_start();
+
+	// first get all events the user created
+	global $wpdb, $post_participants_table_name;
+	$user_id = get_current_user_id();
+
+	// get posts the user created
+	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen'));
+	echo "<ul>";
+	foreach($posts as $currentevent) :
+		echo "<li>".$currentevent->post_title;
+			$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$currentevent->ID.";";
+			$participants = $wpdb->get_results($sql);
+		?><ul><?php
+		foreach ($participants as $current) :
+
+			?>
+			<li><?php echo get_user_by('id', $current->user_id)->display_name; ?></li>
+			<?php
+
+		endforeach;
+		echo "</ul></li>";
+	endforeach;
+	echo "</ul>";
+
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'post_participants_manage_own_events', 'ManageEventsUI' );
+?>
