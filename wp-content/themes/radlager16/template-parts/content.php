@@ -45,7 +45,7 @@
 			}
 
 			// - if applicable
-			if($applicable) :
+			if($applicable && is_user_logged_in()) :
 				// - display button
 ?>
 				<input type="button" class="post_participate" data-task="<?php echo CheckParticipationStatus(get_current_user_id(), get_the_ID()) ? "leave" : "join"; ?>" data-post_id="<?php echo the_ID(); ?>" value="<?php echo CheckParticipationStatus(get_current_user_id(), get_the_ID()) ? "Abmelden" : "Bin dabei!"; ?>" />
