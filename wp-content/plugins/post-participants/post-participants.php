@@ -90,9 +90,7 @@ function PostUserParticipationIntent() {
 
 	// check whether the user already participates
 	$user_id = get_current_user_id();
-	$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$post_id." AND user_id = ".$user_id.";";
-	$user_participates = $wpdb->get_results($sql);
-	if(0 < count($user_participates)) {
+	if(CheckParticipationStatus($user_id, $post_id)) {
 		ReportAndExit("user already participates");
 	}
 
@@ -117,6 +115,20 @@ function ReportAndExit($result) {
 	}
 
 	exit;
+}
+
+/**
+ * Post the participation wish
+ * @param no-param
+ * @return boolean. True if user already participates
+ */
+function CheckParticipationStatus($user_id, $post_id) {
+	global $wpdb, $post_participants_table_name;
+
+	$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$post_id." AND user_id = ".$user_id.";";
+	$user_participates = $wpdb->get_results($sql);
+
+	return 0 < count($user_participates);
 }
 
 add_action('wp_ajax_post_participants_intent', 'PostUserParticipationIntent');

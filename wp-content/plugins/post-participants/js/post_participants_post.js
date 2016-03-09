@@ -10,7 +10,10 @@ jQuery(document).ready(function(){
 			url : data.ajax_url,
 			data : {action: "post_participants_intent", post_id : post_id},
 			success: function(response) {
-				alert("result: " + response.result);
+				if("ok" == response.result)
+					jQuery("[class=post_participate][data-post_id=" + post_id + "]").val("Abmelden");
+				else
+					alert(response.result);
 			}
 		});
 	});
