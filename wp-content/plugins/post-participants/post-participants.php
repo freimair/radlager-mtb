@@ -64,15 +64,37 @@ register_uninstall_hook(__FILE__, 'UninstallPostParticipants');
  * @return no-return
  */
 function PostUserParticipationIntent() {
+	global $wpdb, $post_participants_table_name;
 	$post_id = (int)$_REQUEST['post_id'];
 	$message = "you successfully subscribed to $post_id";
 
 	// find post meta and check whether the use can join
-	// TODO
+	$max_participants = get_field('max_participants', $post_id);
+	$deadline = get_field('anmeldeschluss', $post_id);
+
+	// - check for registration deadline
+	if(date("Y-m-d H:i") > $deadline) {
+		ReportAndExit("registration deadline passed");
+	}
+
+	// - check whether event is full already
+	$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$post_id.";";
+	$rows = $wpdb->get_results($sql);
+
+	if(count($rows) >= $max_participants) {
+		ReportAndExit("event is full");
+	}
 
 	// find participation mode: standard, voranmeldung
-	// save participation status
 	// TODO
+
+	// check whether the user already participates
+	$user_id = get_current_user_id();
+	$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$post_id." AND user_id = ".$user_id.";";
+	$user_participates = $wpdb->get_results($sql);
+	if(0 < count($user_participates)) {
+		ReportAndExit("user already participates");
+	}
 
 	// notify the user
 	// TODO
