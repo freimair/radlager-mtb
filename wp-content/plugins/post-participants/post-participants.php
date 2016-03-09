@@ -96,6 +96,10 @@ function PostUserParticipationIntent() {
 		ReportAndExit("user already participates");
 	}
 
+	// save participation status
+	$sql = "INSERT INTO " . $post_participants_table_name . " (post_id,date_time,user_id) VALUES (".$post_id.",'".date("Y-m-d H:i:s")."',".get_current_user_id().");";
+	$wpdb->get_results($sql);
+
 	// notify the user
 	// TODO
 
