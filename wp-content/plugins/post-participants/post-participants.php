@@ -69,11 +69,12 @@ function PostUserParticipationIntent() {
 	$task = $_REQUEST['task'];
 	$user_id = get_current_user_id();
 
+	// TODO check user permissions
+
 	if("join" == $task)
 		JoinPost($post_id, $user_id);
-
-//	else if("leave" == $task)
-//		Leave($post_id, $user_id);
+	else if("leave" == $task)
+		LeavePost($post_id, $user_id);
 }
 
 function JoinPost($post_id, $user_id) {
@@ -111,7 +112,20 @@ function JoinPost($post_id, $user_id) {
 	// notify the user
 	// TODO
 
-	ReportAndExit("ok");
+	ReportAndExit("leave");
+}
+
+function LeavePost($post_id, $user_id) {
+	global $wpdb, $post_participants_table_name;
+
+	// remove participant
+	$sql = "DELETE FROM " . $post_participants_table_name . " WHERE  post_id = ".$post_id." AND user_id = ".$user_id.";";
+	$wpdb->get_results($sql);
+
+	// join participants from the waiting list
+	// TODO
+
+	ReportAndExit("join");
 }
 
 function ReportAndExit($result) {
