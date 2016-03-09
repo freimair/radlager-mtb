@@ -64,9 +64,20 @@ register_uninstall_hook(__FILE__, 'UninstallPostParticipants');
  * @return no-return
  */
 function PostUserParticipationIntent() {
-	global $wpdb, $post_participants_table_name;
 	$post_id = (int)$_REQUEST['post_id'];
-	$message = "you successfully subscribed to $post_id";
+	// TODO check post id before going further
+	$task = $_REQUEST['task'];
+	$user_id = get_current_user_id();
+
+	if("join" == $task)
+		JoinPost($post_id, $user_id);
+
+//	else if("leave" == $task)
+//		Leave($post_id, $user_id);
+}
+
+function JoinPost($post_id, $user_id) {
+	global $wpdb, $post_participants_table_name;
 
 	// find post meta and check whether the use can join
 	$max_participants = get_field('max_participants', $post_id);
@@ -89,7 +100,6 @@ function PostUserParticipationIntent() {
 	// TODO
 
 	// check whether the user already participates
-	$user_id = get_current_user_id();
 	if(CheckParticipationStatus($user_id, $post_id)) {
 		ReportAndExit("user already participates");
 	}
