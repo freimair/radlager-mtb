@@ -17,7 +17,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 */
 
-global $post_participants_db_version;
+global $wpdb, $post_participants_db_version, $post_participants_table_name;
 $post_participants_db_version = "1.0";
 $post_participants_table_name = $wpdb->prefix . "post_participants";
 
