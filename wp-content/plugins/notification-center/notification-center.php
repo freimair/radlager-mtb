@@ -83,4 +83,28 @@ function NotificationCenter_NotifyUser($userid, $subject, $message) {
 	// trigger notifications
 	// TODO
 }
+
+//[notification_center_show_messages]
+function NotificationCenter_ListMessages( $atts ) {
+	// start gathering the HTML output
+	ob_start();
+
+	// get all messages for the current user
+	global $wpdb, $notification_center_table_name;
+	$user_id = get_current_user_id();
+
+	$sql = "SELECT * FROM " . $notification_center_table_name . " WHERE user_id = ".$user_id.";";
+	$messages = $wpdb->get_results($sql);
+
+	echo "<ul>";
+	foreach ($messages as $currentmessage) {
+	    echo "<li>".$currentmessage->date_time." - ".$currentmessage->subject.": ".$currentmessage->message."</li>";
+	}
+	echo "</ul>";
+
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'notification_center_show_messages', 'NotificationCenter_ListMessages' );
 ?>
