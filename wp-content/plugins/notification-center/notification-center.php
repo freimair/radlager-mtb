@@ -68,10 +68,10 @@ function NotificationCenter_NotifyUser($userid, $subject, $message) {
 	global $wpdb, $notification_center_table_name;
 
 	// do security checks
-	if(!preg_match("/^[a-zA-Z0-9]+$/", $subject)) {
+	if(!preg_match("/^[a-zA-Z0-9 ]+$/", $subject)) {
 		exit;
 	}
-	if(!preg_match("/^[a-zA-Z0-9]+$/", $message)) {
+	if(!preg_match("/^[a-zA-Z0-9 ]+$/", $message)) {
 		// TODO do we need links and stuff?
 		exit;
 	}
