@@ -356,36 +356,5 @@ function twentysixteen_widget_tag_cloud_args( $args ) {
 }
 add_filter( 'widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args' );
 
-function my_pre_save_post( $post_id ) {
-
-	// check if this is to be a new post
-	if( $post_id != 'new' )
-	{
-		return $post_id;
-	}
-
-	// TODO check for permissions
-	// TODO check for valid post categories
-
-	// Create a new post
-	$post = array(
-		'post_status'  => 'pending',
-		'post_title'  => $_POST['title'],
-		'post_content'  => $_POST['editor'],
-		'post_category' => $_POST['post_category']
-	);
-
-	// insert the post
-	$post_id = wp_insert_post( $post );
-
-	// update $_POST['return']
-	$_POST['return'] = add_query_arg( array('post_id' => $post_id), $_POST['return'] );
-
-	// return the new ID
-	return $post_id;
-}
-
-add_filter('acf/pre_save_post' , 'my_pre_save_post' );
-
 ?>
 
