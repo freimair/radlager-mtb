@@ -49,6 +49,21 @@ function my_pre_save_post( $post_id ) {
 
 add_filter('acf/pre_save_post' , 'my_pre_save_post' );
 
+/**
+ * Wrapper for posting the form.
+ * @param no-param
+ * @return no-return
+ */
+function frontend_create_posts_form($post_id, $categories) {
+	acf_form(array(
+		'post_id'	=> $post_id,
+		'post_title'	=> true,
+		'post_content'	=> true,
+		'categories'	=> $categories,
+		'submit_value'	=> 'Create Post!'
+	));
+}
+
 //[pending_posts]
 function ListPendingPosts( $atts ) {
 	// start gathering the HTML output

@@ -94,13 +94,10 @@ updateFilter();
 		// remove duplicate entries just in case
 		array_unique($filters);
 
-		acf_form(array(
-			'post_id'	=> 'new',
-			'post_title'	=> true,
-			'post_content'	=> true,
-			'categories'	=> get_categories(array('child_of' => 3)),
-			'submit_value'	=> 'Create Post!'
-		));
+		// show frontend post
+		if (function_exists('frontend_create_posts_form')) {
+			frontend_create_posts_form('new', get_categories(array('child_of' => 3)));
+		}
 
 		// create new loop based on the categories named in the title of the post
 		// - now start the query
