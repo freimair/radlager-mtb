@@ -1249,7 +1249,11 @@ function acf_form( $options = array() )
 	</div>
 	
 	<div id="poststuff">
+
 	<?php
+	// html before fields
+	echo $options['html_before_fields'];
+
 	if($options['post_title']) {
 		echo '<label>Titel: <input type="text" name="title" value=""></label>';
 	}
@@ -1267,10 +1271,6 @@ function acf_form( $options = array() )
 	if($options['file_upload']) {
 		echo '<input type="file" id="my_image_upload" name="my_image_upload[]" multiple="multiple">';
 	}
-
-	// html before fields
-	echo $options['html_before_fields'];
-	
 	
 	$acfs = apply_filters('acf/get_field_groups', array());
 	
