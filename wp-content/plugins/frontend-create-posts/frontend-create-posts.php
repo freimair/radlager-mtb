@@ -80,7 +80,7 @@ add_filter('acf/pre_save_post' , 'my_pre_save_post' );
  * @return no-return
  */
 function frontend_create_posts_form($post_id, $categories) {
-	acf_form(array(
+	$settings = array(
 		'post_id'	=> $post_id,
 		'post_title'	=> true,
 		'post_content'	=> true,
@@ -88,7 +88,16 @@ function frontend_create_posts_form($post_id, $categories) {
 		'file_upload' 	=> true,
 		'form_attributes' => array ( 'enctype' => 'multipart/form-data' ),
 		'submit_value'	=> 'Create Post!'
-	));
+	);
+
+	foreach ($categories as $current) {
+		// TODO get rid of these nasty constants!
+		if('veranstaltungen' === get_category($current->parent)->category_nicename) {
+			$settings['field_groups'] = array ( 106, 84 );
+		}
+	}
+
+	acf_form($settings);
 }
 
 //[pending_posts]
