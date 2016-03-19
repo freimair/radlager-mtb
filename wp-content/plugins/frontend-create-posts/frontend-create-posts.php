@@ -49,5 +49,28 @@ function my_pre_save_post( $post_id ) {
 
 add_filter('acf/pre_save_post' , 'my_pre_save_post' );
 
+//[pending_posts]
+function ListPendingPosts( $atts ) {
+	// start gathering the HTML output
+	ob_start();
 
+	// get all messages for the current user
+	global $wpdb;
+	$user_id = get_current_user_id();
+
+	// get posts the user created
+	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'medien', 'post_status' => 'pending'));
+
+	echo "<ul>";
+	foreach($posts as $currentevent) :
+		echo "<li>".$currentevent->post_title."</li>";
+		// TODO add edit functionality
+	endforeach;
+	echo "</ul>";
+
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'pending_posts', 'ListPendingPosts' );
 ?>
