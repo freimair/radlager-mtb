@@ -115,4 +115,20 @@ function ListPendingPosts( $atts ) {
 }
 
 add_shortcode( 'pending_posts', 'ListPendingPosts' );
+
+/**
+ * Remove buttons in TinyMCE editor. Keep it stupid simple.
+ */
+function myplugin_tinymce_buttons($buttons)
+{
+	// TODO leave any role above and including editor all options
+
+	//Remove the format dropdown select and text color selector
+	$remove = array('bold', 'strikethrough', 'blockquote', 'hr','alginleft','aligncenter','alignright','wp_more','fullscreen', 'underline','alignleft', 'alignjustify','wp_adv','forecolor','pastetext', 'charmap','wp_help');
+
+	return array_diff($buttons,$remove);
+}
+
+add_filter('mce_buttons_2','myplugin_tinymce_buttons');
+add_filter('mce_buttons','myplugin_tinymce_buttons');
 ?>
