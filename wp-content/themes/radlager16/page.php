@@ -76,7 +76,7 @@ updateFilter();
 				$child_categories = get_categories(array('child_of' => $current_category->term_id));
 				if(count($child_categories)) { // in case there are child categories, add the child categories instead
 					foreach($child_categories as $child_category) {
-						$filters[$child_category->slug] = $child_category->name;
+						$filters[$child_category->cat_ID] = $child_category->name;
 					}
 				} else { // in case there are no child categories, add the current one
 					$filters[$current] = $current_category->name;
@@ -94,9 +94,17 @@ updateFilter();
 		// remove duplicate entries just in case
 		array_unique($filters);
 
-		// show frontend post
+		// show create post form if applicable
 		if (function_exists('frontend_create_posts_form')) {
-			frontend_create_posts_form('new', get_categories(array('child_of' => 3)));
+			if("categories" === $filtermode) {
+				// assemble categories from filter list
+				foreach ($filters as $key => $value) {
+				    $tmp .= $key.",";
+				}
+
+				// render editor
+				frontend_create_posts_form('new', get_categories(array('include' => $tmp)));
+			}
 		}
 
 		// create new loop based on the categories named in the title of the post
@@ -116,7 +124,7 @@ updateFilter();
 			// - decide, which mode to use
 			if("categories" == $filtermode) { // use categories as tags
 				foreach(get_the_category() as $current) {
-					$tags .= "filter-".$current->slug." ";
+					$tags .= "filter-".$current->cat_ID." ";
 				}
 			} else if("titles" == $filtermode) { // use post id as tags
 				$tags .= "filter-".$post->ID." ";
