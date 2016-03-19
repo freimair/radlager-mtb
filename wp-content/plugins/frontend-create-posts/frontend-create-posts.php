@@ -27,7 +27,6 @@ function my_pre_save_post( $post_id ) {
 
 	// TODO check for permissions
 	// TODO check for valid post categories
-	// TODO fix media upload and gallery stuff
 
 	// Create a new post
 	$post = array(
@@ -42,6 +41,32 @@ function my_pre_save_post( $post_id ) {
 
 	// update $_POST['return']
 	$_POST['return'] = add_query_arg( array('post_id' => $post_id), $_POST['return'] );
+
+	// in case there are upload attached, preprocess them, create appropriate media posts and attach them to the newly created post
+	if ( $_FILES ) {
+		// These files need to be included as dependencies when on the front end.
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+		$files = $_FILES["my_image_upload"];
+		// wps media upload helper only works with single-file uploads.
+		// thus, rebuild files array so that the wp media upload helper can handle it.
+		foreach ($files['name'] as $key => $value) {
+			if ($files['name'][$key]) {
+				$file = array(
+					'name' => $files['name'][$key],
+					'type' => $files['type'][$key],
+					'tmp_name' => $files['tmp_name'][$key],
+					'error' => $files['error'][$key],
+					'size' => $files['size'][$key]
+				);
+				$_FILES = array ("my_image_upload" => $file);
+				// Let WordPress handle the upload.
+				media_handle_upload( my_image_upload, $post_id );
+			}
+		}
+	}
 
 	// return the new ID
 	return $post_id;
@@ -60,6 +85,8 @@ function frontend_create_posts_form($post_id, $categories) {
 		'post_title'	=> true,
 		'post_content'	=> true,
 		'categories'	=> $categories,
+		'file_upload' 	=> true,
+		'form_attributes' => array ( 'enctype' => 'multipart/form-data' ),
 		'submit_value'	=> 'Create Post!'
 	));
 }

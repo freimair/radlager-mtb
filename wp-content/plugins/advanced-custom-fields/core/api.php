@@ -1254,7 +1254,7 @@ function acf_form( $options = array() )
 		echo '<label>Titel: <input type="text" name="title" value=""></label>';
 	}
 	if($options['post_content']) {
-		wp_editor('', 'editor');
+		wp_editor('', 'editor', array ( 'media_buttons' => false ) );
 	}
 	if(0 < count($options['categories'])) {
 		echo '<ul id="categorychecklist" class="categorychecklist">';
@@ -1264,7 +1264,10 @@ function acf_form( $options = array() )
 		echo '</ul>';
 	}
 
-	
+	if($options['file_upload']) {
+		echo '<input type="file" id="my_image_upload" name="my_image_upload[]" multiple="multiple">';
+	}
+
 	// html before fields
 	echo $options['html_before_fields'];
 	
