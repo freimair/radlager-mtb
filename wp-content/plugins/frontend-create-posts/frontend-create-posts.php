@@ -27,6 +27,7 @@ function my_pre_save_post( $post_id ) {
 
 	// TODO check for permissions
 	// TODO check for valid post categories
+	// TODO derive post_status from chosen categories
 
 	// Create a new post
 	$post = array(
@@ -90,12 +91,13 @@ function frontend_create_posts_form($post_id, $categories) {
 		'submit_value'	=> 'Create Post!'
 	);
 
+	// cast the whole array again into an array of IDs
 	foreach ($categories as $current) {
-		// TODO get rid of these nasty constants!
-		if('veranstaltungen' === get_category($current->parent)->category_nicename) {
-			$settings['field_groups'] = array ( 106, 84 );
-		}
+		$tmp[] = $current->term_id;
 	}
+
+	// go and ask ACF4. They know which custom fields should be shown where.
+	$settings['field_groups'] = apply_filters( 'acf/location/match_field_groups', array(), array ( 'post_category' => $tmp ) );
 
 	acf_form($settings);
 }
