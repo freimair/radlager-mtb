@@ -109,6 +109,56 @@ $profileuser = get_user_to_edit(get_current_user_id());
 <?php
 }
 
+function contact_info_profile_fields() {
+$profileuser = get_user_to_edit(get_current_user_id());
+?>
+<table class="form-table">
+<tr class="user-email-wrap">
+	<th><label for="email"><?php _e('Email'); ?> <span class="description"><?php _e('(required)'); ?></span></label></th>
+	<td><input type="email" name="email" id="email" value="<?php echo esc_attr( $profileuser->user_email ) ?>" class="regular-text ltr" />
+	<?php
+	$new_email = get_option( $current_user->ID . '_new_email' );
+	if ( $new_email && $new_email['newemail'] != $current_user->user_email && $profileuser->ID == $current_user->ID ) : ?>
+	<div class="updated inline">
+	<p><?php
+		printf(
+			__( 'There is a pending change of your email to %1$s. <a href="%2$s">Cancel</a>' ),
+			'<code>' . $new_email['newemail'] . '</code>',
+			esc_url( self_admin_url( 'profile.php?dismiss=' . $current_user->ID . '_new_email' ) )
+	); ?></p>
+	</div>
+	<?php endif; ?>
+	</td>
+</tr>
+
+<?php
+	foreach ( wp_get_user_contact_methods( $profileuser ) as $name => $desc ) {
+?>
+<tr class="user-<?php echo $name; ?>-wrap">
+	<th><label for="<?php echo $name; ?>">
+		<?php
+		/**
+		 * Filter a user contactmethod label.
+		 *
+		 * The dynamic portion of the filter hook, `$name`, refers to
+		 * each of the keys in the contactmethods array.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param string $desc The translatable label for the contactmethod.
+		 */
+		echo apply_filters( "user_{$name}_label", $desc );
+		?>
+	</label></th>
+	<td><input type="text" name="<?php echo $name; ?>" id="<?php echo $name; ?>" value="<?php echo esc_attr($profileuser->$name) ?>" class="regular-text" /></td>
+</tr>
+<?php
+	}
+?>
+</table>
+<?php
+}
+
 function about_yourself_profile_fields() {
 $profileuser = get_user_to_edit(get_current_user_id());
 ?>
@@ -165,6 +215,29 @@ jQuery("form#personal-profile-fields").click(function(e) {post_user_data(jQuery(
 }
 
 add_shortcode( 'personal_information', 'PersonalInformation' );
+
+//[contact_information]
+function ContactInformation( $atts ) {
+$user_id = get_current_user_id();
+	// start gathering the HTML output
+	ob_start();
+?>
+<form id="contact_information-fields">
+<?php
+	contact_info_profile_fields();
+?>
+
+<input type="button" name="submit" id="submit" class="button button-primary" value="Update Profile">
+</form>
+<script>
+jQuery("form#contact_information-fields").click(function(e) {post_user_data(jQuery(this));});
+</script>
+<?php
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'contact_information', 'ContactInformation' );
 
 function UpdateUserData() {
 	$user_id = get_current_user_id();
