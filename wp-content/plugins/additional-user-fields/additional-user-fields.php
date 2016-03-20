@@ -147,15 +147,63 @@ $user_id = get_current_user_id();
 	// start gathering the HTML output
 	ob_start();
 ?>
+<form id="personal-profile-fields">
 <?php
 	name_profile_fields();
 	rl_add_custom_user_profile_fields(get_current_user_id());
 	about_yourself_profile_fields();
+?>
+
+<input type="button" name="submit" id="submit" class="button button-primary" value="Update Profile">
+</form>
+<script>
+jQuery("form#personal-profile-fields").click(function(e) {post_user_data(jQuery(this));});
+</script>
+<?php
 	// finalize gathering and return
 	return ob_get_clean();
 }
 
 add_shortcode( 'personal_information', 'PersonalInformation' );
+
+function UpdateUserData() {
+	$user_id = get_current_user_id();
+
+	if ( !current_user_can('edit_user', $user_id) )
+		wp_die(__('You do not have permission to edit this user.'));
+
+	do_action( 'personal_options_update', $user_id );
+
+	// Update the user.
+	$_POST['ID'] = $user_id;
+	$user_id = wp_update_user( $_POST );
+
+	if ( is_wp_error( $user_id ) ) {
+		// There was an error, probably that user doesn't exist.
+		// TODO properly report error
+	}
+
+	die();
+}
+
+add_action('wp_ajax_update_user_data', 'UpdateUserData');
+add_action('wp_ajax_nopriv_update_user_data', 'UpdateUserData');
+
+
+/**
+ * Add the javascript for the plugin
+ * @param no-param
+ * @return string
+ */
+function AdditionalUserFieldsScripts() {
+     wp_register_script( 'additional_user_fields_script', plugins_url( 'js/additional_user_fields.js', __FILE__ ), array('jquery') );
+     wp_localize_script( 'additional_user_fields_script', 'data', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
+
+     wp_enqueue_script( 'jquery' );
+     wp_enqueue_script( 'additional_user_fields_script' );
+}
+
+add_action('init', 'AdditionalUserFieldsScripts');
 
 function modify_user_contact_methods( $user_contact ) {
 	// Add user contact methods
