@@ -202,6 +202,7 @@ $user_id = get_current_user_id();
 	name_profile_fields();
 	rl_add_custom_user_profile_fields(get_current_user_id());
 	about_yourself_profile_fields();
+	// TODO add avatar upload field
 ?>
 
 <input type="button" name="submit" id="submit" class="button button-primary" value="Update Profile">
@@ -218,7 +219,7 @@ add_shortcode( 'personal_information', 'PersonalInformation' );
 
 //[contact_information]
 function ContactInformation( $atts ) {
-$user_id = get_current_user_id();
+	$user_id = get_current_user_id();
 	// start gathering the HTML output
 	ob_start();
 ?>
@@ -238,6 +239,8 @@ jQuery("form#contact_information-fields").click(function(e) {post_user_data(jQue
 }
 
 add_shortcode( 'contact_information', 'ContactInformation' );
+
+// TODO add account_management shortcode with appropriate JS
 
 function UpdateUserData() {
 	$user_id = get_current_user_id();
