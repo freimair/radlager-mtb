@@ -210,10 +210,10 @@ $user_id = get_current_user_id();
 	// TODO add avatar upload field
 ?>
 
-<input type="button" name="submit" id="submit" class="button button-primary" value="Update Profile">
+<input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="Update Profile">
 </form>
 <script>
-jQuery("form#personal-profile-fields").click(function(e) {post_user_data(jQuery(this));});
+jQuery("input#submit-personal-profile-fields").click(function(e) {post_user_data(jQuery("form#personal-profile-fields"));});
 </script>
 <?php
 	// finalize gathering and return
@@ -233,10 +233,10 @@ function ContactInformation( $atts ) {
 	contact_info_profile_fields();
 ?>
 
-<input type="button" name="submit" id="submit" class="button button-primary" value="Update Profile">
+<input type="button" name="submit" id="submit-contact_information-fields" class="button button-primary" value="Update Profile">
 </form>
 <script>
-jQuery("form#contact_information-fields").click(function(e) {post_user_data(jQuery(this));});
+jQuery("input#submit-contact_information-fields").click(function(e) {post_user_data(jQuery("form#contact_information-fields"));});
 </script>
 <?php
 	// finalize gathering and return
