@@ -173,6 +173,60 @@ $profileuser = get_user_to_edit(get_current_user_id());
 <?php
 }
 
+function account_management_profile_fields() {
+$profileuser = get_user_to_edit(get_current_user_id());
+?>
+<table class="form-table">
+<tr id="password" class="user-pass1-wrap">
+	<th><label for="pass1"><?php _e( 'New Password' ); ?></label></th>
+	<td>
+		<input class="hidden" value=" " /><!-- #24364 workaround -->
+		<button type="button" class="button button-secondary wp-generate-pw hide-if-no-js"><?php _e( 'Generate Password' ); ?></button>
+		<div class="wp-pwd hide-if-js">
+			<span class="password-input-wrapper">
+				<input type="password" name="pass1" id="pass1" class="regular-text" value="" autocomplete="off" data-pw="<?php echo esc_attr( wp_generate_password( 24 ) ); ?>" aria-describedby="pass-strength-result" />
+			</span>
+			<button type="button" class="button button-secondary wp-hide-pw hide-if-no-js" data-toggle="0" aria-label="<?php esc_attr_e( 'Hide password' ); ?>">
+				<span class="dashicons dashicons-hidden"></span>
+				<span class="text"><?php _e( 'Hide' ); ?></span>
+			</button>
+			<button type="button" class="button button-secondary wp-cancel-pw hide-if-no-js" data-toggle="0" aria-label="<?php esc_attr_e( 'Cancel password change' ); ?>">
+				<span class="text"><?php _e( 'Cancel' ); ?></span>
+			</button>
+			<div style="display:none" id="pass-strength-result" aria-live="polite"></div>
+		</div>
+	</td>
+</tr>
+<tr class="user-pass2-wrap hide-if-js">
+	<th scope="row"><label for="pass2"><?php _e( 'Repeat New Password' ); ?></label></th>
+	<td>
+	<input name="pass2" type="password" id="pass2" class="regular-text" value="" autocomplete="off" />
+	<p class="description"><?php _e( 'Type your new password again.' ); ?></p>
+	</td>
+</tr>
+<tr class="pw-weak">
+	<th><?php _e( 'Confirm Password' ); ?></th>
+	<td>
+		<label>
+			<input type="hidden" name="pw_weak" value="off" />
+			<input type="checkbox" name="pw_weak" class="pw-checkbox" />
+			<?php _e( 'Confirm use of weak password' ); ?>
+		</label>
+	</td>
+</tr>
+<tr class="user-sessions-wrap hide-if-no-js">
+	<th><?php _e( 'Sessions' ); ?></th>
+	<td aria-live="assertive">
+		<div class="destroy-sessions"><button type="button" class="button button-secondary" id="destroy-sessions"><?php _e( 'Log Out Everywhere Else' ); ?></button></div>
+		<p class="description">
+			<?php _e( 'Did you lose your phone or leave your account logged in at a public computer? You can log out everywhere else, and stay logged in here.' ); ?>
+		</p>
+	</td>
+</tr>
+</tbody></table>
+<?php
+}
+
 function rl_save_custom_user_profile_fields( $user_id ) {
 	
 	if ( !current_user_can( 'edit_user', $user_id ) )
@@ -245,7 +299,30 @@ jQuery("input#submit-contact_information-fields").click(function(e) {post_user_d
 
 add_shortcode( 'contact_information', 'ContactInformation' );
 
-// TODO add account_management shortcode with appropriate JS
+//[account_management]
+function AccountManagement( $atts ) {
+	$user_id = get_current_user_id();
+	wp_enqueue_script( 'password-strength-meter' );
+	wp_enqueue_script( 'user-profile' );
+	// start gathering the HTML output
+	ob_start();
+?>
+<form id="account-management-fields">
+<?php
+	account_management_profile_fields();
+?>
+
+<input type="button" name="submit" id="submit-account-management-fields" class="button button-primary" value="Update Profile">
+</form>
+<script>
+jQuery("input#submit-account-management-fields").click(function(e) {post_user_data(jQuery("form#account-management-fields")); e.preventDefault();});
+</script>
+<?php
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'account_management', 'AccountManagement' );
 
 function UpdateUserData() {
 	$user_id = get_current_user_id();
@@ -257,6 +334,31 @@ function UpdateUserData() {
 
 	// Update the user.
 	$_POST['ID'] = $user_id;
+
+	// in case the user changed his password we need to make sure everything is sound
+	$pwd_ok = isset($_POST['pass1']);
+
+	// Check for "\" in password
+	if ( false !== strpos( wp_unslash( $_POST['pass1'] ), "\\" ) ) {
+		$pwd_ok = false;
+		$errors->add( 'pass', __( '<strong>ERROR</strong>: Passwords may not contain the character "\\".' ), array( 'form-field' => 'pass1' ) );
+	}
+
+	// check if passwords match
+	if ( $_POST['pass1'] != $_POST['pass2'] ) {
+		$pwd_ok = false;
+		$errors->add( 'pass', __( '<strong>ERROR</strong>: Please enter the same password in both password fields.' ), array( 'form-field' => 'pass1' ) );
+	}
+
+	// check if pw_weak is set and correct
+	if(isset($_POST['pw_weak']))
+		if('on' !== $_POST['pw_weak'])
+			$pwd_ok = false;
+
+	// if anything is fine prepare setting the password
+	if($pwd_ok)
+		$_POST['user_pass'] = $_POST['pass1'];
+
 	$user_id = wp_update_user( $_POST );
 
 	if ( is_wp_error( $user_id ) ) {
