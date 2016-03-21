@@ -178,11 +178,16 @@ function rl_save_custom_user_profile_fields( $user_id ) {
 	if ( !current_user_can( 'edit_user', $user_id ) )
 		return FALSE;
 	
-	update_usermeta( $user_id, 'function', $_POST['function'] );
-	update_usermeta( $user_id, 'bikes', $_POST['bikes'] );
-	update_usermeta( $user_id, 'phone', $_POST['phone'] );
-	update_usermeta( $user_id, 'home', $_POST['home'] );
-	update_usermeta( $user_id, 'facebook', $_POST['facebook'] );
+	if ( isset($_POST['function']))
+		update_usermeta( $user_id, 'function', $_POST['function'] );
+	if ( isset($_POST['bikes']))
+		update_usermeta( $user_id, 'bikes', $_POST['bikes'] );
+	if ( isset($_POST['phone']))
+		update_usermeta( $user_id, 'phone', $_POST['phone'] );
+	if ( isset($_POST['home']))
+		update_usermeta( $user_id, 'home', $_POST['home'] );
+	if ( isset($_POST['facebook']))
+		update_usermeta( $user_id, 'facebook', $_POST['facebook'] );
 }
 
 add_action( 'show_user_profile', 'rl_add_custom_user_profile_fields' );
