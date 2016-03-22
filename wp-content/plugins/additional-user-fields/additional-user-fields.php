@@ -177,6 +177,7 @@ function account_management_profile_fields() {
 $profileuser = get_user_to_edit(get_current_user_id());
 ?>
 <table class="form-table">
+<tr><th><label>Logout</label></th><td><a href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a></td></tr>
 <tr id="password" class="user-pass1-wrap">
 	<th><label for="pass1"><?php _e( 'New Password' ); ?></label></th>
 	<td>
