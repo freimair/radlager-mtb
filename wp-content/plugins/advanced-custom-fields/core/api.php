@@ -1260,6 +1260,9 @@ function acf_form( $options = array() )
 	}
 	if($options['post_content']) {
 		wp_editor('', 'editor', array ( 'media_buttons' => false ) );
+		\_WP_Editors::enqueue_scripts();
+		print_footer_scripts();
+		\_WP_Editors::editor_js();
 	}
 	if(0 < count($options['categories'])) {
 		echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
@@ -1319,7 +1322,7 @@ function acf_form( $options = array() )
 	<?php if( $options['form'] ): ?>
 	<!-- Submit -->
 	<div class="field">
-		<input type="submit" value="<?php echo $options['submit_value']; ?>" />
+		<input type="submit" id="submit" value="<?php echo $options['submit_value']; ?>" />
 	</div>
 	<!-- / Submit -->
 	<?php endif; ?>

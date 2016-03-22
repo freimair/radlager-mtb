@@ -75,12 +75,18 @@ function my_pre_save_post( $post_id ) {
 
 add_filter('acf/pre_save_post' , 'my_pre_save_post' );
 
-/**
- * Wrapper for posting the form.
- * @param no-param
- * @return no-return
- */
-function frontend_create_posts_form($post_id, $categories) {
+function FrontendEditPostForm() {
+	$category_ids = $_POST['category_ids'];
+	$post_id = $_POST['post_id'];
+	// TODO do security checks
+	// TODO do user permission check
+
+	// cast the whole array again into an array of IDs
+	foreach ($category_ids as $current) {
+		$categories[] = get_category((int)$current);
+	}
+
+	// TODO react to a post id other than new
 	$settings = array(
 		'post_id'	=> $post_id,
 		'post_title'	=> true,
@@ -91,16 +97,65 @@ function frontend_create_posts_form($post_id, $categories) {
 		'submit_value'	=> 'Create Post!'
 	);
 
-	// cast the whole array again into an array of IDs
-	foreach ($categories as $current) {
-		$tmp[] = $current->term_id;
-	}
 
 	// go and ask ACF4. They know which custom fields should be shown where.
-	$settings['field_groups'] = apply_filters( 'acf/location/match_field_groups', array(), array ( 'post_category' => $tmp ) );
+	$settings['field_groups'] = apply_filters( 'acf/location/match_field_groups', array(), array ( 'post_category' => $category_ids ) );
 
 	acf_form($settings);
+	die();
 }
+
+/**
+ * Wrapper for posting the form.
+ * @param post-id, "new" if a new post should be created
+ * @param categories: the categories that should be available to select from
+ */
+function frontend_edit_posts_form($post_id, $categories, $caption) {
+	// cast the whole array again into an array of IDs
+	foreach ($categories as $current) {
+		$category_ids[] = $current->term_id;
+	}
+?>
+<input type="button" id="edit-post" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" value="<?php echo $caption; ?>" />
+<div id="edit-post-form"></div>
+<script type="text/javascript" >
+jQuery(document).ready(function(){
+	jQuery("input#edit-post").click(function(e){
+		e.preventDefault();
+		var post_id = jQuery(this).attr("data-post_id");
+		var categories = JSON.parse(jQuery(this).attr("data-categories"));
+
+		jQuery('div#edit-post-form').load('/wp-admin/admin-ajax.php', {"action" : "frontend_edit_post_form", "post_id" : post_id, "category_ids" : categories}, function() {
+			jQuery('div#edit-post-form input#submit').click(function(e) {
+					e.preventDefault();
+
+					var postData = new FormData(jQuery('div#edit-post-form form')[0]);
+					jQuery.ajax({
+						type: "post",
+//						url: 'wp-admin/admin-ajax.php',
+						url: '#', // we need the js libs anyhow, so why not use the the function. TODO Consider loading the libs via ajax as well
+						data: postData,
+						contentType: false,
+						cache: false,
+						processData: false,
+						success: function (returndata) {
+							alert(returndata);
+						}
+					});
+				});
+			});
+	});
+});
+</script>
+<?php
+}
+
+/**
+ * make available via ajax
+ */
+add_action('wp_ajax_frontend_edit_post_form', 'FrontendEditPostForm');
+add_action('wp_ajax_nopriv_frontend_edit_post_form', 'FrontendEditPostForm');
+
 
 //[pending_posts]
 function ListPendingPosts( $atts ) {

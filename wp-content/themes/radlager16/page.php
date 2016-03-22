@@ -95,7 +95,7 @@ updateFilter();
 		array_unique($filters);
 
 		// show create post form if applicable
-		if (function_exists('frontend_create_posts_form')) {
+		if (function_exists('frontend_edit_posts_form')) {
 			if("categories" === $filtermode) {
 				// assemble categories from filter list
 				foreach ($filters as $key => $value) {
@@ -103,7 +103,7 @@ updateFilter();
 				}
 
 				// render editor
-				frontend_create_posts_form('new', get_categories(array('include' => $tmp)));
+				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), 'Selbst etwas berichten!');
 			}
 		}
 
