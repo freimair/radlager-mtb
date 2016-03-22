@@ -1,12 +1,13 @@
 function post_user_data(myObject) {
-	var postData = myObject.serialize();
-	postData = "action=update_user_data&" + postData;
+	var postData = new FormData(myObject);
+	postData.append("action", "update_user_data");
 	jQuery.ajax({
 		type: "post",
-		async: true,
-		dataType: "json",
 		url: data.ajax_url,
 		data: postData,
+		contentType: false,
+		cache: false,
+		processData: false,
 		success: function (returndata) {
 			alert(returndata);
 		}

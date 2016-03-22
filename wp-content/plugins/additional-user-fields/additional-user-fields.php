@@ -253,7 +253,13 @@ add_action( 'edit_user_profile_update', 'rl_save_custom_user_profile_fields' );
 
 //[personal_information]
 function PersonalInformation( $atts ) {
-$user_id = get_current_user_id();
+	// these variables are required by the userphoto plugin
+	if(function_exists('userphoto_display_selector_fieldset')) {
+		global $current_user, $profileuser;
+		$current_user = wp_get_current_user();
+		$profileuser = $current_user;
+	}
+
 	// start gathering the HTML output
 	ob_start();
 ?>
@@ -263,12 +269,15 @@ $user_id = get_current_user_id();
 	rl_add_custom_user_profile_fields(get_current_user_id());
 	about_yourself_profile_fields();
 	// TODO add avatar upload field
+	if(function_exists('userphoto_display_selector_fieldset')) {
+		userphoto_display_selector_fieldset();
+	}
 ?>
 
 <input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="Update Profile">
 </form>
 <script>
-jQuery("input#submit-personal-profile-fields").click(function(e) {post_user_data(jQuery("form#personal-profile-fields"));});
+jQuery("input#submit-personal-profile-fields").click(function(e) {post_user_data(jQuery("form#personal-profile-fields")[0]);});
 </script>
 <?php
 	// finalize gathering and return
@@ -291,7 +300,7 @@ function ContactInformation( $atts ) {
 <input type="button" name="submit" id="submit-contact_information-fields" class="button button-primary" value="Update Profile">
 </form>
 <script>
-jQuery("input#submit-contact_information-fields").click(function(e) {post_user_data(jQuery("form#contact_information-fields"));});
+jQuery("input#submit-contact_information-fields").click(function(e) {post_user_data(jQuery("form#contact_information-fields")[0]);});
 </script>
 <?php
 	// finalize gathering and return
@@ -316,7 +325,7 @@ function AccountManagement( $atts ) {
 <input type="button" name="submit" id="submit-account-management-fields" class="button button-primary" value="Update Profile">
 </form>
 <script>
-jQuery("input#submit-account-management-fields").click(function(e) {post_user_data(jQuery("form#account-management-fields")); e.preventDefault();});
+jQuery("input#submit-account-management-fields").click(function(e) {post_user_data(jQuery("form#account-management-fields")[0]);});
 </script>
 <?php
 	// finalize gathering and return
@@ -365,8 +374,10 @@ function UpdateUserData() {
 	if ( is_wp_error( $user_id ) ) {
 		// There was an error, probably that user doesn't exist.
 		// TODO properly report error
+		wp_die("something went wrong");
 	}
 
+	do_action( 'profile_update', $user_id );
 	die();
 }
 
