@@ -133,8 +133,8 @@ function frontend_edit_posts_form($post_id, $categories, $caption) {
 		$category_ids[] = $current->term_id;
 	}
 ?>
-<input type="button" id="edit-post" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" value="<?php echo $caption; ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
-<div id="edit-post-form"></div>
+<input type="button" id="edit-post-<?php echo $post_id; ?>" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" value="<?php echo $caption; ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
+<div id="edit-post-<?php echo $post_id; ?>-form"></div>
 <?php
 }
 
