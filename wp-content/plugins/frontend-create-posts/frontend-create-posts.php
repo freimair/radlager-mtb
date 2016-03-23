@@ -92,6 +92,9 @@ function FrontendEditPostForm() {
 	// include necessary styles and scripts
 	acf_form_head();
 
+	// TODO do we really want these styles here?
+	$my_styles = wp_styles();
+	$my_styles->do_items();
 	$my_scripts = wp_scripts();
 	$my_scripts->do_items();
 

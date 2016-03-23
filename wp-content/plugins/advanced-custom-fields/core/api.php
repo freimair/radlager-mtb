@@ -1259,7 +1259,7 @@ function acf_form( $options = array() )
 		echo '<label>Titel: <input type="text" name="title" value=""></label>';
 	}
 	if($options['post_content']) {
-		wp_editor('', 'editor', array ( 'media_buttons' => false ) );
+		wp_editor('', 'editor', array ( 'media_buttons' => false, 'quicktags' => false ) );
 		\_WP_Editors::enqueue_scripts();
 		print_footer_scripts();
 		\_WP_Editors::editor_js();
