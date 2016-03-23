@@ -75,11 +75,21 @@ function my_pre_save_post( $post_id ) {
 
 add_filter('acf/pre_save_post' , 'my_pre_save_post' );
 
+function FrontendSavePostForm() {
+	acf_form_head();
+	die();
+}
+
+add_action('wp_ajax_frontend_save_post_form', 'FrontendSavePostForm');
+add_action('wp_ajax_nopriv_frontend_save_post_form', 'FrontendSavePostForm');
+
 function FrontendEditPostForm() {
 	$category_ids = $_POST['category_ids'];
 	$post_id = $_POST['post_id'];
 	// TODO do security checks
 	// TODO do user permission check
+
+	acf_form_head();
 
 	// cast the whole array again into an array of IDs
 	foreach ($category_ids as $current) {
@@ -135,10 +145,10 @@ jQuery(document).ready(function(){
 					tinymce.triggerSave();
 
 					var postData = new FormData(jQuery('div#edit-post-form form')[0]);
+					postData.append("action", "frontend_save_post_form");
 					jQuery.ajax({
 						type: "post",
-//						url: 'wp-admin/admin-ajax.php',
-						url: '#', // we need the js libs anyhow, so why not use the the function. TODO Consider loading the libs via ajax as well
+						url: '/wp-admin/admin-ajax.php',
 						data: postData,
 						contentType: false,
 						cache: false,

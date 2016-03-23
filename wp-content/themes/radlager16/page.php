@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 
-acf_form_head();
+
 get_header(); ?>
 
 <script>
