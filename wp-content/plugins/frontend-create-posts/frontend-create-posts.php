@@ -133,56 +133,8 @@ function frontend_edit_posts_form($post_id, $categories, $caption) {
 		$category_ids[] = $current->term_id;
 	}
 ?>
-<input type="button" id="edit-post" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" value="<?php echo $caption; ?>" />
+<input type="button" id="edit-post" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" value="<?php echo $caption; ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
 <div id="edit-post-form"></div>
-<script type="text/javascript" >
-jQuery(document).ready(function(){
-	jQuery("input#edit-post").click(function(e){
-		e.preventDefault();
-		if(jQuery("div#edit-post-form").is(':empty')) {
-			var post_id = jQuery(this).attr("data-post_id");
-			var categories = JSON.parse(jQuery(this).attr("data-categories"));
-
-			jQuery('div#edit-post-form').load('/wp-admin/admin-ajax.php', {"action" : "frontend_edit_post_form", "post_id" : post_id, "category_ids" : categories}, function() {
-				// trigger setup for all ACF fields in case there are some that need initializing
-				jQuery(document).trigger('acf/setup_fields', jQuery('div#edit-post-form'));
-
-				// hook the submit button in order to do an ajax submit
-				jQuery('div#edit-post-form input#submit').click(function(e) {
-					e.preventDefault();
-
-					// the new and shiny editor does some woodoo with iframes and stuff. Hence,
-					// the content you see is not in the submittable form. Hence, we have to
-					// manually save its contents back to the form
-					tinymce.triggerSave();
-
-					var postData = new FormData(jQuery('div#edit-post-form form')[0]);
-					postData.append("action", "frontend_save_post_form");
-					jQuery.ajax({
-						type: "post",
-						url: '/wp-admin/admin-ajax.php',
-						data: postData,
-						contentType: false,
-						cache: false,
-						processData: false,
-						success: function (returndata) {
-							location.reload();
-						}
-					});
-				});
-
-				// replace button action
-				jQuery("input#edit-post").val("nein, sorry, doch nicht...");
-			});
-		} else {
-			jQuery("div#edit-post-form").empty();
-			tinyMCE.editors=[];
-			jQuery(".mce-container").remove();
-			jQuery("input#edit-post").val("<?php echo $caption; ?>");
-		}
-	});
-});
-</script>
 <?php
 }
 
@@ -217,6 +169,21 @@ function ListPendingPosts( $atts ) {
 }
 
 add_shortcode( 'pending_posts', 'ListPendingPosts' );
+
+/**
+ * Add the javascript for the plugin
+ * @param no-param
+ * @return string
+ */
+function FrontendCreatePostsScripts() {
+     wp_register_script( 'frontend_create_posts_script', plugins_url( 'js/frontend_create_posts.js', __FILE__ ), array('jquery') );
+     wp_localize_script( 'frontend_create_posts_script', 'data', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
+
+     wp_enqueue_script( 'jquery' );
+     wp_enqueue_script( 'frontend_create_posts_script' );
+}
+
+add_action('init', 'FrontendCreatePostsScripts');
 
 /**
  * Remove buttons in TinyMCE editor. Keep it stupid simple.
