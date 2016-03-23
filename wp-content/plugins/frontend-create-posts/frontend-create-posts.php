@@ -129,6 +129,11 @@ jQuery(document).ready(function(){
 			jQuery('div#edit-post-form input#submit').click(function(e) {
 					e.preventDefault();
 
+					// the new and shiny editor does some woodoo with iframes and stuff. Hence,
+					// the content you see is not in the submittable form. Hence, we have to
+					// manually save its contents back to the form
+					tinymce.triggerSave();
+
 					var postData = new FormData(jQuery('div#edit-post-form form')[0]);
 					jQuery.ajax({
 						type: "post",
