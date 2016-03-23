@@ -166,7 +166,7 @@ jQuery(document).ready(function(){
 						cache: false,
 						processData: false,
 						success: function (returndata) {
-							alert(returndata);
+							location.reload();
 						}
 					});
 				});
