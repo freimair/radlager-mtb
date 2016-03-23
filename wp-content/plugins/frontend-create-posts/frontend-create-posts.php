@@ -192,8 +192,16 @@ function ListPendingPosts( $atts ) {
 	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'medien', 'post_status' => 'pending'));
 
 	echo "<ul>";
-	foreach($posts as $currentevent) :
-		echo "<li>".$currentevent->post_title."</li>";
+	foreach($posts as $current) :
+		echo "<li>".$current->post_title." ";
+		// fetch appropriate categories
+		// - it is sufficient to fetch one of the categories and get the parent and then all childs
+		$basis = get_the_category($current->ID)[0]->parent;
+		// - get all child of the parent category
+		$categories = get_categories(array( 'child_of' => $basis ));
+		frontend_edit_posts_form($current->ID, $categories, "&Auml;ndern");
+		echo "</li>";
+
 		// TODO add edit functionality
 	endforeach;
 	echo "</ul>";
