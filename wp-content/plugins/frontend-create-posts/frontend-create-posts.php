@@ -89,7 +89,11 @@ function FrontendEditPostForm() {
 	// TODO do security checks
 	// TODO do user permission check
 
+	// include necessary styles and scripts
 	acf_form_head();
+
+	$my_scripts = wp_scripts();
+	$my_scripts->do_items();
 
 	// cast the whole array again into an array of IDs
 	foreach ($category_ids as $current) {
@@ -136,6 +140,10 @@ jQuery(document).ready(function(){
 		var categories = JSON.parse(jQuery(this).attr("data-categories"));
 
 		jQuery('div#edit-post-form').load('/wp-admin/admin-ajax.php', {"action" : "frontend_edit_post_form", "post_id" : post_id, "category_ids" : categories}, function() {
+			// trigger setup for all ACF fields in case there are some that need initializing
+			jQuery(document).trigger('acf/setup_fields', jQuery('div#edit-post-form'));
+
+			// hook the submit button in order to do an ajax submit
 			jQuery('div#edit-post-form input#submit').click(function(e) {
 					e.preventDefault();
 
