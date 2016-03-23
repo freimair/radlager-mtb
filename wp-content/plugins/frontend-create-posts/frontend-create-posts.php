@@ -83,6 +83,41 @@ function FrontendSavePostForm() {
 add_action('wp_ajax_frontend_save_post_form', 'FrontendSavePostForm');
 add_action('wp_ajax_nopriv_frontend_save_post_form', 'FrontendSavePostForm');
 
+function fep_render_basic_edit_fields($categories) {
+	// start gathering the HTML output
+	ob_start();
+
+	// create title field
+	echo '<label>Titel: <input type="text" name="title" value=""></label>';
+
+	// create editor
+	wp_editor('', 'editor', array ( 'media_buttons' => false, 'quicktags' => false ) );
+	\_WP_Editors::enqueue_scripts();
+	print_footer_scripts();
+	\_WP_Editors::editor_js();
+
+	if(0 < count($categories)) {
+		echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
+		echo '<h3 class="hndle"><span>Categories</span></h3>';
+		echo '<div class="inside">';
+		echo '<ul id="categorychecklist" class="categorychecklist">';
+		foreach($categories as $current) {
+			echo '<li id="category-'.$current->cat_ID.'"><label class="selectit"><input value="'.$current->cat_ID.'" type="checkbox" name="post_category[]" id=in-category-'.$current->cat_ID.'"</input>'.$current->name.'</label></li>';
+		}
+		echo '</ul>';
+		echo '</div></div>';
+	}
+
+	echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
+	echo '<h3 class="hndle"><span>Fileupload</span></h3>';
+	echo '<div class="inside">';
+	echo '<input type="file" id="my_image_upload" name="my_image_upload[]" multiple="multiple">';
+	echo '</div></div>';
+
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
 function FrontendEditPostForm() {
 	$category_ids = $_POST['category_ids'];
 	$post_id = $_POST['post_id'];
@@ -103,13 +138,12 @@ function FrontendEditPostForm() {
 		$categories[] = get_category((int)$current);
 	}
 
+	$html = fep_render_basic_edit_fields($categories);
+
 	// TODO react to a post id other than new
 	$settings = array(
 		'post_id'	=> $post_id,
-		'post_title'	=> true,
-		'post_content'	=> true,
-		'categories'	=> $categories,
-		'file_upload' 	=> true,
+		'html_before_fields' => $html,
 		'form_attributes' => array ( 'enctype' => 'multipart/form-data' ),
 		'submit_value'	=> 'Create Post!'
 	);
