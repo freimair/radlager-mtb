@@ -22,6 +22,16 @@ function my_pre_save_post( $post_id ) {
 	// check if this is to be a new post
 	if( $post_id != 'new' )
 	{
+		// see if some attachments are to be removed
+
+		// list attached images
+		$attached_images = get_attached_media('image', $post_id);
+		if(0 < count($attached_images)) {
+			foreach ($attached_images as $current) {
+				if(!in_array($current->ID, $_POST['images']))
+					wp_delete_attachment($current->ID);
+			}
+		}
 		return $post_id;
 	}
 
@@ -111,6 +121,15 @@ function fep_render_basic_edit_fields($post_id, $categories) {
 		}
 		echo '</ul>';
 		echo '</div></div>';
+	}
+
+	// list attached images
+	$attached_images = get_attached_media('image', $post_id);
+	if(0 < count($attached_images)) {
+		foreach ($attached_images as $current) {
+			$feat_image_url = wp_get_attachment_thumb_url( $current->ID );
+			echo '<li><label class="selectit"><input value="'.$current->ID.'" type="checkbox" checked="yes" name="images[]" /><img src="'.$feat_image_url.'" /></label></li>';
+		}
 	}
 
 	echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
