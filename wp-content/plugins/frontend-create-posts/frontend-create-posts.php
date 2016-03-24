@@ -37,11 +37,14 @@ function my_pre_save_post( $post_id ) {
 
 	// TODO check for permissions
 	// TODO check for valid post categories
-	// TODO derive post_status from chosen categories
+	// derive post_status from chosen categories
+	$post_status = 'pending';
+	if('veranstaltungen' == get_category(get_category((int)$_POST['post_category'][0])->parent)->slug)
+		$post_status = 'publish';
 
 	// Create a new post
 	$post = array(
-		'post_status'  => 'pending',
+		'post_status'  => $post_status,
 		'post_title'  => $_POST['title'],
 		'post_content'  => $_POST['editor'],
 		'post_category' => $_POST['post_category']
