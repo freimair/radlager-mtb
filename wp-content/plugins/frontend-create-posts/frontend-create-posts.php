@@ -37,6 +37,20 @@ function my_pre_save_post( $post_id ) {
 
 	// TODO check for permissions
 	// TODO check for valid post categories
+	// - we do anyhow need a custom permission check on categories
+	// - we can even include the type information
+	foreach($_POST['post_category'] as $key => $value) {
+		if($value)
+			$categories[] = $key;
+	}
+
+	// if no category is selected, select all so the post will be displayed on the correct page
+	if(empty($categories)) {
+		foreach($_POST['post_category'] as $key => $value) {
+			$categories[] = $key;
+		}
+	}
+
 	// derive post_status from chosen categories
 	$post_status = 'pending';
 	if('event' == $_POST['type'])
@@ -47,7 +61,7 @@ function my_pre_save_post( $post_id ) {
 		'post_status'  => $post_status,
 		'post_title'  => $_POST['title'],
 		'post_content'  => $_POST['editor'],
-		'post_category' => $_POST['post_category']
+		'post_category' => $categories
 	);
 
 	// insert the post
@@ -122,7 +136,10 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 		echo '<ul id="categorychecklist" class="categorychecklist">';
 		foreach($categories as $current) {
 			$checkbox = (in_array($current, $post_categories) ? 'checked="yes"':'');
-			echo '<li id="category-'.$current->cat_ID.'"><label class="selectit"><input value="'.$current->cat_ID.'" type="checkbox" '.$checkbox.' name="post_category[]" id=in-category-'.$current->cat_ID.'"</input>'.$current->name.'</label></li>';
+			echo '<li id="category-'.$current->cat_ID.'"><label class="selectit">';
+			echo '<input type="hidden" name="post_category['.$current->cat_ID.']" value="0" />';
+			echo '<input value="1" type="checkbox" '.$checkbox.' name="post_category['.$current->cat_ID.']" id="in-category-'.$current->cat_ID.'" />';
+			echo $current->name.'</label></li>';
 		}
 		echo '</ul>';
 		echo '</div></div>';
