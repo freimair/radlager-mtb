@@ -2,8 +2,9 @@ function frontend_create_post_stuff(current){
 	var post_id = current.attr("data-post_id");
 	if(jQuery("div#edit-post-"+post_id+"-form").is(':empty')) {
 		var categories = JSON.parse(current.attr("data-categories"));
+		var type = current.attr("data-type");
 
-		jQuery("div#edit-post-"+post_id+"-form").load(data.ajax_url, {"action" : "frontend_edit_post_form", "post_id" : post_id, "category_ids" : categories}, function() {
+		jQuery("div#edit-post-"+post_id+"-form").load(data.ajax_url, {"action" : "frontend_edit_post_form", "post_id" : post_id, "category_ids" : categories, type : type}, function() {
 			// trigger setup for all ACF fields in case there are some that need initializing
 			jQuery(document).trigger('acf/setup_fields', jQuery("div#edit-post-"+post_id+"-form"));
 

@@ -103,7 +103,7 @@ updateFilter();
 				}
 
 				// render editor
-				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), 'Selbst etwas berichten!');
+				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), 'Selbst etwas berichten!', 'event');
 			}
 		}
 

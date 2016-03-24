@@ -39,7 +39,7 @@ function my_pre_save_post( $post_id ) {
 	// TODO check for valid post categories
 	// derive post_status from chosen categories
 	$post_status = 'pending';
-	if('veranstaltungen' == get_category(get_category((int)$_POST['post_category'][0])->parent)->slug)
+	if('event' == $_POST['type'])
 		$post_status = 'publish';
 
 	// Create a new post
@@ -96,12 +96,14 @@ function FrontendSavePostForm() {
 add_action('wp_ajax_frontend_save_post_form', 'FrontendSavePostForm');
 add_action('wp_ajax_nopriv_frontend_save_post_form', 'FrontendSavePostForm');
 
-function fep_render_basic_edit_fields($post_id, $categories) {
+function fep_render_basic_edit_fields($post_id, $categories, $type) {
 	// start gathering the HTML output
 	ob_start();
 
 	// in case we have a valid post id we fill everything we have into the form
 	$post = get_post($post_id);
+
+	echo '<input type="hidden" name="type" value="'.$type.'" />';
 
 	// create title field
 	echo '<label>Titel: <input type="text" name="title" value="'.$post->post_title.'"></label>';
@@ -148,6 +150,7 @@ function fep_render_basic_edit_fields($post_id, $categories) {
 function FrontendEditPostForm() {
 	$category_ids = $_POST['category_ids'];
 	$post_id = $_POST['post_id'];
+	$type = $_POST['type'];
 	// TODO do security checks
 	// TODO do user permission check
 
@@ -165,7 +168,7 @@ function FrontendEditPostForm() {
 		$categories[] = get_category((int)$current);
 	}
 
-	$html = fep_render_basic_edit_fields($post_id, $categories);
+	$html = fep_render_basic_edit_fields($post_id, $categories, $type);
 
 	// TODO react to a post id other than new
 	$settings = array(
@@ -188,13 +191,13 @@ function FrontendEditPostForm() {
  * @param post-id, "new" if a new post should be created
  * @param categories: the categories that should be available to select from
  */
-function frontend_edit_posts_form($post_id, $categories, $caption) {
+function frontend_edit_posts_form($post_id, $categories, $caption, $type) {
 	// cast the whole array again into an array of IDs
 	foreach ($categories as $current) {
 		$category_ids[] = $current->term_id;
 	}
 ?>
-<input type="button" id="edit-post-<?php echo $post_id; ?>" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" value="<?php echo $caption; ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
+<input type="button" id="edit-post-<?php echo $post_id; ?>" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" data-type="<?php echo $type; ?>" value="<?php echo $caption; ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
 <div id="edit-post-<?php echo $post_id; ?>-form"></div>
 <?php
 }
