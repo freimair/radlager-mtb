@@ -83,26 +83,31 @@ function FrontendSavePostForm() {
 add_action('wp_ajax_frontend_save_post_form', 'FrontendSavePostForm');
 add_action('wp_ajax_nopriv_frontend_save_post_form', 'FrontendSavePostForm');
 
-function fep_render_basic_edit_fields($categories) {
+function fep_render_basic_edit_fields($post_id, $categories) {
 	// start gathering the HTML output
 	ob_start();
 
+	// in case we have a valid post id we fill everything we have into the form
+	$post = get_post($post_id);
+
 	// create title field
-	echo '<label>Titel: <input type="text" name="title" value=""></label>';
+	echo '<label>Titel: <input type="text" name="title" value="'.$post->post_title.'"></label>';
 
 	// create editor
-	wp_editor('', 'editor', array ( 'media_buttons' => false, 'quicktags' => false ) );
+	wp_editor($post->post_content, 'editor', array ( 'media_buttons' => false, 'quicktags' => false ) );
 	\_WP_Editors::enqueue_scripts();
 	print_footer_scripts();
 	\_WP_Editors::editor_js();
 
 	if(0 < count($categories)) {
+		$post_categories = get_the_category($post_id);
 		echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
 		echo '<h3 class="hndle"><span>Categories</span></h3>';
 		echo '<div class="inside">';
 		echo '<ul id="categorychecklist" class="categorychecklist">';
 		foreach($categories as $current) {
-			echo '<li id="category-'.$current->cat_ID.'"><label class="selectit"><input value="'.$current->cat_ID.'" type="checkbox" name="post_category[]" id=in-category-'.$current->cat_ID.'"</input>'.$current->name.'</label></li>';
+			$checkbox = (in_array($current, $post_categories) ? 'checked="yes"':'');
+			echo '<li id="category-'.$current->cat_ID.'"><label class="selectit"><input value="'.$current->cat_ID.'" type="checkbox" '.$checkbox.' name="post_category[]" id=in-category-'.$current->cat_ID.'"</input>'.$current->name.'</label></li>';
 		}
 		echo '</ul>';
 		echo '</div></div>';
@@ -138,7 +143,7 @@ function FrontendEditPostForm() {
 		$categories[] = get_category((int)$current);
 	}
 
-	$html = fep_render_basic_edit_fields($categories);
+	$html = fep_render_basic_edit_fields($post_id, $categories);
 
 	// TODO react to a post id other than new
 	$settings = array(
