@@ -91,6 +91,12 @@ updateFilter();
 			}
 		}
 
+		// determine post type
+		if('veranstaltungen' == get_category(get_category(array_keys($filters)[0])->parent)->slug)
+			$type = 'event';
+		else
+			$type = 'media';
+
 		// remove duplicate entries just in case
 		array_unique($filters);
 
@@ -103,7 +109,7 @@ updateFilter();
 				}
 
 				// render editor
-				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), 'Selbst etwas berichten!', 'event');
+				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), ('media' == $type ? 'Selbst etwas berichten!' : 'Selbst etwas veranstalten!'), $type);
 			}
 		}
 
