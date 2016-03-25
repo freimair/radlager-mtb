@@ -113,13 +113,35 @@ function NotificationCenter_Settings( $atts ) {
 	// start gathering the HTML output
 	ob_start();
 
-	$notification_slugs[] = 'event_participation';
+	// gather subscription hooks
+	$categories = (array) get_categories(array( 'parent' => 0 ));
+	$categories_without_descendants = (array) get_categories(array( 'parent' => 0, 'childless' => true ));
 
-	echo '<table>';
-	foreach ($notification_slugs as $value) {
-	    echo '<tr><td>'.$value.'</td></tr>';
+	foreach($categories as $current_parent) {
+		if(!in_array($current_parent, $categories_without_descendants)) {
+			$tmp = [];
+			foreach(get_categories(array( 'parent' => $current_parent->cat_ID )) as $current) {
+				$tmp[] = $current->name;
+			}
+			$notification_slugs[$current_parent->name] = $tmp;
+		}
+	}
+
+	// add special subscription hooks
+	$notification_slugs['misc'] = array('event_participation');
+
+	echo '<form id="notification_center_settings"><table>';
+	// init headings
+	echo '<tr><th>event</th><th>mail</th><th>facebook</th></tr>';
+	foreach ($notification_slugs as $heading => $items) {
+		echo '<tr><td colspan="3">'.$heading.'</td></tr>';
+		foreach($items as $item)
+			echo '<tr><td>'.$item.'</td><td><input type="checkbox"/></td><td><input type="checkbox"/></td></tr>';
 	}
 	echo '</table>';
+
+	echo '<input type="submit" value="save"/>';
+	echo '</form>';
 
 	// finalize gathering and return
 	return ob_get_clean();
