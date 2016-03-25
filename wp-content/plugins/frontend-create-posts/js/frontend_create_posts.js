@@ -27,7 +27,17 @@ function frontend_create_post_stuff(current){
 					cache: false,
 					processData: false,
 					success: function (returndata) {
-						location.reload();
+						if('new' !== post_id) {
+							// remove input field
+							remove_edit_field(post_id);
+						} else {
+							if('event' == type)
+								location.reload();
+							else {
+								remove_edit_field(post_id);
+								// TODO notify via notification field
+							}
+						}
 					}
 				});
 			});
@@ -36,10 +46,14 @@ function frontend_create_post_stuff(current){
 			jQuery("input#edit-post-"+post_id).val("nein, sorry, doch nicht...");
 		});
 	} else {
+		remove_edit_field(post_id);
+	}
+}
+
+function remove_edit_field(post_id) {
 		jQuery("div#edit-post-"+post_id+"-form").empty();
 		if('undefined' !== typeof tinyMCE)
 			tinyMCE.editors=[];
 		jQuery(".mce-container").remove();
 		jQuery("input#edit-post-"+post_id).val("<?php echo $caption; ?>");
-	}
 }
