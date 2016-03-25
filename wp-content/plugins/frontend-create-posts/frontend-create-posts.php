@@ -19,22 +19,6 @@ GNU General Public License for more details.
 
 function my_pre_save_post( $post_id ) {
 
-	// check if this is to be a new post
-	if( $post_id != 'new' )
-	{
-		// see if some attachments are to be removed
-
-		// list attached images
-		$attached_images = get_attached_media('image', $post_id);
-		if(0 < count($attached_images)) {
-			foreach ($attached_images as $current) {
-				if(!in_array($current->ID, $_POST['images']))
-					wp_delete_attachment($current->ID);
-			}
-		}
-		return $post_id;
-	}
-
 	// TODO check for permissions
 	// TODO check for valid post categories
 	// - we do anyhow need a custom permission check on categories
@@ -50,6 +34,33 @@ function my_pre_save_post( $post_id ) {
 			$categories[] = $key;
 		}
 	}
+
+	// check if this is to be a new post
+	if( $post_id != 'new' )
+	{
+		// save post title, content, and categories
+		$post_data = array(
+			'ID' => $post_id,
+			'post_title' => $_POST['title'],
+			'post_content' => $_POST['editor'],
+			'post_category' => $categories
+		);
+		wp_update_post($post_data);
+
+		// see if some attachments are to be removed
+
+		// list attached images
+		$attached_images = get_attached_media('image', $post_id);
+		if(0 < count($attached_images)) {
+			foreach ($attached_images as $current) {
+				if(!in_array($current->ID, $_POST['images']))
+					wp_delete_attachment($current->ID);
+			}
+		}
+
+		return $post_id;
+	}
+
 
 	// derive post_status from chosen categories
 	$post_status = 'pending';
