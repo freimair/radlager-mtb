@@ -203,7 +203,7 @@ function FrontendEditPostForm() {
 		'post_id'	=> $post_id,
 		'html_before_fields' => $html,
 		'form_attributes' => array ( 'enctype' => 'multipart/form-data' ),
-		'submit_value'	=> 'Create Post!'
+		'submit_value'	=> 'Fertig. Speichern!'
 	);
 
 
