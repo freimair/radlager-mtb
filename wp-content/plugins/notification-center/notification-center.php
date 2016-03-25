@@ -107,4 +107,23 @@ function NotificationCenter_ListMessages( $atts ) {
 }
 
 add_shortcode( 'notification_center_show_messages', 'NotificationCenter_ListMessages' );
+
+//[notification_center_settings]
+function NotificationCenter_Settings( $atts ) {
+	// start gathering the HTML output
+	ob_start();
+
+	$notification_slugs[] = 'event_participation';
+
+	echo '<table>';
+	foreach ($notification_slugs as $value) {
+	    echo '<tr><td>'.$value.'</td></tr>';
+	}
+	echo '</table>';
+
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'notification_center_settings', 'NotificationCenter_Settings' );
 ?>
