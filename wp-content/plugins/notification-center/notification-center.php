@@ -78,7 +78,7 @@ register_uninstall_hook(__FILE__, 'UninstallNotificationCenter');
  * @param userid, subject, message
  * @return no-return
  */
-function NotificationCenter_NotifyUser($userid, $subject, $message) {
+function NotificationCenter_NotifyUser($hook, $user_id, $subject, $message) {
 	global $wpdb, $notification_center_table_name;
 
 	// do security checks
@@ -90,12 +90,27 @@ function NotificationCenter_NotifyUser($userid, $subject, $message) {
 		exit;
 	}
 
-	// save to database
-	$sql = "INSERT INTO " . $notification_center_table_name . " (user_id,date_time,subject,message) VALUES (".$userid.",'".date("Y-m-d H:i:s")."','".$subject."','".$message."');";
-	$wpdb->get_results($sql);
-
 	// trigger notifications
-	// TODO
+	// fetch user notification settings
+	global $wpdb, $notification_center_settings_table_name;
+	$sql = "SELECT meta_key FROM $notification_center_settings_table_name WHERE user_id = $user_id AND hook = '$hook'";
+	$rows = $wpdb->get_results($sql);
+	foreach($rows as $current) {
+		var_dump($current->meta_key);
+		switch($current->meta_key) {
+			case 'mail' :
+				//wp_mail( 'admin@example.com', $subject, $message );
+				break;	// TODO implement email notification
+			case 'pm' :
+				// save to database
+				$sql = "INSERT INTO " . $notification_center_table_name . " (user_id,date_time,subject,message) VALUES (".$user_id.",'".date("Y-m-d H:i:s")."','".$subject."','".$message."');";
+				$wpdb->query($sql);
+				break;
+			case 'facebook' : 
+				//wp_mail( 'admin@example.com', $subject, $message );
+				break; // TODO implement facebook notification via email to username@facebook.com
+		}
+	}
 }
 
 //[notification_center_show_messages]
