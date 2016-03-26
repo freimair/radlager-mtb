@@ -74,11 +74,20 @@ function UninstallNotificationCenter() {
 register_uninstall_hook(__FILE__, 'UninstallNotificationCenter');
 
 /**
+ * Notify all users
+ */
+function NotificationCenter_NotifyUsers($hooks, $subject, $message) {
+	// TODO check for roles
+	foreach(get_users() as $user)
+		NotificationCenter_NotifyUser($hooks, $user->ID, $subject, $message);
+}
+
+/**
  * Notify a single user
  * @param userid, subject, message
  * @return no-return
  */
-function NotificationCenter_NotifyUser($hook, $user_id, $subject, $message) {
+function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	global $wpdb, $notification_center_table_name;
 
 	// do security checks
@@ -93,10 +102,12 @@ function NotificationCenter_NotifyUser($hook, $user_id, $subject, $message) {
 	// trigger notifications
 	// fetch user notification settings
 	global $wpdb, $notification_center_settings_table_name;
-	$sql = "SELECT meta_key FROM $notification_center_settings_table_name WHERE user_id = $user_id AND hook = '$hook'";
+	$sql = "SELECT DISTINCT meta_key FROM $notification_center_settings_table_name WHERE user_id = $user_id AND (";
+	foreach($hooks as $current_hook)
+		$sql .= "hook = '$current_hook' OR ";
+	$sql = substr($sql, 0, -4).");";
 	$rows = $wpdb->get_results($sql);
 	foreach($rows as $current) {
-		var_dump($current->meta_key);
 		switch($current->meta_key) {
 			case 'mail' :
 				//wp_mail( 'admin@example.com', $subject, $message );
