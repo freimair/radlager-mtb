@@ -122,6 +122,14 @@ function NotificationCenter_ListMessages( $atts ) {
 
 add_shortcode( 'notification_center_show_messages', 'NotificationCenter_ListMessages' );
 
+function NotificationCenter_IsNotifyUser($user_id, $hook, $contact_method) {
+	global $wpdb, $notification_center_settings_table_name;
+	$sql = "SELECT hook, meta_key FROM $notification_center_settings_table_name WHERE user_id = $user_id AND hook = '$hook' AND meta_key = '$contact_method';";
+	$rows = $wpdb->get_results($sql);
+
+	return !empty($rows);
+}
+
 //[notification_center_settings]
 function NotificationCenter_Settings( $atts ) {
 	// start gathering the HTML output
@@ -162,8 +170,10 @@ function NotificationCenter_Settings( $atts ) {
 		echo '<tr><td colspan="'.(1 + count($contact_options)).'">'.$heading.'</td></tr>';
 		foreach($items as $key => $value) {
 			echo '<tr><td>'.$value.'</td>';
-			foreach($contact_options as $current)
-				echo '<td><input type="checkbox" name="'.$key.'['.$current.']"/></td>';
+			foreach($contact_options as $current) {
+				$checked = (NotificationCenter_IsNotifyUser(get_current_user_id(), $key, $current) ? 'checked="checked"' : '');
+				echo '<td><input type="checkbox" name="'.$key.'['.$current.']" '.$checked.' /></td>';
+			}
 			echo '</tr>';
 		}
 	}
