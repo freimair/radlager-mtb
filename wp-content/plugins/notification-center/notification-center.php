@@ -121,7 +121,7 @@ function NotificationCenter_Settings( $atts ) {
 		if(!in_array($current_parent, $categories_without_descendants)) {
 			$tmp = [];
 			foreach(get_categories(array( 'parent' => $current_parent->cat_ID )) as $current) {
-				$tmp[] = $current->name;
+				$tmp[$current->slug] = $current->name;
 			}
 			$notification_slugs[$current_parent->name] = $tmp;
 		}
@@ -146,10 +146,10 @@ function NotificationCenter_Settings( $atts ) {
 	// print options
 	foreach ($notification_slugs as $heading => $items) {
 		echo '<tr><td colspan="'.(1 + count($contact_options)).'">'.$heading.'</td></tr>';
-		foreach($items as $item) {
-			echo '<tr><td>'.$item.'</td>';
+		foreach($items as $key => $value) {
+			echo '<tr><td>'.$value.'</td>';
 			foreach($contact_options as $current)
-				echo '<td><input type="checkbox"/></td>';
+				echo '<td><input type="checkbox" name="'.$key.'['.$current.']"/></td>';
 			echo '</tr>';
 		}
 	}
@@ -163,4 +163,28 @@ function NotificationCenter_Settings( $atts ) {
 }
 
 add_shortcode( 'notification_center_settings', 'NotificationCenter_Settings' );
+
+function NotificationCenterSaveSettings() {
+	var_dump($_POST);
+	die();
+}
+
+add_action('wp_ajax_notification_center_save_settings', 'NotificationCenterSaveSettings');
+add_action('wp_ajax_nopriv_notification_center_save_settings', 'NotificationCenterSaveSettings');
+
+
+/**
+ * Add the javascript for the plugin
+ * @param no-param
+ * @return string
+ */
+function NotificationCenterScripts() {
+     wp_register_script( 'notification_center_script', plugins_url( 'js/notification_center.js', __FILE__ ), array('jquery') );
+     wp_localize_script( 'notification_center_script', 'data', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
+
+     wp_enqueue_script( 'jquery' );
+     wp_enqueue_script( 'notification_center_script' );
+}
+
+add_action('init', 'NotificationCenterScripts');
 ?>
