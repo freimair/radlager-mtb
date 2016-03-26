@@ -36,7 +36,7 @@ function InstallNotificationCenter() {
 		$sql = "CREATE TABLE " . $notification_center_table_name . " (
 			`id` bigint(11) NOT NULL AUTO_INCREMENT,
 			`user_id` int(11) NOT NULL DEFAULT '0',
-			`subject` varchar(30) NOT NULL,
+			`subject` varchar(60) NOT NULL,
 			`message` blob NOT NULL,
 			`date_time` datetime NOT NULL,
 			PRIMARY KEY (`id`)
@@ -84,20 +84,18 @@ function NotificationCenter_NotifyUsers($hooks, $subject, $message) {
 
 /**
  * Notify a single user
- * @param userid, subject, message
- * @return no-return
  */
 function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	global $wpdb, $notification_center_table_name;
 
-	// do security checks
+	// TODO do security checks
 	if(!preg_match("/^[a-zA-Z0-9 ]+$/", $subject)) {
 		exit;
 	}
-	if(!preg_match("/^[a-zA-Z0-9 ]+$/", $message)) {
+	/*if(!preg_match("/^[a-zA-Z0-9 ]+$/", $message)) {
 		// TODO do we need links and stuff?
 		exit;
-	}
+	}*/
 
 	// trigger notifications
 	// fetch user notification settings
@@ -250,4 +248,22 @@ function NotificationCenterScripts() {
 }
 
 add_action('init', 'NotificationCenterScripts');
+
+function NotificationCenterUpdatePostHook( $post_id, $post ) {
+	$post_title = $post->post_title;
+	$post_url = get_permalink( $post_id );
+
+	$categories = get_the_category($post_id);
+	$category_slugs = [];
+	foreach($categories as $current)
+		$category_slugs[] = $current->slug;
+
+	$subject = 'Neues auf der Website';
+
+	$message = "Neuer Content auf der Website:\n\n";
+	$message .= $post_title . ": " . $post_url;
+
+	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
+}
+add_action( 'publish_post', 'NotificationCenterUpdatePostHook', 10, 2 );
 ?>
