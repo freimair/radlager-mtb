@@ -130,13 +130,28 @@ function NotificationCenter_Settings( $atts ) {
 	// add special subscription hooks
 	$notification_slugs['misc'] = array('event_participation');
 
+	// gather contact options
+	$contact_options[] = "mail"; // every user has a mail contact option
+	$contact_options[] = "personal_message"; // every user has personal messages
+	$contact_options = array_merge($contact_options, wp_get_user_contact_methods(wp_get_current_user()));
+
 	echo '<form id="notification_center_settings"><table>';
+
 	// init headings
-	echo '<tr><th>event</th><th>mail</th><th>facebook</th></tr>';
+	echo '<tr><th>hook</th>';
+	foreach($contact_options as $current_contact_option)
+		echo '<th>'.$current_contact_option.'</th>';
+	echo '</tr>';
+
+	// print options
 	foreach ($notification_slugs as $heading => $items) {
-		echo '<tr><td colspan="3">'.$heading.'</td></tr>';
-		foreach($items as $item)
-			echo '<tr><td>'.$item.'</td><td><input type="checkbox"/></td><td><input type="checkbox"/></td></tr>';
+		echo '<tr><td colspan="'.(1 + count($contact_options)).'">'.$heading.'</td></tr>';
+		foreach($items as $item) {
+			echo '<tr><td>'.$item.'</td>';
+			foreach($contact_options as $current)
+				echo '<td><input type="checkbox"/></td>';
+			echo '</tr>';
+		}
 	}
 	echo '</table>';
 
