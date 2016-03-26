@@ -17,9 +17,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 */
 
-global $wpdb, $notification_center_db_version, $notification_center_table_name;
+global $wpdb, $notification_center_db_version, $notification_center_table_name, $notification_center_settings_table_name;
 $notification_center_db_version = "1.0";
 $notification_center_table_name = $wpdb->prefix . "notification_center";
+$notification_center_settings_table_name = $wpdb->prefix . "notification_center_settings";
 
 /**
  * Basic options function for the plugin settings
@@ -27,7 +28,7 @@ $notification_center_table_name = $wpdb->prefix . "notification_center";
  * @return void
  */
 function InstallNotificationCenter() {
-	global $wpdb, $notification_center_db_version, $notification_center_table_name;
+	global $wpdb, $notification_center_db_version, $notification_center_table_name, $notification_center_settings_table_name;
 
 	// Creating the database table on activating the plugin
 
@@ -43,6 +44,18 @@ function InstallNotificationCenter() {
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 	}
+
+	if ($wpdb->get_var("show tables like '$notification_center_settings_table_name'") != $notification_center_settings_table_name) {
+		$sql = "CREATE TABLE " . $notification_center_settings_table_name . " (
+			`id` bigint(11) NOT NULL AUTO_INCREMENT,
+			`user_id` int(11) NOT NULL DEFAULT '0',
+			`hook` varchar(30) NOT NULL,
+			`meta_key` varchar(15) NOT NULL,
+			PRIMARY KEY (`id`)
+			)";
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}
  }
 register_activation_hook(__FILE__, 'InstallNotificationCenter');
 
@@ -52,9 +65,10 @@ register_activation_hook(__FILE__, 'InstallNotificationCenter');
  * @return no-return
  */
 function UninstallNotificationCenter() {
-	global $wpdb, $notification_center_table_name;
+	global $wpdb, $notification_center_table_name, $notification_center_settings_table_name;
 	
 	$wpdb->query("DROP TABLE IF EXISTS ". $notification_center_table_name );
+	$wpdb->query("DROP TABLE IF EXISTS ". $notification_center_settings_table_name );
 }
 
 register_uninstall_hook(__FILE__, 'UninstallNotificationCenter');
@@ -128,11 +142,11 @@ function NotificationCenter_Settings( $atts ) {
 	}
 
 	// add special subscription hooks
-	$notification_slugs['misc'] = array('event_participation');
+	$notification_slugs['misc'] = array('event_participation' => 'event_participation');
 
 	// gather contact options
 	$contact_options[] = "mail"; // every user has a mail contact option
-	$contact_options[] = "personal_message"; // every user has personal messages
+	$contact_options[] = "pm"; // every user has personal messages
 	$contact_options = array_merge($contact_options, wp_get_user_contact_methods(wp_get_current_user()));
 
 	echo '<form id="notification_center_settings"><table>';
@@ -165,7 +179,20 @@ function NotificationCenter_Settings( $atts ) {
 add_shortcode( 'notification_center_settings', 'NotificationCenter_Settings' );
 
 function NotificationCenterSaveSettings() {
-	var_dump($_POST);
+	global $wpdb, $notification_center_settings_table_name;
+	// TODO check sanity
+	$input = $_POST;
+	unset($input['action']); // remove the action element
+
+	// delete existing config
+	$wpdb->query("DELETE FROM $notification_center_settings_table_name WHERE user_id=".get_current_user_id().";");
+
+	// save new config
+	foreach($input as $current_hook => $values)
+		foreach($values as $current_contact_method => $donotusethisbrain)
+			$wpdb->query("INSERT INTO $notification_center_settings_table_name (user_id, hook, meta_key) VALUES (".get_current_user_id().",'$current_hook','$current_contact_method');");
+
+	// TODO report errors appropriatly
 	die();
 }
 
