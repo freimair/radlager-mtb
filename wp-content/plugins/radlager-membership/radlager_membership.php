@@ -118,16 +118,25 @@ function radlager_membership_show_column_content($value, $column_name, $user_id)
 
 // setup and maintain cron job
 function radlager_membership_notify_users($state) {
-	$transitions = array('01.11.' => '15.01.', '15.01.' => '01.02.', '01.02.' => '14.02.', '14.02.' => '01.03.', '01.03' => '01.11');
-	$action = array('01.11.' => 'reset', '15.01.' => 'reminder', '01.02.' => 'reminder', '14.02.' => 'reminder', '01.03.' => 'kick');
+	$transitions = array('11-01' => '01-15', '01-15' => '02-01', '02-01' => '02-14', '02-14' => '03-01', '03-01' => '11-01');
+	$action = array('11-01' => 'reset', '01-15' => 'reminder', '02-01' => 'reminder', '02-14' => 'reminder', '03-01' => 'kick');
 
-	if(empty($state))
-		$state = '01.11.';
+	// find start state if we just got fired up
+	if(empty($state)) {
+		krsort($transitions);
+		foreach ($transitions as $key => $value) {
+			if(date("m-d") < $key)
+				$state = $key;
+			else
+				break;
+		}
+	}
+
 
 	// calculate next execution timestamp
-	$next_date = strtotime($state.date("Y"));
+	$next_date = strtotime(date("Y").'-'.$state);
 	if(time() > $next_date)
-		$next_date = strtotime($state.date("Y", strtotime("next year")));
+		$next_date = strtotime(date("Y", strtotime("next year")).'-'.$state);
 
 	// schedule next execution
 	wp_schedule_single_event($next_date, 'radlager_membership_notify_users', $transition[$state]);
