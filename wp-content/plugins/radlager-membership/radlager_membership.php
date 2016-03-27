@@ -51,7 +51,7 @@ function RadlagerMembershipStatus( $atts ) {
 	// check the payment status
 	$payment_status = get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true);
 	$show_button = true;
-	if('open' != $payment_status && !empty($payment_status)) {
+	if(!empty($payment_status)) {
 		echo '<p>Du hast bereits bezahlt.</p>';
 		$show_button = false;
 	}
@@ -112,7 +112,7 @@ function radlager_membership_add_columns($columns) {
 add_action('manage_users_custom_column',  'radlager_membership_show_column_content', 10, 3);
 function radlager_membership_show_column_content($value, $column_name, $user_id) {
 	if ( 'fee_status' == $column_name )
-		return get_user_meta($user_id, 'radlager_membership_fee_status', true);;
+		return get_user_meta($user_id, 'radlager_membership_fee_status', true);
     return $value;
 }
 
