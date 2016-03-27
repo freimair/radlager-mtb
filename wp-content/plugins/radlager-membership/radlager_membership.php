@@ -17,6 +17,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 */
 
+add_action( 'user_register', function() {
+	update_usermeta( get_current_user_id(), 'radlager_membership_fee_status', 'open' );
+});
+
 //[radlager_membership_register]
 function RadlagerMembershipRegister( $atts ) {
 	// start gathering the HTML output
@@ -111,10 +115,50 @@ function radlager_membership_add_columns($columns) {
 
 add_action('manage_users_custom_column',  'radlager_membership_show_column_content', 10, 3);
 function radlager_membership_show_column_content($value, $column_name, $user_id) {
-	if ( 'fee_status' == $column_name )
-		return get_user_meta($user_id, 'radlager_membership_fee_status', true);
+	if ( 'fee_status' == $column_name ) {
+		$value = get_user_meta($user_id, 'radlager_membership_fee_status', true);
+		if(empty($value)) {
+			update_usermeta( $user_id, 'radlager_membership_fee_status', 'open' );
+			$value = 'open';
+		}
+	}
     return $value;
 }
+
+
+// WP seems to haven an issue here. Queries for metadata and other data are connected with a hardcoded AND which is bs.
+/*
+function pre_get_users( $user_query ){
+	$merken = $user_query->query_vars;
+	$merken['meta_query'] = array('relation' => 'AND', array('key' => 'radlager_membership_fee_status', 'value' => substr($merken['search'], 1, -1), 'compare' => 'LIKE'), array('key' => 'radlager_membership_fee_status', 'compare' => 'EXISTS'));
+
+	// temporarly disable filter to avoid infinite loop
+	remove_filter( 'pre_get_users', 'pre_get_users');
+	$user_query = new WP_User_Query($merken);
+	add_filter( 'pre_get_users', 'pre_get_users');
+
+	return $user_query;
+}
+add_filter( 'pre_get_users', 'pre_get_users');
+*/
+
+function pre_user_query( $user_query ){
+	// workaround for static AND when working with metadata query.
+	if($user_query->query_vars['search']) {
+		$user_query->query_from .= ' INNER JOIN wp_usermeta ON ( wp_users.ID = wp_usermeta.user_id ) ';
+		$user_query->query_where .= " OR ( wp_usermeta.meta_key = 'radlager_membership_fee_status' AND CAST(wp_usermeta.meta_value AS CHAR) LIKE '%".substr($user_query->query_vars['search'], 1, -1)."%' )";
+	}
+
+	return $user_query;
+}
+add_filter( 'pre_user_query', 'pre_user_query');
+
+/*function add_query_vars_filter( $vars ){
+  $vars[] = "fee_status";
+  return $vars;
+}
+add_filter( 'query_vars', 'add_query_vars_filter' );
+*/
 
 // setup and maintain cron job
 function radlager_membership_notify_users($state) {
@@ -136,7 +180,7 @@ function radlager_membership_notify_users($state) {
 	switch($action[$state]) {
 		case 'reset':
 			foreach (get_users(array('who' => 'authors')) as $current) {
-				delete_user_meta($current->ID, 'radlager_membership_fee_status');
+				update_user_meta($current->ID, 'radlager_membership_fee_status', 'open');
 				NotificationCenter_NotifyUser(array('administrative'), $current->ID, 'Membership fee due', 'Membership fee due');
 			}
 			break;
