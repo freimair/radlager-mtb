@@ -58,7 +58,7 @@ Bank: Raiffeisenlandesbank Steiermark</br>
 BIC: RZSTAT2G</br>
 IBAN: AT673800000007132327</p>
 
-<input type="button" value="Habe bezahlt!" />
+<input type="button" id="radlager_membership_payment_claim" value="Habe bezahlt!" />
 
 <?php
 	// finalize gathering and return
@@ -66,4 +66,29 @@ IBAN: AT673800000007132327</p>
 }
 
 add_shortcode( 'radlager_membership_status', 'RadlagerMembershipStatus' );
+
+
+function RadlagerMembershipClaim() {
+	// TODO do security checks
+
+	update_usermeta( get_current_user_id(), 'radlager_membership_fee_status', 'claim' );
+}
+
+add_action('wp_ajax_radlager_membership_claim', 'RadlagerMembershipClaim');
+add_action('wp_ajax_nopriv_radlager_membership_claim', 'RadlagerMembershipClaim');
+
+/**
+ * Add the javascript for the plugin
+ * @param no-param
+ * @return string
+ */
+function RadlagerMembershipScripts() {
+     wp_register_script( 'radlager_membership_script', plugins_url( 'js/radlager_membership.js', __FILE__ ), array('jquery') );
+     wp_localize_script( 'radlager_membership_script', 'data', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
+
+     wp_enqueue_script( 'jquery' );
+     wp_enqueue_script( 'radlager_membership_script' );
+}
+
+add_action('init', 'RadlagerMembershipScripts');
 ?>
