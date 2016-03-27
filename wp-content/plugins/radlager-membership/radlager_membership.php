@@ -48,19 +48,34 @@ function printNameIfAvailable() {
 
 //[radlager_membership_status]
 function RadlagerMembershipStatus( $atts ) {
+	// check the payment status
+	$payment_status = get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true);
+	$show_button = true;
+	if('open' != $payment_status && !empty($payment_status)) {
+		echo '<p>Du hast bereits bezahlt.</p>';
+		$show_button = false;
+	}
+
 	// start gathering the HTML output
 	ob_start();
 ?>
 <p>Bitte überweise den Jahresmitgliedsbeitrag von 20€ und du kannst du die Tätigkeiten des Vereins unterstützten und alle Vergünstigungen in Anspruch nehmen. Als Verwendungszweck gib bei der Überweisung  an. Die Verlängerung erfolgt per Überweisung des Mitgliedsbeitrages auf folgendes Konto:</p>
 
-<p>Verwendungszweck: <strong>"Mitgliedsbeitrag <?php echo date("Y", strtotime('+31 days'));?> <?php printNameIfAvailable(); ?>"</strong></br>
-Bank: Raiffeisenlandesbank Steiermark</br>
+<p>Bank: Raiffeisenlandesbank Steiermark</br>
 BIC: RZSTAT2G</br>
 IBAN: AT673800000007132327</p>
+<?php
+if($show_button) :
+?>
+
+<p>Verwendungszweck: <strong>"Mitgliedsbeitrag <?php echo date("Y", strtotime('+31 days'));?> <?php printNameIfAvailable(); ?>"</strong></p>
 
 <input type="button" id="radlager_membership_payment_claim" value="Habe bezahlt!" />
 
+
 <?php
+	endif;
+
 	// finalize gathering and return
 	return ob_get_clean();
 }
