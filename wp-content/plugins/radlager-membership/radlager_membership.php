@@ -100,4 +100,19 @@ function RadlagerMembershipScripts() {
 }
 
 add_action('init', 'RadlagerMembershipScripts');
+
+
+// add fee status column to user list
+add_filter('manage_users_columns', 'radlager_membership_add_columns');
+function radlager_membership_add_columns($columns) {
+    $columns['fee_status'] = 'fee status';
+    return $columns;
+}
+
+add_action('manage_users_custom_column',  'radlager_membership_show_column_content', 10, 3);
+function radlager_membership_show_column_content($value, $column_name, $user_id) {
+	if ( 'fee_status' == $column_name )
+		return get_user_meta($user_id, 'radlager_membership_fee_status', true);;
+    return $value;
+}
 ?>
