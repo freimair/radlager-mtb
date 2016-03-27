@@ -115,4 +115,24 @@ function radlager_membership_show_column_content($value, $column_name, $user_id)
 		return get_user_meta($user_id, 'radlager_membership_fee_status', true);;
     return $value;
 }
+
+// setup and maintain cron job
+function radlager_membership_notify_users($state) {
+	$transitions = array('01.11.' => '15.01.', '15.01.' => '01.02.', '01.02.' => '14.02.', '14.02.' => '01.03.', '01.03' => '01.11');
+	$action = array('01.11.' => 'reset', '15.01.' => 'reminder', '01.02.' => 'reminder', '14.02.' => 'reminder', '01.03.' => 'kick');
+
+	if(empty($state))
+		$state = '01.11.';
+
+	// calculate next execution timestamp
+	$next_date = strtotime($state.date("Y"));
+	if(time() > $next_date)
+		$next_date = strtotime($state.date("Y", strtotime("next year")));
+
+	// schedule next execution
+	wp_schedule_single_event($next_date, 'radlager_membership_notify_users', $transition[$state]);
+}
+add_action( 'radlager_membership_notify_users','radlager_membership_notify_users' );
+
+register_activation_hook(__FILE__, 'radlager_membership_notify_users');
 ?>
