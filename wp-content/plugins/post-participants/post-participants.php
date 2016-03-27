@@ -116,7 +116,7 @@ function JoinPost($post_id, $user_id) {
 
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
-		NotificationCenter_NotifyUser($user_id, "You have joined a post", get_post($post_id)->post_title);
+		NotificationCenter_NotifyUser(array('event_participation'), $user_id, "You have joined a post", get_post($post_id)->post_title);
 	}
 
 	ReportAndExit("leave");
@@ -131,7 +131,7 @@ function LeavePost($post_id, $user_id) {
 
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
-		NotificationCenter_NotifyUser($user_id, "You have left a post", get_post($post_id)->post_title);
+		NotificationCenter_NotifyUser(array('event_participation'), $user_id, "You have left a post", get_post($post_id)->post_title);
 	}
 
 	// join participants from the waiting list
