@@ -143,14 +143,14 @@ function radlager_membership_notify_users($state) {
 		case 'reminder':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				$usermeta = get_user_meta($user_id, 'radlager_membership_fee_status', true);
-				if(!$usermeta)
+				if(!empty($usermeta))
 					NotificationCenter_NotifyUser(array('administrative'), $current->ID, 'Membership fee due', 'Membership fee due');
 			}
 			break;
 		case 'kick':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				$usermeta = get_user_meta($user_id, 'radlager_membership_fee_status', true);
-				if(!$usermeta && !in_array('administrator',$current->roles))
+				if(!empty($usermeta) && !in_array('administrator',$current->roles))
 					$current->set_role('subscriber');
 			}
 			break;
