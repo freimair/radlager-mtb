@@ -28,6 +28,8 @@
 				get_the_title()
 			) );
 
+			echo do_shortcode('[gallery]');
+
 			wp_link_pages( array(
 				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
 				'after'       => '</div>',

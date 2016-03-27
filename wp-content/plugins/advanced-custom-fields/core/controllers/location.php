@@ -508,13 +508,6 @@ class acf_location
 	
 	function rule_match_post_category( $match, $rule, $options )
 	{
-		// validate
-		if( !$options['post_id'] )
-		{
-			return false;
-		}
-
-		
 		// post type
 		if( !$options['post_type'] )
 		{
@@ -531,7 +524,7 @@ class acf_location
 		if( !$options['ajax'] )
 		{
 			// no terms? Load them from the post_id
-			if( empty($terms) )
+			if( empty($terms) && $options['post_id'])
 			{
 				$all_terms = get_the_terms( $options['post_id'], 'category' );
 				if($all_terms)
