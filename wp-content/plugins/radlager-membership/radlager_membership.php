@@ -29,4 +29,11 @@ function RadlagerMembershipRegister( $atts ) {
 }
 
 add_shortcode( 'radlager_membership_register', 'RadlagerMembershipRegister' );
+
+//[radlager_membership_login]
+function RadlagerMembershipLogin( $atts ) {
+	return wp_login_form(array ( 'redirect' => site_url(), 'value_remember' => true, 'echo' => false ));
+}
+
+add_shortcode( 'radlager_membership_login', 'RadlagerMembershipLogin' );
 ?>
