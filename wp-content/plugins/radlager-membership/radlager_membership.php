@@ -36,4 +36,34 @@ function RadlagerMembershipLogin( $atts ) {
 }
 
 add_shortcode( 'radlager_membership_login', 'RadlagerMembershipLogin' );
+
+function printNameIfAvailable() {
+  $current_user = wp_get_current_user();
+  if ( is_user_logged_in() ) {
+    echo $current_user->first_name . " " . $current_user->last_name . " (" . $current_user->user_login . ")";
+  } else {
+    echo "Vorname Nachname (Benutzername)";
+  }
+}
+
+//[radlager_membership_status]
+function RadlagerMembershipStatus( $atts ) {
+	// start gathering the HTML output
+	ob_start();
+?>
+<p>Bitte überweise den Jahresmitgliedsbeitrag von 20€ und du kannst du die Tätigkeiten des Vereins unterstützten und alle Vergünstigungen in Anspruch nehmen. Als Verwendungszweck gib bei der Überweisung  an. Die Verlängerung erfolgt per Überweisung des Mitgliedsbeitrages auf folgendes Konto:</p>
+
+<p>Verwendungszweck: <strong>"Mitgliedsbeitrag <?php echo date("Y", strtotime('+31 days'));?> <?php printNameIfAvailable(); ?>"</strong></br>
+Bank: Raiffeisenlandesbank Steiermark</br>
+BIC: RZSTAT2G</br>
+IBAN: AT673800000007132327</p>
+
+<input type="button" value="Habe bezahlt!" />
+
+<?php
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'radlager_membership_status', 'RadlagerMembershipStatus' );
 ?>
