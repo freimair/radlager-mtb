@@ -11,7 +11,7 @@
  * @since Twenty Sixteen 1.0
  */
 
-acf_form_head();
+
 get_header(); ?>
 
 <script>
@@ -85,17 +85,23 @@ updateFilter();
 			}
 		} else if(preg_match("/^use_titles$/", $filterconfiguration)) { // use post id as tags
 			$filtermode = "titles";
-			$posts_array = get_posts( array( 'post_status' => 'publish', 'category_name' => $categories ));
+			$posts_array = get_posts( array( 'post_status' => 'publish', 'category_name' => $categories, 'posts_per_page' => '-1' ));
 			foreach($posts_array as $current) {
 				$filters[$current->ID] = $current->post_title;
 			}
 		}
 
+		// determine post type
+		if('veranstaltungen' == get_category(get_category(array_keys($filters)[0])->parent)->slug)
+			$type = 'event';
+		else
+			$type = 'media';
+
 		// remove duplicate entries just in case
 		array_unique($filters);
 
 		// show create post form if applicable
-		if (function_exists('frontend_create_posts_form')) {
+		if (function_exists('frontend_edit_posts_form')) {
 			if("categories" === $filtermode) {
 				// assemble categories from filter list
 				foreach ($filters as $key => $value) {
@@ -103,7 +109,7 @@ updateFilter();
 				}
 
 				// render editor
-				frontend_create_posts_form('new', get_categories(array('include' => $tmp)));
+				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), ('media' == $type ? 'Selbst etwas berichten!' : 'Selbst etwas veranstalten!'), $type);
 			}
 		}
 

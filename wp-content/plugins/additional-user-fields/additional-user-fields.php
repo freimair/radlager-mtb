@@ -288,6 +288,7 @@ add_shortcode( 'personal_information', 'PersonalInformation' );
 
 //[contact_information]
 function ContactInformation( $atts ) {
+	require_once(ABSPATH . 'wp-admin/includes/user.php');
 	$user_id = get_current_user_id();
 	// start gathering the HTML output
 	ob_start();

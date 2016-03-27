@@ -1240,9 +1240,9 @@ function acf_form( $options = array() )
 	<?php endif; ?>
 	
 	<div style="display:none">
-		<script type="text/javascript">
+<!--		<script type="text/javascript">
 			acf.o.post_id = <?php echo is_numeric($options['post_id']) ? $options['post_id'] : '"' . $options['post_id'] . '"'; ?>;
-		</script>
+		</script>-->
 		<input type="hidden" name="acf_nonce" value="<?php echo wp_create_nonce( 'input' ); ?>" />
 		<input type="hidden" name="post_id" value="<?php echo $options['post_id']; ?>" />
 		<input type="hidden" name="return" value="<?php echo $options['return']; ?>" />
@@ -1254,33 +1254,6 @@ function acf_form( $options = array() )
 	// html before fields
 	echo $options['html_before_fields'];
 
-	// TODO see if we can move these lines of code somewhere else
-	if($options['post_title']) {
-		echo '<label>Titel: <input type="text" name="title" value=""></label>';
-	}
-	if($options['post_content']) {
-		wp_editor('', 'editor', array ( 'media_buttons' => false ) );
-	}
-	if(0 < count($options['categories'])) {
-		echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
-		echo '<h3 class="hndle"><span>Categories</span></h3>';
-		echo '<div class="inside">';
-		echo '<ul id="categorychecklist" class="categorychecklist">';
-		foreach($options['categories'] as $current) {
-			echo '<li id="category-'.$current->cat_ID.'"><label class="selectit"><input value="'.$current->cat_ID.'" type="checkbox" name="post_category[]" id=in-category-'.$current->cat_ID.'"</input>'.$current->name.'</label></li>';
-		}
-		echo '</ul>';
-		echo '</div></div>';
-	}
-
-	if($options['file_upload']) {
-		echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
-		echo '<h3 class="hndle"><span>Fileupload</span></h3>';
-		echo '<div class="inside">';
-		echo '<input type="file" id="my_image_upload" name="my_image_upload[]" multiple="multiple">';
-		echo '</div></div>';
-	}
-	
 	$acfs = apply_filters('acf/get_field_groups', array());
 	
 	if( is_array($acfs) ){ foreach( $acfs as $acf ){
@@ -1319,7 +1292,7 @@ function acf_form( $options = array() )
 	<?php if( $options['form'] ): ?>
 	<!-- Submit -->
 	<div class="field">
-		<input type="submit" value="<?php echo $options['submit_value']; ?>" />
+		<input type="submit" id="submit" value="<?php echo $options['submit_value']; ?>" />
 	</div>
 	<!-- / Submit -->
 	<?php endif; ?>
