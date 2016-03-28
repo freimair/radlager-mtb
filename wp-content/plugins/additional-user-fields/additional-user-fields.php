@@ -253,6 +253,7 @@ add_action( 'edit_user_profile_update', 'rl_save_custom_user_profile_fields' );
 
 //[personal_information]
 function PersonalInformation( $atts ) {
+	require_once(ABSPATH . 'wp-admin/includes/user.php');
 	// these variables are required by the userphoto plugin
 	if(function_exists('userphoto_display_selector_fieldset')) {
 		global $current_user, $profileuser;
@@ -312,6 +313,7 @@ add_shortcode( 'contact_information', 'ContactInformation' );
 
 //[account_management]
 function AccountManagement( $atts ) {
+	require_once(ABSPATH . 'wp-admin/includes/user.php');
 	$user_id = get_current_user_id();
 	wp_enqueue_script( 'password-strength-meter' );
 	wp_enqueue_script( 'user-profile' );
