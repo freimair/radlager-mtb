@@ -94,7 +94,14 @@ updateFilter();
 			$filtermode = "titles";
 			$posts_array = get_posts( array( 'post_status' => 'publish', 'category_name' => $categories, 'posts_per_page' => '-1' ));
 			foreach($posts_array as $current) {
-				$filters[$current->ID] = $current->post_title;
+				// TODO find better place for this piece of code
+				if('true' === get_post_meta($current->ID, '_wpac_is_members_only', true)) {
+					$required = maybe_unserialize(get_post_meta($current->ID, '_wpac_restricted_to', true));
+					$available = wp_get_current_user()->roles;
+					if(empty(array_diff($required, $available)))
+						$filters[$current->ID] = $current->post_title;
+				} else
+					$filters[$current->ID] = $current->post_title;
 			}
 		}
 
@@ -123,7 +130,7 @@ updateFilter();
 		// create new loop based on the categories named in the title of the post
 		// - now start the query
 		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
-		$query = new WP_Query( array ('category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
+		$query = new WP_Query( array ('post_status' => 'publish', 'category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
 
 		if($query->have_posts()) :
 ?>
@@ -131,6 +138,14 @@ updateFilter();
 <?php
 		// Start the loop.
 		while ( $query->have_posts() ) : $query->the_post();
+			// TODO find better place for this piece of code
+			if('true' === get_post_meta(get_the_ID(), '_wpac_is_members_only', true)) {
+				$required = maybe_unserialize(get_post_meta(get_the_ID(), '_wpac_restricted_to', true));
+				$available = wp_get_current_user()->roles;
+				if(!empty(array_diff($required, $available)))
+					continue;
+			}
+
 			// tag each article
 			// - reset the tags variable first to avoid erroneos behaviour with ajax pagination
 			$tags = "";
