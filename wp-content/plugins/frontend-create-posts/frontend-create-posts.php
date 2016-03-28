@@ -19,8 +19,6 @@ GNU General Public License for more details.
 
 function my_pre_save_post( $post_id ) {
 
-	// TODO check for permissions
-	// TODO check for valid post categories
 	// - we do anyhow need a custom permission check on categories
 	// - we can even include the type information
 	foreach($_POST['post_category'] as $key => $value) {
@@ -33,6 +31,13 @@ function my_pre_save_post( $post_id ) {
 		foreach($_POST['post_category'] as $key => $value) {
 			$categories[] = $key;
 		}
+	}
+
+	// TODO find a better place for this
+	foreach($categories as $currentid) {
+		$current = get_category($currentid);
+		if($current->parent != 3 && $current->parent != 9)
+			die();
 	}
 
 	// check if this is to be a new post
@@ -114,6 +119,11 @@ function my_pre_save_post( $post_id ) {
 add_filter('acf/pre_save_post' , 'my_pre_save_post' );
 
 function FrontendSavePostForm() {
+	// do user permission check
+	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
+		die();
+
+	// do the saving
 	acf_form_head();
 	die();
 }
@@ -176,11 +186,25 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 }
 
 function FrontendEditPostForm() {
+	// TODO do security checks
 	$category_ids = $_POST['category_ids'];
 	$post_id = $_POST['post_id'];
 	$type = $_POST['type'];
-	// TODO do security checks
-	// TODO do user permission check
+
+	// do user permission check
+	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
+		return;
+
+	// cast the whole array again into an array of IDs
+	foreach ($category_ids as $current) {
+		$categories[] = get_category((int)$current);
+	}
+
+	// TODO find a better place for this
+	foreach($categories as $current) {
+		if($current->parent != 3 && $current->parent != 9)
+			return;
+	}
 
 	// include necessary styles and scripts
 	acf_form_head();
@@ -191,14 +215,9 @@ function FrontendEditPostForm() {
 	$my_scripts = wp_scripts();
 	$my_scripts->do_items();
 
-	// cast the whole array again into an array of IDs
-	foreach ($category_ids as $current) {
-		$categories[] = get_category((int)$current);
-	}
 
 	$html = fep_render_basic_edit_fields($post_id, $categories, $type);
 
-	// TODO react to a post id other than new
 	$settings = array(
 		'post_id'	=> $post_id,
 		'html_before_fields' => $html,
@@ -220,6 +239,9 @@ function FrontendEditPostForm() {
  * @param categories: the categories that should be available to select from
  */
 function frontend_edit_posts_form($post_id, $categories, $caption, $type) {
+	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
+		return;
+
 	// cast the whole array again into an array of IDs
 	foreach ($categories as $current) {
 		$category_ids[] = $current->term_id;
@@ -290,12 +312,15 @@ add_action('init', 'FrontendCreatePostsScripts');
  */
 function myplugin_tinymce_buttons($buttons)
 {
-	// TODO leave any role above and including editor all options
+	$user = wp_get_current_user();
+	if ( !in_array( 'editor', (array) $user->roles ) ) {
 
-	//Remove the format dropdown select and text color selector
-	$remove = array('bold', 'strikethrough', 'blockquote', 'hr','alginleft','aligncenter','alignright','wp_more','fullscreen', 'underline','alignleft', 'alignjustify','wp_adv','forecolor','pastetext', 'charmap','wp_help');
+		//Remove the format dropdown select and text color selector
+		$remove = array('bold', 'strikethrough', 'blockquote', 'hr','alginleft','aligncenter','alignright','wp_more','fullscreen', 'underline','alignleft', 'alignjustify','wp_adv','forecolor','pastetext', 'charmap','wp_help');
 
-	return array_diff($buttons,$remove);
+		return array_diff($buttons,$remove);
+	}
+	return $buttons;
 }
 
 add_filter('mce_buttons_2','myplugin_tinymce_buttons');
