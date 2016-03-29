@@ -25,9 +25,10 @@ function change_role_names() {
 
 	$newNames['subscriber'] = 'Kandidat';
 	$newNames['contributor'] = 'Mitglied';
-	$newNames['author'] = 'Author';
+	$newNames['author'] = 'Vorstand';
 	$newNames['editor'] = 'Redakteur';
 	$newNames['administrator'] = 'Administrator';
+	$newNames['usermanager'] = 'Mitgliederverwalter';
 
 	foreach ($newNames as $key => $value) {
 		$wp_roles->roles[$key]['name'] = $value;
