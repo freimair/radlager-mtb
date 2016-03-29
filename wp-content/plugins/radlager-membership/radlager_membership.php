@@ -44,7 +44,7 @@ add_shortcode( 'radlager_membership_login', 'RadlagerMembershipLogin' );
 function printNameIfAvailable() {
   $current_user = wp_get_current_user();
   if ( is_user_logged_in() ) {
-    echo $current_user->first_name . " " . $current_user->last_name . " (" . $current_user->user_login . ")";
+    echo esc_html($current_user->first_name) . " " . esc_html($current_user->last_name) . " (" . esc_html($current_user->user_login) . ")";
   } else {
     echo "Vorname Nachname (Benutzername)";
   }
@@ -66,7 +66,7 @@ function RadlagerMembershipStatus( $atts ) {
 	if($show_button) :
 ?>
 
-<p>Verwendungszweck: <strong>"<?php echo date("Y", strtotime('+61 days'));?> <?php printNameIfAvailable(); ?>"</strong></p>
+<p>Verwendungszweck: <strong>"<?php echo esc_html(date("Y", strtotime('+61 days')));?> <?php printNameIfAvailable(); ?>"</strong></p>
 
 <input type="button" id="radlager_membership_payment_claim" value="Habe bezahlt!" />
 
@@ -161,7 +161,7 @@ function pre_user_query( $user_query ){
 	// workaround for static AND when working with metadata query.
 	if($user_query->query_vars['search']) {
 		$user_query->query_from .= ' INNER JOIN wp_usermeta ON ( wp_users.ID = wp_usermeta.user_id ) ';
-		$user_query->query_where .= " OR ( wp_usermeta.meta_key = 'radlager_membership_fee_status' AND CAST(wp_usermeta.meta_value AS CHAR) LIKE '%".substr($user_query->query_vars['search'], 1, -1)."%' )";
+		$user_query->query_where .= $wpdb->perpare(" OR ( wp_usermeta.meta_key = 'radlager_membership_fee_status' AND CAST(wp_usermeta.meta_value AS CHAR) LIKE %s' )", "%".substr($user_query->query_vars['search'], 1, -1)."%");
 	}
 
 	return $user_query;
