@@ -215,6 +215,10 @@ add_shortcode( 'notification_center_settings', 'NotificationCenter_Settings' );
 
 function NotificationCenterSaveSettings() {
 	global $wpdb, $notification_center_settings_table_name;
+
+	if(!is_user_logged_in())
+		die();
+
 	// TODO check sanity
 	$input = $_POST;
 	unset($input['action']); // remove the action element
