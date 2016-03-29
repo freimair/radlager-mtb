@@ -68,13 +68,13 @@ function PostUserParticipationIntent() {
 	// TODO check post id before going further
 	$task = $_REQUEST['task'];
 
-	if(!is_user_logged_in())
-		ReportAndExit("You have to login in order to join the event.");
+	if(!is_user_logged_in()) {
+		$user = wp_get_current_user();
+		if ( !in_array( 'contributor', (array) $user->roles ) )
+			ReportAndExit("Access Denied");
+	}
 
 	$user_id = get_current_user_id();
-
-
-	// TODO check user permissions
 
 	if("join" == $task)
 		JoinPost($post_id, $user_id);
