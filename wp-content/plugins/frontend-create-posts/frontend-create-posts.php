@@ -23,26 +23,27 @@ function my_pre_save_post( $post_id ) {
 	// - we can even include the type information
 	foreach($_POST['post_category'] as $key => $value) {
 		if($value)
-			$categories[] = $key;
+			$categories[] = (int)$key;
 	}
 
 	// if no category is selected, select all so the post will be displayed on the correct page
 	if(empty($categories)) {
 		foreach($_POST['post_category'] as $key => $value) {
-			$categories[] = $key;
+			$categories[] = (int)$key;
 		}
 	}
 
 	// TODO find a better place for this
 	foreach($categories as $currentid) {
 		$current = get_category($currentid);
-		if($current->parent != 3 && $current->parent != 9)
+		if(null == $current || !($current->parent == 3 || $current->parent == 9))
 			die();
 	}
 
 	// check if this is to be a new post
 	if( $post_id != 'new' )
 	{
+		$post_id = (int) $post_id;
 		// save post title, content, and categories
 		$post_data = array(
 			'ID' => $post_id,
@@ -53,8 +54,6 @@ function my_pre_save_post( $post_id ) {
 		wp_update_post($post_data);
 
 		// see if some attachments are to be removed
-
-		// list attached images
 		$attached_images = get_attached_media('image', $post_id);
 		if(0 < count($attached_images)) {
 			foreach ($attached_images as $current) {
@@ -62,29 +61,23 @@ function my_pre_save_post( $post_id ) {
 					wp_delete_attachment($current->ID);
 			}
 		}
+	} else {
+		// derive post_status from chosen categories
+		$post_status = 'pending';
+		if('event' == $_POST['type'])
+			$post_status = 'publish';
 
-		return $post_id;
+		// Create a new post
+		$post = array(
+			'post_status'  => $post_status,
+			'post_title'  => $_POST['title'],
+			'post_content'  => $_POST['editor'],
+			'post_category' => $categories
+		);
+
+		// insert the post
+		$post_id = wp_insert_post( $post );
 	}
-
-
-	// derive post_status from chosen categories
-	$post_status = 'pending';
-	if('event' == $_POST['type'])
-		$post_status = 'publish';
-
-	// Create a new post
-	$post = array(
-		'post_status'  => $post_status,
-		'post_title'  => $_POST['title'],
-		'post_content'  => $_POST['editor'],
-		'post_category' => $categories
-	);
-
-	// insert the post
-	$post_id = wp_insert_post( $post );
-
-	// update $_POST['return']
-	$_POST['return'] = add_query_arg( array('post_id' => $post_id), $_POST['return'] );
 
 	// in case there are upload attached, preprocess them, create appropriate media posts and attach them to the newly created post
 	if ( $_FILES ) {
@@ -118,6 +111,16 @@ function my_pre_save_post( $post_id ) {
 
 add_filter('acf/pre_save_post' , 'my_pre_save_post' );
 
+function restrict_mime($mimes) {
+	$mimes = array(
+	'jpg|jpeg|jpe' => 'image/jpeg',
+	'gif' => 'image/gif',
+	'png' => 'image/png',
+	);
+	return $mimes;
+}
+add_filter('upload_mimes','restrict_mime');
+
 function FrontendSavePostForm() {
 	// do user permission check
 	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
@@ -138,10 +141,10 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 	// in case we have a valid post id we fill everything we have into the form
 	$post = get_post($post_id);
 
-	echo '<input type="hidden" name="type" value="'.$type.'" />';
+	echo '<input type="hidden" name="type" value="'.esc_attr($type).'" />';
 
 	// create title field
-	echo '<label>Titel: <input type="text" name="title" value="'.$post->post_title.'"></label>';
+	echo '<label>Titel: <input type="text" name="title" value="'.esc_attr($post->post_title).'"></label>';
 
 	// create editor
 	wp_editor($post->post_content, 'editor', array ( 'media_buttons' => false, 'quicktags' => false ) );
@@ -151,19 +154,18 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 
 	if(0 < count($categories)) {
 		$post_categories = get_the_category($post_id);
-		echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
 		echo '<h3 class="hndle"><span>Categories</span></h3>';
 		echo '<div class="inside">';
 		echo '<ul id="categorychecklist" class="categorychecklist">';
 		foreach($categories as $current) {
 			$checkbox = (in_array($current, $post_categories) ? 'checked="yes"':'');
-			echo '<li id="category-'.$current->cat_ID.'"><label class="selectit">';
-			echo '<input type="hidden" name="post_category['.$current->cat_ID.']" value="0" />';
-			echo '<input value="1" type="checkbox" '.$checkbox.' name="post_category['.$current->cat_ID.']" id="in-category-'.$current->cat_ID.'" />';
-			echo $current->name.'</label></li>';
+			echo '<li id="category-'.esc_attr($current->cat_ID).'"><label class="selectit">';
+			echo '<input type="hidden" name="post_category['.esc_attr($current->cat_ID).']" value="0" />';
+			echo '<input value="1" type="checkbox" '.$checkbox.' name="post_category['.esc_attr($current->cat_ID).']" id="in-category-'.esc_attr($current->cat_ID).'" />';
+			echo esc_html($current->name).'</label></li>';
 		}
 		echo '</ul>';
-		echo '</div></div>';
+		echo '</div>';
 	}
 
 	// list attached images
@@ -171,11 +173,10 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 	if(0 < count($attached_images)) {
 		foreach ($attached_images as $current) {
 			$feat_image_url = wp_get_attachment_thumb_url( $current->ID );
-			echo '<li><label class="selectit"><input value="'.$current->ID.'" type="checkbox" checked="yes" name="images[]" /><img src="'.$feat_image_url.'" /></label></li>';
+			echo '<li><label class="selectit"><input value="'.esc_attr($current->ID).'" type="checkbox" checked="yes" name="images[]" /><img src="'.esc_url_raw($feat_image_url).'" /></label></li>';
 		}
 	}
 
-	echo '<div id="acf_' . $acf['id'] . '" class="postbox acf_postbox ' . $acf['options']['layout'] . '">';
 	echo '<h3 class="hndle"><span>Fileupload</span></h3>';
 	echo '<div class="inside">';
 	echo '<input type="file" id="my_image_upload" name="my_image_upload[]" multiple="multiple">';
@@ -186,14 +187,16 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 }
 
 function FrontendEditPostForm() {
-	// TODO do security checks
-	$category_ids = $_POST['category_ids'];
-	$post_id = $_POST['post_id'];
-	$type = $_POST['type'];
-
 	// do user permission check
 	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
 		return;
+
+	// do security checks
+	$category_ids = $_POST['category_ids'];
+	$post_id = $_POST['post_id'];
+	$type = sanitize_key($_POST['type']);
+	if(!intval($post_id) && 'new' != $post_id)
+		die();
 
 	// cast the whole array again into an array of IDs
 	foreach ($category_ids as $current) {
@@ -202,8 +205,8 @@ function FrontendEditPostForm() {
 
 	// TODO find a better place for this
 	foreach($categories as $current) {
-		if($current->parent != 3 && $current->parent != 9)
-			return;
+		if(null == $current || !($current->parent == 3 || $current->parent == 9))
+			die();
 	}
 
 	// include necessary styles and scripts
@@ -233,6 +236,9 @@ function FrontendEditPostForm() {
 	die();
 }
 
+add_action('wp_ajax_frontend_edit_post_form', 'FrontendEditPostForm');
+add_action('wp_ajax_nopriv_frontend_edit_post_form', 'FrontendEditPostForm');
+
 /**
  * Wrapper for posting the form.
  * @param post-id, "new" if a new post should be created
@@ -247,17 +253,10 @@ function frontend_edit_posts_form($post_id, $categories, $caption, $type) {
 		$category_ids[] = $current->term_id;
 	}
 ?>
-<input type="button" id="edit-post-<?php echo $post_id; ?>" data-categories="<?php echo json_encode($category_ids); ?>" data-post_id="<?php echo $post_id; ?>" data-type="<?php echo $type; ?>" value="<?php echo $caption; ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
-<div id="edit-post-<?php echo $post_id; ?>-form"></div>
+<input type="button" id="edit-post-<?php echo esc_attr($post_id); ?>" data-categories="<?php echo esc_attr(json_encode($category_ids)); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" data-type="<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($caption); ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
+<div id="edit-post-<?php echo esc_attr($post_id); ?>-form"></div>
 <?php
 }
-
-/**
- * make available via ajax
- */
-add_action('wp_ajax_frontend_edit_post_form', 'FrontendEditPostForm');
-add_action('wp_ajax_nopriv_frontend_edit_post_form', 'FrontendEditPostForm');
-
 
 //[pending_posts]
 function ListPendingPosts( $atts ) {
@@ -273,16 +272,14 @@ function ListPendingPosts( $atts ) {
 
 	echo "<ul>";
 	foreach($posts as $current) :
-		echo "<li>".$current->post_title." ";
+		echo "<li>".esc_html($current->post_title)." ";
 		// fetch appropriate categories
 		// - it is sufficient to fetch one of the categories and get the parent and then all childs
 		$basis = get_the_category($current->ID)[0]->parent;
 		// - get all child of the parent category
 		$categories = get_categories(array( 'child_of' => $basis ));
-		frontend_edit_posts_form($current->ID, $categories, "&Auml;ndern");
+		frontend_edit_posts_form($current->ID, $categories, "&Auml;ndern", "media");
 		echo "</li>";
-
-		// TODO add edit functionality
 	endforeach;
 	echo "</ul>";
 
