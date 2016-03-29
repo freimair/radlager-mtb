@@ -32,7 +32,7 @@ function InstallNotificationCenter() {
 
 	// Creating the database table on activating the plugin
 
-	if ($wpdb->get_var("show tables like '$notification_center_table_name'") != $notification_center_table_name) {
+	if ($wpdb->get_var($wpdb->prepare("show tables like %s", $notification_center_table_name)) != $notification_center_table_name) {
 		$sql = "CREATE TABLE " . $notification_center_table_name . " (
 			`id` bigint(11) NOT NULL AUTO_INCREMENT,
 			`user_id` int(11) NOT NULL DEFAULT '0',
@@ -45,7 +45,7 @@ function InstallNotificationCenter() {
 		dbDelta($sql);
 	}
 
-	if ($wpdb->get_var("show tables like '$notification_center_settings_table_name'") != $notification_center_settings_table_name) {
+	if ($wpdb->get_var($wpdb->prepare("show tables like %s", $notification_center_settings_table_name)) != $notification_center_settings_table_name) {
 		$sql = "CREATE TABLE " . $notification_center_settings_table_name . " (
 			`id` bigint(11) NOT NULL AUTO_INCREMENT,
 			`user_id` int(11) NOT NULL DEFAULT '0',
@@ -88,22 +88,17 @@ function NotificationCenter_NotifyUsers($hooks, $subject, $message) {
 function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	global $wpdb, $notification_center_table_name;
 
-	// TODO do security checks
-	if(!preg_match("/^[a-zA-Z0-9 ]+$/", $subject)) {
-		exit;
-	}
-	/*if(!preg_match("/^[a-zA-Z0-9 ]+$/", $message)) {
-		// TODO do we need links and stuff?
-		exit;
-	}*/
+	$subject = sanitize_text_field($subject);
+	$message = sanitize_text_field($message);
 
 	// trigger notifications
 	// fetch user notification settings
 	global $wpdb, $notification_center_settings_table_name;
-	$sql = "SELECT DISTINCT meta_key FROM $notification_center_settings_table_name WHERE user_id = $user_id AND (";
+	$sql = $wpdb->prepare("SELECT DISTINCT meta_key FROM $notification_center_settings_table_name WHERE user_id = %d AND (", $user_id);
 	foreach($hooks as $current_hook)
-		$sql .= "hook = '$current_hook' OR ";
+		$sql .= $wpdb->prepare("hook = %s OR ", $current_hook);
 	$sql = substr($sql, 0, -4).");";
+
 	$rows = $wpdb->get_results($sql);
 	foreach($rows as $current) {
 		switch($current->meta_key) {
@@ -112,7 +107,7 @@ function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 				break;	// TODO implement email notification
 			case 'pm' :
 				// save to database
-				$sql = "INSERT INTO " . $notification_center_table_name . " (user_id,date_time,subject,message) VALUES (".$user_id.",'".date("Y-m-d H:i:s")."','".$subject."','".$message."');";
+				$sql = $wpdb->prepare("INSERT INTO $notification_center_table_name (user_id,date_time,subject,message) VALUES (%d,%s,%s,%s);", array($user_id, date("Y-m-d H:i:s"), $subject, $message));
 				$wpdb->query($sql);
 				break;
 			case 'facebook' : 
@@ -131,12 +126,12 @@ function NotificationCenter_ListMessages( $atts ) {
 	global $wpdb, $notification_center_table_name;
 	$user_id = get_current_user_id();
 
-	$sql = "SELECT * FROM " . $notification_center_table_name . " WHERE user_id = ".$user_id.";";
+	$sql = $wpdb->prepare("SELECT * FROM $notification_center_table_name WHERE user_id = %d;", $user_id);
 	$messages = $wpdb->get_results($sql);
 
 	echo "<ul>";
 	foreach ($messages as $currentmessage) {
-	    echo "<li>".$currentmessage->date_time." - ".$currentmessage->subject.": ".$currentmessage->message."</li>";
+	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".esc_html($currentmessage->message)."</li>";
 	}
 	echo "</ul>";
 
@@ -148,7 +143,7 @@ add_shortcode( 'notification_center_show_messages', 'NotificationCenter_ListMess
 
 function NotificationCenter_IsNotifyUser($user_id, $hook, $contact_method) {
 	global $wpdb, $notification_center_settings_table_name;
-	$sql = "SELECT hook, meta_key FROM $notification_center_settings_table_name WHERE user_id = $user_id AND hook = '$hook' AND meta_key = '$contact_method';";
+	$sql = $wpdb->prepare("SELECT hook, meta_key FROM $notification_center_settings_table_name WHERE user_id = %d AND hook = %s AND meta_key = %s;", array($user_id, $hook, $contact_method));
 	$rows = $wpdb->get_results($sql);
 
 	return !empty($rows);
@@ -186,17 +181,17 @@ function NotificationCenter_Settings( $atts ) {
 	// init headings
 	echo '<tr><th>hook</th>';
 	foreach($contact_options as $current_contact_option)
-		echo '<th>'.$current_contact_option.'</th>';
+		echo '<th>'.esc_html($current_contact_option).'</th>';
 	echo '</tr>';
 
 	// print options
 	foreach ($notification_slugs as $heading => $items) {
-		echo '<tr><td colspan="'.(1 + count($contact_options)).'">'.$heading.'</td></tr>';
+		echo '<tr><td colspan="'.esc_html(1 + count($contact_options)).'">'.esc_html($heading).'</td></tr>';
 		foreach($items as $key => $value) {
-			echo '<tr><td>'.$value.'</td>';
+			echo '<tr><td>'.esc_html($value).'</td>';
 			foreach($contact_options as $current) {
 				$checked = (NotificationCenter_IsNotifyUser(get_current_user_id(), $key, $current) ? 'checked="checked"' : '');
-				echo '<td><input type="checkbox" name="'.$key.'['.$current.']" '.$checked.' /></td>';
+				echo '<td><input type="checkbox" name="'.esc_attr($key).'['.esc_attr($current).']" '.$checked.' /></td>';
 			}
 			echo '</tr>';
 		}
@@ -223,12 +218,12 @@ function NotificationCenterSaveSettings() {
 	unset($input['action']); // remove the action element
 
 	// delete existing config
-	$wpdb->query("DELETE FROM $notification_center_settings_table_name WHERE user_id=".get_current_user_id().";");
+	$wpdb->query($wpdb->prepare("DELETE FROM $notification_center_settings_table_name WHERE user_id=%d;", get_current_user_id()));
 
 	// save new config
 	foreach($input as $current_hook => $values)
 		foreach($values as $current_contact_method => $donotusethisbrain)
-			$wpdb->query("INSERT INTO $notification_center_settings_table_name (user_id, hook, meta_key) VALUES (".get_current_user_id().",'$current_hook','$current_contact_method');");
+			$wpdb->query($wpdb->prepare("INSERT INTO $notification_center_table_name (user_id, hook, meta_key) VALUES (%d,%s,%s);", array(get_current_user_id(), $current_hook, $current_contact_method)));
 
 	// TODO report errors appropriatly
 	die();
