@@ -53,9 +53,9 @@ updateFilter();
 
 <div id="primary" class="content-area">
 <?php
-	if(empty(get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true)) && is_user_logged_in()) :
+	if('open' === get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true) && is_user_logged_in()) :
 ?>
-<div id="payment_notification">Zahl! <input type="button" value="Later" onclick="jQuery('div#payment_notification').remove();"/></div>
+<div id="payment_notification"><strong>Zahl endlich!</strong> Hier die direkte Erinnerung, sollte der Mitgliedsbeitrag noch nicht bezahlt worden sein. Vielleicht auch als Overlay das man nur wegbekommt wenn man den Button da drückt. <input type="button" value="Later" onclick="jQuery('div#payment_notification').remove();"/></div>
 <?php
 	endif;
 ?>

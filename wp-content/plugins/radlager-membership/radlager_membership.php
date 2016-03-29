@@ -55,7 +55,7 @@ function RadlagerMembershipStatus( $atts ) {
 	// check the payment status
 	$payment_status = get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true);
 	$show_button = true;
-	if(!empty($payment_status)) {
+	if('open' !== $payment_status) {
 		echo '<p>Du hast bereits bezahlt.</p>';
 		$show_button = false;
 	}
@@ -66,7 +66,7 @@ function RadlagerMembershipStatus( $atts ) {
 	if($show_button) :
 ?>
 
-<p>Verwendungszweck: <strong>"<?php echo date("Y", strtotime('+31 days'));?> <?php printNameIfAvailable(); ?>"</strong></p>
+<p>Verwendungszweck: <strong>"<?php echo date("Y", strtotime('+61 days'));?> <?php printNameIfAvailable(); ?>"</strong></p>
 
 <input type="button" id="radlager_membership_payment_claim" value="Habe bezahlt!" />
 
