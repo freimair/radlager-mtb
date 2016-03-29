@@ -233,7 +233,7 @@ function rl_save_custom_user_profile_fields( $user_id ) {
 	if ( !current_user_can( 'edit_user', $user_id ) )
 		return FALSE;
 	
-	if ( isset($_POST['function']))
+	if ( isset($_POST['function']) && current_user_can('edit_users'))
 		update_usermeta( $user_id, 'function', $_POST['function'] );
 	if ( isset($_POST['bikes']))
 		update_usermeta( $user_id, 'bikes', $_POST['bikes'] );
