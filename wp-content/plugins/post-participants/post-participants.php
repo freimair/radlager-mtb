@@ -31,7 +31,7 @@ function InstallPostParticipants() {
 
 	// Creating the database table on activating the plugin
 
-	if ($wpdb->get_var("show tables like '$post_participants_table_name'") != $post_participants_table_name) {
+	if ($wpdb->get_var($wpdb->prepare("show tables like %s", $post_participants_table_name)) != $post_participants_table_name) {
 		$sql = "CREATE TABLE " . $post_participants_table_name . " (
 			`id` bigint(11) NOT NULL AUTO_INCREMENT,
 			`post_id` int(11) NOT NULL,
@@ -65,7 +65,6 @@ register_uninstall_hook(__FILE__, 'UninstallPostParticipants');
  */
 function PostUserParticipationIntent() {
 	$post_id = (int)$_REQUEST['post_id'];
-	// TODO check post id before going further
 	$task = $_REQUEST['task'];
 
 	if(!is_user_logged_in()) {
@@ -80,6 +79,8 @@ function PostUserParticipationIntent() {
 		JoinPost($post_id, $user_id);
 	else if("leave" == $task)
 		LeavePost($post_id, $user_id);
+
+	die();
 }
 
 function JoinPost($post_id, $user_id) {
@@ -95,7 +96,7 @@ function JoinPost($post_id, $user_id) {
 	}
 
 	// - check whether event is full already
-	$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$post_id.";";
+	$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $post_id);
 	$rows = $wpdb->get_results($sql);
 
 	if(count($rows) >= $max_participants) {
@@ -111,7 +112,7 @@ function JoinPost($post_id, $user_id) {
 	}
 
 	// save participation status
-	$sql = "INSERT INTO " . $post_participants_table_name . " (post_id,date_time,user_id) VALUES (".$post_id.",'".date("Y-m-d H:i:s")."',".get_current_user_id().");";
+	$sql = $wpdb->prepare("INSERT INTO $post_participants_table_name (post_id,date_time,user_id) VALUES (%d, %s, %d);", array($post_id, date("Y-m-d H:i:s"), get_current_user_id()));
 	$wpdb->get_results($sql);
 
 	// notify the user
@@ -126,7 +127,7 @@ function LeavePost($post_id, $user_id) {
 	global $wpdb, $post_participants_table_name;
 
 	// remove participant
-	$sql = "DELETE FROM " . $post_participants_table_name . " WHERE  post_id = ".$post_id." AND user_id = ".$user_id.";";
+	$sql = $wpdb->prepare("DELETE FROM $post_participants_table_name WHERE post_id = %d AND user_id = %d;", array($post_id, $user_id));
 	$wpdb->get_results($sql);
 
 	// notify the user
@@ -150,7 +151,7 @@ function ReportAndExit($result) {
 		header( "location:" . $_SERVER["HTTP_REFERER"] );
 	}
 
-	exit;
+	die();
 }
 
 /**
@@ -161,7 +162,7 @@ function ReportAndExit($result) {
 function CheckParticipationStatus($user_id, $post_id) {
 	global $wpdb, $post_participants_table_name;
 
-	$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$post_id." AND user_id = ".$user_id.";";
+	$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d AND user_id = %d;", array($post_id, $user_id));
 	$user_participates = $wpdb->get_results($sql);
 
 	return 0 < count($user_participates);
@@ -199,14 +200,14 @@ function ManageEventsUI( $atts ) {
 	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen'));
 	echo "<ul>";
 	foreach($posts as $currentevent) :
-		echo "<li>".$currentevent->post_title;
-			$sql = "SELECT * FROM " . $post_participants_table_name . " WHERE post_id = ".$currentevent->ID.";";
+		echo "<li>".esc_html($currentevent->post_title);
+			$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $currentevent->ID);
 			$participants = $wpdb->get_results($sql);
 		?><ul><?php
 		foreach ($participants as $current) :
 
 			?>
-			<li><?php echo get_user_by('id', $current->user_id)->display_name; ?></li>
+			<li><?php echo esc_html(get_user_by('id', $current->user_id)->display_name); ?></li>
 			<?php
 
 		endforeach;
