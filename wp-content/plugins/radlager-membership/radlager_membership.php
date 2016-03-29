@@ -81,7 +81,8 @@ function RadlagerMembershipStatus( $atts ) {
 add_shortcode( 'radlager_membership_status', 'RadlagerMembershipStatus' );
 
 function RadlagerMembershipConfirm() {
-	// TODO do security checks
+	if(!is_user_logged_in() || !current_user_can('edit_users'))
+		die();
 
 	update_usermeta( $_POST['userid'], 'radlager_membership_fee_status', 'confirmed' );
 }
@@ -89,9 +90,14 @@ function RadlagerMembershipConfirm() {
 add_action('wp_ajax_radlager_membership_confirm', 'RadlagerMembershipConfirm');
 
 function RadlagerMembershipClaim() {
-	// TODO do security checks
+	if(!is_user_logged_in())
+		die();
+
+	if('confirmed' === get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true))
+		die();
 
 	update_usermeta( get_current_user_id(), 'radlager_membership_fee_status', 'claim' );
+	die();
 }
 
 add_action('wp_ajax_radlager_membership_claim', 'RadlagerMembershipClaim');
@@ -128,7 +134,7 @@ function radlager_membership_show_column_content($value, $column_name, $user_id)
 			update_usermeta( $user_id, 'radlager_membership_fee_status', 'open' );
 			$value = 'open';
 		}
-		if('confirmed' !== $value)
+		if('confirmed' !== $value && current_user_can('edit_users'))
 			$value .= ' <input type="button" value="'.__('confirm').'" onclick="radlager_membership_confirm(jQuery(this),'.$user_id.')" />';
 	}
     return $value;
