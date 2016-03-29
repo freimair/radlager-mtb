@@ -26,7 +26,7 @@ function rl_add_custom_user_profile_fields( $user ) {
 			</th>
 			<td>
 				<input type="text" name="bikes" id="bikes" value="<?php echo esc_attr( get_the_author_meta( 'bikes', $user->ID ) ); ?>" class="regular-text" /><br />
-				<span class="description">Welche Bikes fährst du?</span>
+				<span class="description">Welche Bikes f&auml;hrst du?</span>
 			</td>
 		</tr>
 		<tr>
@@ -44,7 +44,7 @@ function rl_add_custom_user_profile_fields( $user ) {
 			</th>
 			<td>
 				<input type="text" name="home" id="home" value="<?php echo esc_attr( get_the_author_meta( 'home', $user->ID ) ); ?>" class="regular-text" /><br />
-				<span class="description">Von wo aus startest du deine Touren hauptsächlich? Anders gefragt: Wo wohnst du? Aber bitte nicht zu genau werden. Sowas wie <em>Steiermark/Graz</em> oder <em>Deutschland/Bayern/Staudach</em> beispielsweise wäre optimal. (Auch dieses Feld ist maxmial für Vereinsmitglieder sichtbar)</span>
+				<span class="description">Von wo aus startest du deine Touren haupts&auml;chlich? Anders gefragt: Wo wohnst du? Aber bitte nicht zu genau werden. Sowas wie <em>Graz</em>, <em>Villach</em> oder <em>Deutschland/Bayern</em> beispielsweise wäre optimal. (Auch dieses Feld ist maxmial für Vereinsmitglieder sichtbar)</span>
 			</td>
 		</tr>
 	</table>
@@ -111,6 +111,7 @@ $profileuser = get_user_to_edit(get_current_user_id());
 
 function contact_info_profile_fields() {
 $profileuser = get_user_to_edit(get_current_user_id());
+global $current_user;
 ?>
 <table class="form-table">
 <tr class="user-email-wrap">
@@ -165,7 +166,7 @@ $profileuser = get_user_to_edit(get_current_user_id());
 <table class="form-table">
 <tr class="user-description-wrap">
 	<th><label for="description"><?php _e('Biographical Info'); ?></label></th>
-	<td><textarea name="description" id="description" rows="5" cols="30"><?php echo $profileuser->description; // textarea_escaped ?></textarea>
+	<td><textarea name="description" id="description" rows="5" cols="30"><?php echo esc_html($profileuser->description); ?></textarea>
 	<p class="description"><?php _e('Share a little biographical information to fill out your profile. This may be shown publicly.'); ?></p></td>
 </tr>
 
@@ -232,17 +233,24 @@ function rl_save_custom_user_profile_fields( $user_id ) {
 	
 	if ( !current_user_can( 'edit_user', $user_id ) )
 		return FALSE;
+
+	// sanitize input fields
+	$function = sanitize_text_field($_POST['function']);
+	$bikes = sanitize_text_field($_POST['bikes']);
+	$phone = sanitize_text_field($_POST['phone']);
+	$home = sanitize_text_field($_POST['home']);
+	$facebook = sanitize_text_field($_POST['facebook']);
 	
 	if ( isset($_POST['function']) && current_user_can('edit_users'))
-		update_usermeta( $user_id, 'function', $_POST['function'] );
+		update_usermeta( $user_id, 'function', $function );
 	if ( isset($_POST['bikes']))
-		update_usermeta( $user_id, 'bikes', $_POST['bikes'] );
+		update_usermeta( $user_id, 'bikes', $bikes );
 	if ( isset($_POST['phone']))
-		update_usermeta( $user_id, 'phone', $_POST['phone'] );
+		update_usermeta( $user_id, 'phone', $phone );
 	if ( isset($_POST['home']))
-		update_usermeta( $user_id, 'home', $_POST['home'] );
+		update_usermeta( $user_id, 'home', $home );
 	if ( isset($_POST['facebook']))
-		update_usermeta( $user_id, 'facebook', $_POST['facebook'] );
+		update_usermeta( $user_id, 'facebook', $facebook );
 }
 
 add_action( 'show_user_profile', 'rl_add_custom_user_profile_fields' );
@@ -269,7 +277,7 @@ function PersonalInformation( $atts ) {
 	name_profile_fields();
 	rl_add_custom_user_profile_fields(get_current_user_id());
 	about_yourself_profile_fields();
-	// TODO add avatar upload field
+
 	if(function_exists('userphoto_display_selector_fieldset')) {
 		userphoto_display_selector_fieldset();
 	}
