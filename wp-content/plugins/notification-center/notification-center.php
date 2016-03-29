@@ -174,8 +174,7 @@ function NotificationCenter_Settings( $atts ) {
 	}
 
 	// add special subscription hooks
-	$notification_slugs['misc'] = array('event_participation' => 'event_participation');
-	$notification_slugs['misc'] = array('administrative' => 'administrative');
+	$notification_slugs['misc'] = array('event_participation' => 'event_participation', 'administrative' => 'administrative');
 
 	// gather contact options
 	$contact_options[] = "mail"; // every user has a mail contact option
