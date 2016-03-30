@@ -15,4 +15,18 @@ jQuery(document).ready(function(e){
 			}
 		});
 	});
+
 });
+
+function NotificationCenter_DeleteMessage(object, messageid) {
+	jQuery.ajax({
+		type : "post",
+		url : data.ajax_url,
+		dataType : "json",
+		data : {"action" : "notification_center_delete_message", "messageid": messageid},
+		success: function(response) {
+				object.parent().remove();
+		}
+	});
+};
+

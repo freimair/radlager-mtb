@@ -117,6 +117,23 @@ function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	}
 }
 
+function NotificationCenterDeleteMessage() {
+	global $wpdb, $notification_center_table_name;
+
+	if(!is_user_logged_in())
+		die();
+
+	$messageid = (int)$_POST['messageid'];
+	$current_user_id = get_current_user_id();
+
+	$sql = $wpdb->prepare("DELETE FROM $notification_center_table_name WHERE id = %d AND user_id = %d", array($messageid, $current_user_id));
+	$wpdb->query($sql);
+}
+
+
+add_action('wp_ajax_notification_center_delete_message', 'NotificationCenterDeleteMessage');
+add_action('wp_ajax_nopriv_notification_center_delete_message', 'NotificationCenterDeleteMessage');
+
 //[notification_center_show_messages]
 function NotificationCenter_ListMessages( $atts ) {
 	// start gathering the HTML output
@@ -131,7 +148,7 @@ function NotificationCenter_ListMessages( $atts ) {
 
 	echo "<ul>";
 	foreach ($messages as $currentmessage) {
-	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".esc_html($currentmessage->message)."</li>";
+	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".esc_html($currentmessage->message).' <input id="notification_center_delete_message" type="button" value="'.__('delete').'" onclick="NotificationCenter_DeleteMessage(jQuery(this), '.esc_attr($currentmessage->id).')"/></li>';
 	}
 	echo "</ul>";
 
