@@ -126,7 +126,7 @@ function NotificationCenter_ListMessages( $atts ) {
 	global $wpdb, $notification_center_table_name;
 	$user_id = get_current_user_id();
 
-	$sql = $wpdb->prepare("SELECT * FROM $notification_center_table_name WHERE user_id = %d;", $user_id);
+	$sql = $wpdb->prepare("SELECT * FROM $notification_center_table_name WHERE user_id = %d ORDER BY date_time DESC;", $user_id);
 	$messages = $wpdb->get_results($sql);
 
 	echo "<ul>";
