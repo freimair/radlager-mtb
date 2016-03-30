@@ -1,6 +1,7 @@
 <?php
 /*
 Plugin Name: Radlager Membership
+Depends: Notification Center
 Description: Implements the life-cycle logic for being a Radlager Club Member.
 Version: 1.0
 Author: florianreimair

@@ -1,6 +1,7 @@
 <?php
 /*
 Plugin Name: Frontend Create Posts
+Depends: Advanced Custom Fields
 Description: Enables users to create content from the frontend. Uses ACF4!
 Version: 1.0
 Author: florianreimair
