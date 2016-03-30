@@ -97,7 +97,6 @@ function RadlagerMembershipClaim() {
 		die();
 
 	update_usermeta( get_current_user_id(), 'radlager_membership_fee_status', 'claim' );
-	die();
 }
 
 add_action('wp_ajax_radlager_membership_claim', 'RadlagerMembershipClaim');

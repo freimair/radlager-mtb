@@ -9,7 +9,7 @@ jQuery(document).ready(function(){
 				url : data.ajax_url,
 				data : {action: "radlager_membership_claim"},
 				success: function(response) {
-						myObject.attr("disabled", "true");
+						location.reload();
 				}
 			});
 		}
