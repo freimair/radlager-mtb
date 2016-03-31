@@ -196,6 +196,34 @@ function ManageEventsUI( $atts ) {
 	global $wpdb, $post_participants_table_name;
 	$user_id = get_current_user_id();
 
+	// get the events the current user participates in
+	$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE user_id = %d;", $user_id);
+	$participations = $wpdb->get_results($sql);
+
+	echo '<ul>';
+	foreach($participations as $current) {
+		// get posts the user created
+		$post = get_post((int)$current->post_id);
+
+		echo '<li>'.esc_html($post->post_title).'</li>';
+	}
+	echo '</ul>';
+
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'post_participants_list_joined_events', 'ManageEventsUI' );
+
+//[post_participants_manage_own_events]
+function ManageOwnEventsUI( $atts ) {
+	// start gathering the HTML output
+	ob_start();
+
+	// first get all events the user created
+	global $wpdb, $post_participants_table_name;
+	$user_id = get_current_user_id();
+
 	// get posts the user created
 	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen'));
 	echo "<ul>";
@@ -219,5 +247,5 @@ function ManageEventsUI( $atts ) {
 	return ob_get_clean();
 }
 
-add_shortcode( 'post_participants_manage_own_events', 'ManageEventsUI' );
+add_shortcode( 'post_participants_manage_own_events', 'ManageOwnEventsUI' );
 ?>
