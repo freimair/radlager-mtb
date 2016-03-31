@@ -1,6 +1,7 @@
 <?php
 /*
 Plugin Name: Post Participants
+Depends: Frontend Create Posts
 Description: Offers participants per posts. Useful for event subscription and/or ordering items presented in posts.
 Version: 1.0
 Author: florianreimair
@@ -229,8 +230,18 @@ function ManageOwnEventsUI( $atts ) {
 	echo "<ul>";
 	foreach($posts as $currentevent) :
 		echo "<li>".esc_html($currentevent->post_title);
-			$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $currentevent->ID);
-			$participants = $wpdb->get_results($sql);
+		// fetch appropriate categories
+		// - it is sufficient to fetch one of the categories and get the parent and then all childs
+		$basis = get_the_category($currentevent->ID)[0]->parent;
+		// - get all child of the parent category
+		$categories = get_categories(array( 'child_of' => $basis ));
+
+		// display edit button
+		frontend_edit_posts_form($currentevent->ID, $categories, "&Auml;ndern", "event");
+
+		// fetch participants
+		$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $currentevent->ID);
+		$participants = $wpdb->get_results($sql);
 		?><ul><?php
 		foreach ($participants as $current) :
 

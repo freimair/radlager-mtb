@@ -181,7 +181,7 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 	echo '<h3 class="hndle"><span>Fileupload</span></h3>';
 	echo '<div class="inside">';
 	echo '<input type="file" id="my_image_upload" name="my_image_upload[]" multiple="multiple">';
-	echo '</div></div>';
+	echo '</div>';
 
 	// finalize gathering and return
 	return ob_get_clean();
