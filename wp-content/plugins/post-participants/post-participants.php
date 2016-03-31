@@ -100,7 +100,7 @@ function JoinPost($post_id, $user_id) {
 	$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $post_id);
 	$rows = $wpdb->get_results($sql);
 
-	if(count($rows) >= $max_participants) {
+	if(!empty($max_participants) && count($rows) >= $max_participants) {
 		ReportAndExit("event is full");
 	}
 
