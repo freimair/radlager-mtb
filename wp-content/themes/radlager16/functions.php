@@ -220,6 +220,8 @@ function twentysixteen_scripts() {
 		'expand'   => __( 'expand child menu', 'twentysixteen' ),
 		'collapse' => __( 'collapse child menu', 'twentysixteen' ),
 	) );
+
+	wp_enqueue_script( 'radlager16_pagination_and_filtering', get_template_directory_uri() . '/js/paginationAndFiltering.js', array('jquery'), '20160331', true );
 }
 add_action( 'wp_enqueue_scripts', 'twentysixteen_scripts' );
 
