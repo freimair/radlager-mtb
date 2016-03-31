@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Post Participants
-Depends: Frontend Create Posts
+Depends: Frontend Create Posts, Advanced Custom Fields
 Description: Offers participants per posts. Useful for event subscription and/or ordering items presented in posts.
 Version: 1.0
 Author: florianreimair
@@ -156,7 +156,7 @@ function ReportAndExit($result) {
 }
 
 /**
- * Post the participation wish
+ * Check participation status
  * @param no-param
  * @return boolean. True if user already participates
  */
