@@ -158,10 +158,12 @@ add_filter( 'pre_get_users', 'pre_get_users');
 */
 
 function pre_user_query( $user_query ){
+	global $wpdb;
+
 	// workaround for static AND when working with metadata query.
 	if($user_query->query_vars['search']) {
-		$user_query->query_from .= ' INNER JOIN wp_usermeta ON ( wp_users.ID = wp_usermeta.user_id ) ';
-		$user_query->query_where .= $wpdb->perpare(" OR ( wp_usermeta.meta_key = 'radlager_membership_fee_status' AND CAST(wp_usermeta.meta_value AS CHAR) LIKE %s' )", "%".substr($user_query->query_vars['search'], 1, -1)."%");
+		$user_query->query_from .= ' INNER JOIN '.$wpdb->prefix.'usermeta ON ( '.$wpdb->prefix.'users.ID = '.$wpdb->prefix.'usermeta.user_id ) ';
+		$user_query->query_where .= $wpdb->prepare(" OR ( ".$wpdb->prefix."usermeta.meta_key = 'radlager_membership_fee_status' AND CAST(".$wpdb->prefix."usermeta.meta_value AS CHAR) LIKE %s )", "%".str_replace('*', '%', $user_query->query_vars['search']));
 	}
 
 	return $user_query;
