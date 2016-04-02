@@ -556,7 +556,10 @@ class acf_location
 			if(0 != $term->parent)
 				$tmp[] = $term->parent;
 		}
-		$terms = array_merge($terms, $tmp);
+		if(is_array($tmp))
+			$terms = array_merge($terms, $tmp);
+		else
+			$terms[] = $tmp;
 
         if($rule['operator'] == "==")
         {

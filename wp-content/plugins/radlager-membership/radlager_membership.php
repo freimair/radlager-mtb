@@ -18,9 +18,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 */
 
-add_action( 'user_register', function() {
+function radlager_membership_user_register_hook() {
 	update_usermeta( get_current_user_id(), 'radlager_membership_fee_status', 'open' );
-});
+}
+add_action( 'user_register', 'radlager_membership_user_register_hook');
 
 //[radlager_membership_register]
 function RadlagerMembershipRegister( $atts ) {

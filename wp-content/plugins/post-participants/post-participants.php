@@ -232,7 +232,8 @@ function ManageOwnEventsUI( $atts ) {
 		echo "<li>".esc_html($currentevent->post_title);
 		// fetch appropriate categories
 		// - it is sufficient to fetch one of the categories and get the parent and then all childs
-		$basis = get_the_category($currentevent->ID)[0]->parent;
+		$basis = get_the_category($currentevent->ID);
+		$basis = $basis[0]->parent;
 		// - get all child of the parent category
 		$categories = get_categories(array( 'child_of' => $basis ));
 

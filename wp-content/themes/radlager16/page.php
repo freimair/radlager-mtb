@@ -34,10 +34,12 @@ get_header();
 		}
 
 		// - find categories to be displayed
-		$categories = preg_split("/;/", $configuration)[0];
+		$categories = preg_split("/;/", $configuration);
+		$categories = $categories[0];
 
 		// - find filter configuration and prepare filter gui
-		$filterconfiguration = preg_split("/;/", $configuration)[1];
+		$filterconfiguration = preg_split("/;/", $configuration);
+		$filterconfiguration = $filterconfiguration[1];
 		if(preg_match("/^use_categories$/", $filterconfiguration)) { // use categories as tags
 			$filtermode = "categories";
 			$configured_categories = preg_split("/,/", $categories);
@@ -62,7 +64,8 @@ get_header();
 				if('true' === get_post_meta($current->ID, '_wpac_is_members_only', true)) {
 					$required = maybe_unserialize(get_post_meta($current->ID, '_wpac_restricted_to', true));
 					$available = wp_get_current_user()->roles;
-					if(empty(array_diff($required, $available)))
+					$result = array_diff($required, $available);
+					if(empty($result))
 						$filters[$current->ID] = $current->post_title;
 				} else
 					$filters[$current->ID] = $current->post_title;
@@ -70,7 +73,8 @@ get_header();
 		}
 
 		// determine post type
-		if('veranstaltungen' == get_category(get_category(array_keys($filters)[0])->parent)->slug)
+		$tmp = array_keys($filters);
+		if('veranstaltungen' == get_category(get_category($tmp[0])->parent)->slug)
 			$type = 'event';
 		else
 			$type = 'media';
@@ -106,7 +110,8 @@ get_header();
 			if('true' === get_post_meta(get_the_ID(), '_wpac_is_members_only', true)) {
 				$required = maybe_unserialize(get_post_meta(get_the_ID(), '_wpac_restricted_to', true));
 				$available = wp_get_current_user()->roles;
-				if(!empty(array_diff($required, $available)))
+				$result = array_diff($required, $available);
+				if(!empty($result))
 					continue;
 			}
 

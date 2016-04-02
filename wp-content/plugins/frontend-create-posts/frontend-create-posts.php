@@ -276,7 +276,8 @@ function ListPendingPosts( $atts ) {
 		echo "<li>".esc_html($current->post_title)." ";
 		// fetch appropriate categories
 		// - it is sufficient to fetch one of the categories and get the parent and then all childs
-		$basis = get_the_category($current->ID)[0]->parent;
+		$basis = get_the_category($current->ID);
+		$basis = $basis[0]->parent;
 		// - get all child of the parent category
 		$categories = get_categories(array( 'child_of' => $basis ));
 		frontend_edit_posts_form($current->ID, $categories, "&Auml;ndern", "media");

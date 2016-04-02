@@ -177,7 +177,7 @@ function NotificationCenter_Settings( $atts ) {
 
 	foreach($categories as $current_parent) {
 		if(!in_array($current_parent, $categories_without_descendants)) {
-			$tmp = [];
+			$tmp = array();
 			foreach(get_categories(array( 'parent' => $current_parent->cat_ID )) as $current) {
 				$tmp[$current->slug] = $current->name;
 			}
@@ -270,7 +270,7 @@ function NotificationCenterUpdatePostHook( $post_id, $post ) {
 	$post_url = get_permalink( $post_id );
 
 	$categories = get_the_category($post_id);
-	$category_slugs = [];
+	$category_slugs = array();
 	foreach($categories as $current)
 		$category_slugs[] = $current->slug;
 
