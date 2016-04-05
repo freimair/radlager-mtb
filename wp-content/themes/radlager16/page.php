@@ -174,5 +174,4 @@ get_header();
 
 	</aside><!-- .sidebar .widget-area -->
 
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>
