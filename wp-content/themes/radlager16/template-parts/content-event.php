@@ -49,9 +49,6 @@
 			) );
 
 			echo do_shortcode('[gallery]');
-echo "I AM AN EVENT";
-
-echo "<div>".get_field('startdatum')."</div>";
 
 			wp_link_pages( array(
 				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
