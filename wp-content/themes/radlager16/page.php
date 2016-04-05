@@ -101,9 +101,12 @@ get_header();
 		$args = array ('post_status' => 'publish', 'category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged );
 		if('event' == $type) {
 			$args['orderby'] = 'meta_value';
-			$args['meta_key'] = 'startdatum';
 			$args['order'] = 'ASC';
+			$args['meta_key'] = 'startdatum';
+			$args['meta_value'] = time();
+			$args['meta_compare'] = '>';
 		}
+
 		$query = new WP_Query( $args );
 
 		if($query->have_posts()) :
