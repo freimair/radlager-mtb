@@ -73,6 +73,7 @@ if ( post_password_required() ) {
 		comment_form( array(
 			'title_reply_before' => '<h2 id="reply-title" class="comment-reply-title">',
 			'title_reply_after'  => '</h2>',
+			'logged_in_as' => '<input type="hidden" name="redirect_to" value="'.$_SERVER['PHP_SELF'].'"/>',
 		) );
 	?>
 
