@@ -22,6 +22,26 @@
 
 	<div class="entry-content">
 		<?php
+			echo '<div class="event_start">'.get_field('startdatum')."</div>";
+			$end = get_field('enddatum');
+			if(!empty($end))
+				echo '<div class="event_end">'.get_field('enddatum')."</div>";
+
+			// getting location information
+			$location = maybe_unserialize(get_field('ort'));
+			if(!empty($location)) {
+				echo '<div class="event_location">';
+
+
+?>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script><div style="overflow:hidden;height:500px;width:600px;"><div id="gmap_canvas" style="height:500px;width:600px;"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style><script type="text/javascript"> function init_map(){var myOptions = {zoom:14,center:new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById("gmap_canvas"), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>)});infowindow = new google.maps.InfoWindow({content:"<?php echo $location['address'];?>" });google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);</script>
+</div></div>
+<?php
+				echo "</div>";
+			}
+
+
+
 			/* translators: %s: Name of current post */
 			the_content( sprintf(
 				__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'twentysixteen' ),
