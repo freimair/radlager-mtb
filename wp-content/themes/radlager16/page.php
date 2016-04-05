@@ -98,7 +98,13 @@ get_header();
 		// create new loop based on the categories named in the title of the post
 		// - now start the query
 		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
-		$query = new WP_Query( array ('post_status' => 'publish', 'category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged ) );
+		$args = array ('post_status' => 'publish', 'category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged );
+		if('event' == $type) {
+			$args['orderby'] = 'meta_value';
+			$args['meta_key'] = 'startdatum';
+			$args['order'] = 'ASC';
+		}
+		$query = new WP_Query( $args );
 
 		if($query->have_posts()) :
 ?>
