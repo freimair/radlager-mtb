@@ -38,10 +38,23 @@
 </div></div>
 <?php
 				echo "</div>";
+
+				echo '<div class="event_weather">';
+?>
+
+<script>
+  var callbackFunction = function(data) {
+	 var wind = data.query.results.channel.forecast;
+	 alert(forecast);
+  };
+</script>
+
+<script src="https://query.yahooapis.com/v1/public/yql?q=select forecast from weather.forecast where woeid in (select woeid from geo.places(1) where text='<?php echo $location['address']; ?>')&format=json&callback=callbackFunction"></script>
+
+<?php
+
+				echo "</div>";
 			}
-
-
-
 			/* translators: %s: Name of current post */
 			the_content( sprintf(
 				__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'twentysixteen' ),
