@@ -77,7 +77,10 @@
 				get_the_title()
 			) );
 
-			echo do_shortcode('[gallery]');
+			if(function_exists('jqlb_autoexpand_rel_wlightbox'))
+				echo jqlb_autoexpand_rel_wlightbox(do_shortcode('[gallery link="file"]'));
+			else
+				echo do_shortcode('[gallery link="file"]');
 
 			wp_link_pages( array(
 				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
