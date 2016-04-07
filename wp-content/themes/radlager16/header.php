@@ -23,24 +23,11 @@
 
 <body <?php body_class(); ?>>
 <div id="page" class="site">
-	<div class="site-inner">
+	
 		<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'twentysixteen' ); ?></a>
 
 		<header id="masthead" class="site-header" role="banner">
 			<div class="site-header-main">
-				<div class="site-branding">
-					<?php if ( is_front_page() && is_home() ) : ?>
-						<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-					<?php else : ?>
-						<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-					<?php endif;
-
-					$description = get_bloginfo( 'description', 'display' );
-					if ( $description || is_customize_preview() ) : ?>
-						<p class="site-description"><?php echo $description; ?></p>
-					<?php endif; ?>
-				</div><!-- .site-branding -->
-
 				<?php if ( has_nav_menu( 'primary' ) || has_nav_menu( 'social' ) ) : ?>
 					<button id="menu-toggle" class="menu-toggle"><?php _e( 'Menu', 'twentysixteen' ); ?></button>
 
@@ -71,6 +58,38 @@
 						<?php endif; ?>
 					</div><!-- .site-header-menu -->
 				<?php endif; ?>
+				
+				<div class="site-branding">
+					<?php if ( is_front_page() && is_home() ) : ?>
+						<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<?php else : ?>
+						<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+					<?php endif;
+
+					$description = get_bloginfo( 'description', 'display' );
+					if ( $description || is_customize_preview() ) : ?>
+						<p class="site-description"><?php echo $description; ?></p>
+					<?php endif; ?>
+				</div><!-- .site-branding -->
+
+				
+				
+				
+				<div class="banner">
+					
+				
+					<div class="RL-Logo">
+						
+					</div>
+				
+				</div>
+				
+				
+				
+				
+				
+				
+				
 			</div><!-- .site-header-main -->
 
 			<?php if ( get_header_image() ) : ?>
@@ -93,5 +112,5 @@
 				</div><!-- .header-image -->
 			<?php endif; // End header image check. ?>
 		</header><!-- .site-header -->
-
+	<div class="site-inner">
 		<div id="content" class="site-content">

@@ -340,6 +340,25 @@ optgroup {
  * 3.0 - Typography
  */
 
+@font-face {      
+	font-family: Lato-Black;
+	local: Lato-Black;
+	src: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Black.woff2) format('woff');
+}
+
+@font-face {      
+	font-family: Lato-Bold;
+	local: Lato-Black;
+	src: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Bold.woff2) format('woff');
+}
+
+@font-face {      
+	font-family: Lato-Regular;
+	local: Lato-Black;
+	src: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Regular.woff2) format('woff');
+}
+
+
 body,
 button,
 input,
@@ -823,7 +842,13 @@ a:active {
 	-webkit-flex: 0 1 100%;
 	-ms-flex: 0 1 100%;
 	flex: 0 1 100%;
-	margin: 0.875em 0;
+	
+	width: 100%;
+	background-color: #47974C;
+	position: fixed;
+	z-index:99;
+	padding-left:5%;
+	
 }
 
 .site-header-menu.toggled-on,
@@ -832,7 +857,10 @@ a:active {
 }
 
 .main-navigation {
-	font-family: Montserrat, "Helvetica Neue", sans-serif;
+	font-family: "Lato-Bold", sans-serif;
+	font-size: 15px;
+	letter-spacing: 0.2em;
+	
 }
 
 .site-footer .main-navigation {
@@ -850,11 +878,13 @@ a:active {
 }
 
 .main-navigation a {
-	color: #1a1a1a;
+	color: #ffffff;
 	display: block;
 	line-height: 1.3125;
 	outline-offset: -1px;
 	padding: 0.84375em 0;
+	text-transform: uppercase;
+	
 }
 
 .main-navigation a:hover,
@@ -1557,13 +1587,14 @@ blockquote:after,
  */
 
 .site {
-	background-color: #fff;
+	background-color: #ffffff;
 }
 
 .site-inner {
-	margin: 0 auto;
+	margin: 100px auto;
 	max-width: 1320px;
 	position: relative;
+	z-index: 1;
 }
 
 .site-content {
@@ -1589,7 +1620,7 @@ blockquote:after,
  */
 
 .site-header {
-	padding: 2.625em 7.6923%;
+	
 }
 
 .site-header-main {
@@ -1634,6 +1665,28 @@ blockquote:after,
 	font-weight: 400;
 	line-height: 1.0769230769;
 	margin: 0.538461538em 0 0;
+}
+
+
+.banner{
+	background-image: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);
+	width: 100%;
+	height: 350px;
+	background-size: cover;
+	position: relative;
+	z-index: 2;
+	
+}
+
+.RL-Logo{
+	background-image: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png);
+	margin: 50px auto;
+	width: 200px;
+	height: 95px;
+	position: relative;
+	background-size: cover;
+	z-index:3;
+	
 }
 
 .menu-toggle {
@@ -2745,7 +2798,7 @@ p > video {
 	body:not(.custom-background-image):after {
 		background: inherit;
 		content: "";
-		display: block;
+		display: none;
 		height: 21px;
 		left: 0;
 		position: fixed;
@@ -2766,7 +2819,6 @@ p > video {
 	}
 
 	.site {
-		margin: 21px;
 	}
 
 	.site-main {
@@ -2774,7 +2826,7 @@ p > video {
 	}
 
 	.site-header {
-		padding: 3.9375em 7.6923%;
+		
 	}
 
 	.site-branding {
@@ -2800,7 +2852,7 @@ p > video {
 	}
 
 	.site-header-menu {
-		margin: 1.3125em 0;
+	
 	}
 
 	.site-header .main-navigation + .social-navigation {
@@ -2967,8 +3019,7 @@ p > video {
 
 @media screen and (min-width: 56.875em) {
 	.site-header {
-		padding-right: 4.5455%;
-		padding-left: 4.5455%;
+
 	}
 
 	.site-header-main {
@@ -3397,14 +3448,16 @@ p > video {
 	}
 
 	.site-header {
-		padding: 5.25em 4.5455%;
+		
 	}
 
 	.site-branding,
-	.site-header-menu,
+	.site-header-menu {
+		
+		
+	}
 	.header-image {
-		margin-top: 1.75em;
-		margin-bottom: 1.75em;
+	
 	}
 
 	.image-navigation {
