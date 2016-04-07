@@ -260,4 +260,30 @@ function ManageOwnEventsUI( $atts ) {
 }
 
 add_shortcode( 'post_participants_manage_own_events', 'ManageOwnEventsUI' );
+
+function PostParticipantsGetSubscribedUsers($post_id) {
+	global $wpdb, $post_participants_table_name;
+	$sql = $wpdb->prepare("SELECT user_id FROM $post_participants_table_name WHERE post_id = %d", $post_id);
+	$tmp = $wpdb->get_results($sql);
+	foreach($tmp as $current) {
+		$result[] = $current->user_id;
+	}
+	return $result;
+}
+
+function wp_notify_postauthor($comment_id) {
+	$comment = get_comment($comment_id);
+	$post_id = $comment->comment_post_ID;
+	$post = get_post($post_id);
+
+	// notify the post creator
+	NotificationCenter_NotifyUser(array('event_participation'), $post->post_author, "A new comment has been posted", $comment->content);
+
+	// fetch subscribed users
+	$participating_users = PostParticipantsGetSubscribedUsers($post_id);
+
+	// notify them
+	foreach($participating_users as $participating_user)
+		NotificationCenter_NotifyUser(array('event_participation'), $participating_user, "A new comment has been posted", $comment->content);
+}
 ?>
