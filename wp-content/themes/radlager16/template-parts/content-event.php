@@ -39,8 +39,9 @@
 <?php
 				echo "</div>";
 
-				// TODO only check when we are near the date anyways
-				echo '<div id="event_'.get_the_ID().'" class="event_weather">';
+				// only check when we are near the date anyways (i.e. +10 days)
+				if(time() + (10 * 24 * 60 * 60) > time(get_field('startdatum'))) {
+					echo '<div id="event_'.get_the_ID().'" class="event_weather">';
 ?>
 
 <script type="text/javascript">
@@ -67,7 +68,8 @@
 
 <?php
 
-				echo "</div>";
+					echo "</div>";
+				}
 			}
 			/* translators: %s: Name of current post */
 			the_content( sprintf(
