@@ -1,9 +1,10 @@
 var $j = jQuery.noConflict();
 
-$j('document').ready(function(){
-	$j('.readmoreinline').hide();
+$j(document).on('resize ready', function(){
+	$j('.more-link').off('click');
 	$j('.more-link').click(function(e){
 		e.preventDefault();
-		$j('.readmoreinline').toggle();
+		var post_id = jQuery(this).attr("data-post_id");
+		$j('#readmoreinline' + post_id).toggle();
 	});
 });
