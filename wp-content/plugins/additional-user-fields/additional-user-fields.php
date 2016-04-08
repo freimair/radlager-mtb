@@ -151,7 +151,7 @@ global $current_user;
 		echo apply_filters( "user_{$name}_label", $desc );
 		?>
 	</label></th>
-	<td><input type="text" name="<?php echo $name; ?>" id="<?php echo $name; ?>" value="<?php echo esc_attr($profileuser->$name) ?>" class="regular-text" /></td>
+	<td><input type="text" name="<?php echo esc_attr($name); ?>" id="<?php echo $name; ?>" value="<?php echo esc_attr($profileuser->$name) ?>" class="regular-text" /></td>
 </tr>
 <?php
 	}
@@ -283,7 +283,7 @@ function PersonalInformation( $atts ) {
 	}
 ?>
 
-<input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="Update Profile">
+<input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="<?php _e('Save'); ?>">
 </form>
 <script>
 jQuery("input#submit-personal-profile-fields").click(function(e) {post_user_data(jQuery("form#personal-profile-fields")[0]);});
@@ -307,7 +307,7 @@ function ContactInformation( $atts ) {
 	contact_info_profile_fields();
 ?>
 
-<input type="button" name="submit" id="submit-contact_information-fields" class="button button-primary" value="Update Profile">
+<input type="button" name="submit" id="submit-contact_information-fields" class="button button-primary" value="<?php _e('Save'); ?>">
 </form>
 <script>
 jQuery("input#submit-contact_information-fields").click(function(e) {post_user_data(jQuery("form#contact_information-fields")[0]);});
@@ -333,7 +333,7 @@ function AccountManagement( $atts ) {
 	account_management_profile_fields();
 ?>
 
-<input type="button" name="submit" id="submit-account-management-fields" class="button button-primary" value="Update Profile">
+<input type="button" name="submit" id="submit-account-management-fields" class="button button-primary" value="<?php _e('Save'); ?>">
 </form>
 <script>
 jQuery("input#submit-account-management-fields").click(function(e) {post_user_data(jQuery("form#account-management-fields")[0]);});

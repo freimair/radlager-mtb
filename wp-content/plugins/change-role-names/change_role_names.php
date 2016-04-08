@@ -23,12 +23,12 @@ function change_role_names() {
 	if ( ! isset( $wp_roles ) )
 		$wp_roles = new WP_Roles();
 
-	$newNames['subscriber'] = 'Kandidat';
-	$newNames['contributor'] = 'Mitglied';
-	$newNames['author'] = 'Vorstand';
-	$newNames['editor'] = 'Redakteur';
-	$newNames['administrator'] = 'Administrator';
-	$newNames['usermanager'] = 'Mitgliederverwalter';
+	$newNames['subscriber'] = __('Kandidat');
+	$newNames['contributor'] = __('Mitglied');
+	$newNames['author'] = __('Vorstand');
+	$newNames['editor'] = __('Redakteur');
+	$newNames['administrator'] = __('Administrator');
+	$newNames['usermanager'] = __('Mitgliederverwalter');
 
 	foreach ($newNames as $key => $value) {
 		$wp_roles->roles[$key]['name'] = $value;

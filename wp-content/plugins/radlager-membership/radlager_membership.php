@@ -58,7 +58,7 @@ function RadlagerMembershipStatus( $atts ) {
 	$payment_status = get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true);
 	$show_button = true;
 	if('open' !== $payment_status) {
-		echo '<p>Du hast bereits bezahlt.</p>';
+		echo '<div class="payment_status">'.__("Du hast bereits bezahlt.").'</div>';
 		$show_button = false;
 	}
 
@@ -70,7 +70,7 @@ function RadlagerMembershipStatus( $atts ) {
 
 <p>Verwendungszweck: <strong>"<?php echo esc_html(date("Y", strtotime('+61 days')));?> <?php printNameIfAvailable(); ?>"</strong></p>
 
-<input type="button" id="radlager_membership_payment_claim" value="Habe bezahlt!" />
+<input type="button" id="radlager_membership_payment_claim" value="<?php _e("Habe bezahlt!"); ?>" />
 
 
 <?php
@@ -199,14 +199,14 @@ function radlager_membership_notify_users($state) {
 		case 'reset':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				update_user_meta($current->ID, 'radlager_membership_fee_status', 'open');
-				NotificationCenter_NotifyUser(array('administrative'), $current->ID, 'Membership fee due', 'Membership fee due');
+				NotificationCenter_NotifyUser(array('administrative'), $current->ID, __('Der Mitgliedbeitrag ist fällig'), __('Mehr Info auf der Website!'));
 			}
 			break;
 		case 'reminder':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				$usermeta = get_user_meta($user_id, 'radlager_membership_fee_status', true);
 				if(!empty($usermeta))
-					NotificationCenter_NotifyUser(array('administrative'), $current->ID, 'Membership fee due', 'Membership fee due');
+					NotificationCenter_NotifyUser(array('administrative'), $current->ID, __('Der Mitgliedbeitrag ist fällig'), __('Mehr Info auf der Website!'));
 			}
 			break;
 		case 'kick':
@@ -228,5 +228,6 @@ function radlager_membership_notify_users($state) {
 }
 add_action( 'radlager_membership_notify_users','radlager_membership_notify_users' );
 
+// start cron-job on plugin activation
 register_activation_hook(__FILE__, 'radlager_membership_notify_users');
 ?>

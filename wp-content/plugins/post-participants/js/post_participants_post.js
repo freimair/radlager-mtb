@@ -9,18 +9,18 @@ jQuery(document).on('resize ready', function(){
 			type : "post",
 			async : true,
 			dataType : "json",
-			url : data.ajax_url,
+			url : ppdata.ajax_url,
 			data : {action: "post_participants_intent", post_id : post_id, task : task},
 			success: function(response) {
 				var current = jQuery("[class=post_participate][data-post_id=" + post_id + "]");
 				if("leave" == response.result) {
-					current.val("Abmelden");
+					current.val(ppdata.leave);
 					current.attr("data-task", response.result);
 				} else if("join" == response.result) {
-					current.val("Bin dabei!");
+					current.val(ppdata.join);
 					current.attr("data-task", response.result);
 				} else
-					alert(response.result);
+					console.log(response.result);
 			}
 		});
 	});

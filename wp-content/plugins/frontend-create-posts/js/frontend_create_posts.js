@@ -4,7 +4,7 @@ function frontend_create_post_stuff(current){
 	if(jQuery("div#edit-post-"+post_id+"-form").is(':empty')) {
 		var categories = JSON.parse(current.attr("data-categories"));
 
-		jQuery("div#edit-post-"+post_id+"-form").load(data.ajax_url, {"action" : "frontend_edit_post_form", "post_id" : post_id, "category_ids" : categories, type : type}, function() {
+		jQuery("div#edit-post-"+post_id+"-form").load(fcpdata.ajax_url, {"action" : "frontend_edit_post_form", "post_id" : post_id, "category_ids" : categories, type : type}, function() {
 			// trigger setup for all ACF fields in case there are some that need initializing
 			jQuery(document).trigger('acf/setup_fields', jQuery("div#edit-post-"+post_id+"-form"));
 
@@ -21,7 +21,7 @@ function frontend_create_post_stuff(current){
 				postData.append("action", "frontend_save_post_form");
 				jQuery.ajax({
 					type: "post",
-					url: data.ajax_url,
+					url: fcpdata.ajax_url,
 					data: postData,
 					contentType: false,
 					cache: false,
@@ -43,7 +43,7 @@ function frontend_create_post_stuff(current){
 			});
 
 			// replace button action
-			jQuery("input#edit-post-"+post_id).val("nein, sorry, doch nicht...");
+			jQuery("input#edit-post-"+post_id).val(fcpdata.cancel);
 		});
 	} else {
 		remove_edit_field(post_id, type);
@@ -55,5 +55,5 @@ function remove_edit_field(post_id, type) {
 		if('undefined' !== typeof tinyMCE)
 			tinyMCE.editors=[];
 		jQuery(".mce-container").remove();
-		jQuery("input#edit-post-"+post_id).val("new" != post_id ? "Ändern" : ("event" == type ? "Selbst etwas veranstalten" : "Selbst etwas berichten"));
+		jQuery("input#edit-post-"+post_id).val("new" != post_id ? "Ändern" : ("event" == type ? fcpdata.edit_event : fcpdata.edit_media));
 }

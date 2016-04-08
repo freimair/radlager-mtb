@@ -161,7 +161,7 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 
 	if(0 < count($categories)) {
 		$post_categories = get_the_category($post_id);
-		echo '<h3 class="hndle"><span>Categories</span></h3>';
+		echo '<h3 class="hndle"><span>'.__('Categories').'</span></h3>';
 		echo '<div class="inside">';
 		echo '<ul id="categorychecklist" class="categorychecklist">';
 		foreach($categories as $current) {
@@ -184,7 +184,7 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 		}
 	}
 
-	echo '<h3 class="hndle"><span>Fileupload</span></h3>';
+	echo '<h3 class="hndle"><span>'.__('Imageupload').'</span></h3>';
 	echo '<div class="inside">';
 	echo '<input type="file" id="my_image_upload" name="my_image_upload[]" multiple="multiple">';
 	echo '</div>';
@@ -194,6 +194,7 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 }
 
 function FrontendEditPostForm() {
+
 	// do user permission check
 	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
 		return;
@@ -237,7 +238,7 @@ function FrontendEditPostForm() {
 		'post_id'	=> $post_id,
 		'html_before_fields' => $html,
 		'form_attributes' => array ( 'enctype' => 'multipart/form-data' ),
-		'submit_value'	=> 'Fertig. Speichern!'
+		'submit_value'	=> __('Save')
 	);
 
 
@@ -291,7 +292,7 @@ function ListPendingPosts( $atts ) {
 		$basis = $basis[0]->parent;
 		// - get all child of the parent category
 		$categories = get_categories(array( 'child_of' => $basis ));
-		frontend_edit_posts_form($current->ID, $categories, "&Auml;ndern", "media");
+		frontend_edit_posts_form($current->ID, $categories, __('Edit'), "media");
 		echo "</li>";
 	endforeach;
 	echo "</ul>";
@@ -309,7 +310,10 @@ add_shortcode( 'pending_posts', 'ListPendingPosts' );
  */
 function FrontendCreatePostsScripts() {
      wp_register_script( 'frontend_create_posts_script', plugins_url( 'js/frontend_create_posts.js', __FILE__ ), array('jquery') );
-     wp_localize_script( 'frontend_create_posts_script', 'data', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
+     wp_localize_script( 'frontend_create_posts_script', 'fcpdata', array( 'ajax_url' => admin_url( 'admin-ajax.php' ),
+																								'cancel' => __("nein, sorry, doch nicht..."),
+																								'edit_event' => __("Selbst etwas veranstalten"),
+																								'edit_media' => __("Selbst etwas berichten")));
 
      wp_enqueue_script( 'jquery' );
      wp_enqueue_script( 'frontend_create_posts_script' );

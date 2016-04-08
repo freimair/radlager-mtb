@@ -121,7 +121,7 @@ function JoinPost($post_id, $user_id) {
 
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
-		NotificationCenter_NotifyUser(array('event_participation'), $user_id, "You have joined a post", get_post($post_id)->post_title);
+		NotificationCenter_NotifyUser(array('event_participation'), $user_id, __("Du hast dich angemeldet"), get_post($post_id)->post_title);
 	}
 
 	ReportAndExit("leave");
@@ -137,9 +137,9 @@ function LeavePost($post_id, $user_id, $forced = false) {
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
 		if($forced)
-			$message = "Deine Anmeldung wurde zurückgesetzt";
+			$message = __("Deine Anmeldung wurde zurückgesetzt");
 		else
-			$message = "Du hast dich abgemeldet";
+			$message = __("Du hast dich abgemeldet");
 
 		NotificationCenter_NotifyUser(array('event_participation'), $user_id, $message, get_post($post_id)->post_title);
 	}
@@ -188,7 +188,9 @@ add_action('wp_ajax_nopriv_post_participants_intent', 'PostUserParticipationInte
  */
 function PostParticipantsScripts() {
      wp_register_script( 'post_participants_script', plugins_url( 'js/post_participants_post.js', __FILE__ ), array('jquery') );
-     wp_localize_script( 'post_participants_script', 'data', array( 'ajax_url' => admin_url( 'admin-ajax.php' )));
+     wp_localize_script( 'post_participants_script', 'ppdata', array( 'ajax_url' => admin_url( 'admin-ajax.php' ),
+																							 'join' => __("Bin dabei!"),
+																							 'leave' => __("Abmelden")));
 
      wp_enqueue_script( 'jquery' );
      wp_enqueue_script( 'post_participants_script' );
@@ -246,7 +248,7 @@ function ManageOwnEventsUI( $atts ) {
 		$categories = get_categories(array( 'child_of' => $basis ));
 
 		// display edit button
-		frontend_edit_posts_form($currentevent->ID, $categories, "&Auml;ndern", "event");
+		frontend_edit_posts_form($currentevent->ID, $categories, __("Edit"), "event");
 
 		// fetch participants
 		$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $currentevent->ID);
@@ -255,7 +257,7 @@ function ManageOwnEventsUI( $atts ) {
 		foreach ($participants as $current) :
 
 			?>
-			<li><?php echo esc_html(get_user_by('id', $current->user_id)->display_name); ?><input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="kick"/></li>
+			<li><?php echo esc_html(get_user_by('id', $current->user_id)->display_name); ?><input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="<?php _e("kick"); ?>"/></li>
 			<?php
 
 		endforeach;
@@ -285,13 +287,13 @@ function wp_notify_postauthor($comment_id) {
 	$post = get_post($post_id);
 
 	// notify the post creator
-	NotificationCenter_NotifyUser(array('event_participation'), $post->post_author, "A new comment has been posted", $comment->content);
+	NotificationCenter_NotifyUser(array('event_participation'), $post->post_author, __("Ein neuer Kommentar wurde abgegeben"), $comment->content);
 
 	// fetch subscribed users
 	$participating_users = PostParticipantsGetSubscribedUsers($post_id);
 
 	// notify them
 	foreach($participating_users as $participating_user)
-		NotificationCenter_NotifyUser(array('event_participation'), $participating_user, "A new comment has been posted", $comment->content);
+		NotificationCenter_NotifyUser(array('event_participation'), $participating_user, __("Ein neuer Kommentar wurde abgegeben"), $comment->content);
 }
 ?>
