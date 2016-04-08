@@ -56,12 +56,12 @@ $profileuser = get_user_to_edit(get_current_user_id());
 ?>
 <table class="form-table">
 	<tbody><tr class="user-first-name-wrap">
-	<th><label for="first_name"><?php _e('First Name') ?></label></th>
+	<th><label for="first_name"><?php _e('Vorname') ?></label></th>
 	<td><input type="text" name="first_name" id="first_name" value="<?php echo esc_attr($profileuser->first_name) ?>" class="regular-text" /></td>
 </tr>
 
 <tr class="user-last-name-wrap">
-	<th><label for="last_name"><?php _e('Last Name') ?></label></th>
+	<th><label for="last_name"><?php _e('Nachname') ?></label></th>
 	<td><input type="text" name="last_name" id="last_name" value="<?php echo esc_attr($profileuser->last_name) ?>" class="regular-text" /></td>
 </tr>
 
@@ -71,7 +71,7 @@ $profileuser = get_user_to_edit(get_current_user_id());
 </tr>
 
 <tr class="user-display-name-wrap">
-	<th><label for="display_name"><?php _e('Display name publicly as') ?></label></th>
+	<th><label for="display_name"><?php _e('Angezeigter Name') ?></label></th>
 	<td>
 		<select name="display_name" id="display_name">
 		<?php
@@ -165,9 +165,9 @@ $profileuser = get_user_to_edit(get_current_user_id());
 ?>
 <table class="form-table">
 <tr class="user-description-wrap">
-	<th><label for="description"><?php _e('Biographical Info'); ?></label></th>
+	<th><label for="description"><?php _e('Über dich'); ?></label></th>
 	<td><textarea name="description" id="description" rows="5" cols="30"><?php echo esc_html($profileuser->description); ?></textarea>
-	<p class="description"><?php _e('Share a little biographical information to fill out your profile. This may be shown publicly.'); ?></p></td>
+	<p class="description"><?php _e('Teil uns mit wer du so bist wenn du willst.'); ?></p></td>
 </tr>
 
 </tbody></table>
@@ -178,12 +178,12 @@ function account_management_profile_fields() {
 $profileuser = get_user_to_edit(get_current_user_id());
 ?>
 <table class="form-table">
-<tr><th><label>Logout</label></th><td><a href="<?php echo wp_logout_url( home_url() ); ?>">Logout</a></td></tr>
+<tr><th><label><?php _e("Ausloggen"); ?></label></th><td><a href="<?php echo wp_logout_url( home_url() ); ?>">Ausloggen</a></td></tr>
 <tr id="password" class="user-pass1-wrap">
-	<th><label for="pass1"><?php _e( 'New Password' ); ?></label></th>
+	<th><label for="pass1"><?php _e( 'Neues Passwort' ); ?></label></th>
 	<td>
 		<input class="hidden" value=" " /><!-- #24364 workaround -->
-		<button type="button" class="button button-secondary wp-generate-pw hide-if-no-js"><?php _e( 'Generate Password' ); ?></button>
+		<button type="button" class="button button-secondary wp-generate-pw hide-if-no-js"><?php _e( 'Passwort generieren' ); ?></button>
 		<div class="wp-pwd hide-if-js">
 			<span class="password-input-wrapper">
 				<input type="password" name="pass1" id="pass1" class="regular-text" value="" autocomplete="off" data-pw="<?php echo esc_attr( wp_generate_password( 24 ) ); ?>" aria-describedby="pass-strength-result" />
@@ -200,29 +200,20 @@ $profileuser = get_user_to_edit(get_current_user_id());
 	</td>
 </tr>
 <tr class="user-pass2-wrap hide-if-js">
-	<th scope="row"><label for="pass2"><?php _e( 'Repeat New Password' ); ?></label></th>
+	<th scope="row"><label for="pass2"><?php _e( 'Passwort wiederholen' ); ?></label></th>
 	<td>
 	<input name="pass2" type="password" id="pass2" class="regular-text" value="" autocomplete="off" />
 	<p class="description"><?php _e( 'Type your new password again.' ); ?></p>
 	</td>
 </tr>
 <tr class="pw-weak">
-	<th><?php _e( 'Confirm Password' ); ?></th>
+	<th><?php _e( 'Passwort bestätigen' ); ?></th>
 	<td>
 		<label>
 			<input type="hidden" name="pw_weak" value="off" />
 			<input type="checkbox" name="pw_weak" class="pw-checkbox" />
-			<?php _e( 'Confirm use of weak password' ); ?>
+			<?php _e( 'Ja, schwaches Passwort verwenden' ); ?>
 		</label>
-	</td>
-</tr>
-<tr class="user-sessions-wrap hide-if-no-js">
-	<th><?php _e( 'Sessions' ); ?></th>
-	<td aria-live="assertive">
-		<div class="destroy-sessions"><button type="button" class="button button-secondary" id="destroy-sessions"><?php _e( 'Log Out Everywhere Else' ); ?></button></div>
-		<p class="description">
-			<?php _e( 'Did you lose your phone or leave your account logged in at a public computer? You can log out everywhere else, and stay logged in here.' ); ?>
-		</p>
 	</td>
 </tr>
 </tbody></table>

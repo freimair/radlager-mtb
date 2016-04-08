@@ -145,7 +145,7 @@ function NotificationCenter_ListMessages( $atts ) {
 
 	echo "<ul>";
 	foreach ($messages as $currentmessage) {
-	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".esc_html($currentmessage->message).' <input id="notification_center_delete_message" type="button" value="'.__('Delete').'" onclick="NotificationCenter_DeleteMessage(jQuery(this), '.esc_attr($currentmessage->id).')"/></li>';
+	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".esc_html($currentmessage->message).' <input id="notification_center_delete_message" type="button" value="'.__('Löschen').'" onclick="NotificationCenter_DeleteMessage(jQuery(this), '.esc_attr($currentmessage->id).')"/></li>';
 	}
 	echo "</ul>";
 
@@ -183,17 +183,17 @@ function NotificationCenter_Settings( $atts ) {
 	}
 
 	// add special subscription hooks
-	$notification_slugs[__('hook_misc')] = array('event_participation' => __('event_participation'), 'administrative' => __('administrative'));
+	$notification_slugs[__('sonstige Inhalte')] = array('event_participation' => __('Teilnameinformationen'), 'administrative' => __('Administratives'));
 
 	// gather contact options
 	$contact_options[] = __('Email'); // every user has a mail contact option
-	$contact_options[] = __("pm"); // every user has personal messages
+	$contact_options[] = __("Persönliche Nachricht"); // every user has personal messages
 	$contact_options = array_merge($contact_options, wp_get_user_contact_methods(wp_get_current_user()));
 
 	echo '<form id="notification_center_settings"><table>';
 
 	// init headings
-	echo '<tr><th>'.__('hook').'</th>';
+	echo '<tr><th>'.__('Inhalte').'</th>';
 	foreach($contact_options as $current_contact_option)
 		echo '<th>'.esc_html($current_contact_option).'</th>';
 	echo '</tr>';
