@@ -67,19 +67,22 @@ register_uninstall_hook(__FILE__, 'UninstallPostParticipants');
 function PostUserParticipationIntent() {
 	$post_id = (int)$_REQUEST['post_id'];
 	$task = $_REQUEST['task'];
+	$user_id = (int)$_REQUEST['user_id'];
 
 	if(!is_user_logged_in()) {
 		$user = wp_get_current_user();
 		if ( !in_array( 'contributor', (array) $user->roles ) )
 			ReportAndExit("Access Denied");
+		if("kick" == $task && get_current_user_id() != get_post($post_id)->post_author) 
+			ReportAndExit("Access Denied");
 	}
 
-	$user_id = get_current_user_id();
-
 	if("join" == $task)
-		JoinPost($post_id, $user_id);
+		JoinPost($post_id, get_current_user_id());
 	else if("leave" == $task)
-		LeavePost($post_id, $user_id);
+		LeavePost($post_id, get_current_user_id());
+	else if("kick" == $task)
+		LeavePost($post_id, $user_id, true);
 
 	die();
 }
@@ -124,16 +127,21 @@ function JoinPost($post_id, $user_id) {
 	ReportAndExit("leave");
 }
 
-function LeavePost($post_id, $user_id) {
+function LeavePost($post_id, $user_id, $forced = false) {
 	global $wpdb, $post_participants_table_name;
 
 	// remove participant
-	$sql = $wpdb->prepare("DELETE FROM $post_participants_table_name WHERE post_id = %d AND user_id = %d;", array($post_id, $user_id));
-	$wpdb->get_results($sql);
+	$sql = $wpdb->prepare("DELETE FROM $post_participants_table_name WHERE post_id = %d AND user_id = %d", array($post_id, $user_id));
+	$wpdb->query($sql);
 
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
-		NotificationCenter_NotifyUser(array('event_participation'), $user_id, "You have left a post", get_post($post_id)->post_title);
+		if($forced)
+			$message = "Deine Anmeldung wurde zurückgesetzt";
+		else
+			$message = "Du hast dich abgemeldet";
+
+		NotificationCenter_NotifyUser(array('event_participation'), $user_id, $message, get_post($post_id)->post_title);
 	}
 
 	// join participants from the waiting list
@@ -247,7 +255,7 @@ function ManageOwnEventsUI( $atts ) {
 		foreach ($participants as $current) :
 
 			?>
-			<li><?php echo esc_html(get_user_by('id', $current->user_id)->display_name); ?></li>
+			<li><?php echo esc_html(get_user_by('id', $current->user_id)->display_name); ?><input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="kick"/></li>
 			<?php
 
 		endforeach;
