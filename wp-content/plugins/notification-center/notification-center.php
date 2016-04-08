@@ -110,9 +110,6 @@ function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 				$sql = $wpdb->prepare("INSERT INTO $notification_center_table_name (user_id,date_time,subject,message) VALUES (%d,%s,%s,%s);", array($user_id, date("Y-m-d H:i:s"), $subject, $message));
 				$wpdb->query($sql);
 				break;
-			case 'facebook' : 
-				//wp_mail( 'admin@example.com', $subject, $message );
-				break; // TODO implement facebook notification via email to username@facebook.com
 		}
 	}
 }

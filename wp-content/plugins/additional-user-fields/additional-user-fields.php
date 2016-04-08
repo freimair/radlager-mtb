@@ -411,13 +411,4 @@ function AdditionalUserFieldsScripts() {
 
 add_action('init', 'AdditionalUserFieldsScripts');
 
-function modify_user_contact_methods( $user_contact ) {
-	// Add user contact methods
-	$user_contact['facebook']   = __( 'Facebook Username'   );
-
-	return $user_contact;
-}
-add_filter( 'user_contactmethods', 'modify_user_contact_methods');
-
-
 ?>
