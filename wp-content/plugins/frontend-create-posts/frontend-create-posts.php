@@ -35,9 +35,15 @@ function my_pre_save_post( $post_id ) {
 	}
 
 	// TODO find a better place for this
-	foreach($categories as $currentid) {
-		$current = get_category($currentid);
-		if(null == $current || !($current->parent == 3 || $current->parent == 9))
+	foreach($categories as $current) {
+		if(null == $current)
+			die();
+
+		$parent = $current;
+		while(0 < $parent->parent)
+			$parent = get_category($parent->parent);
+
+		if("veranstaltungen" != $parent->slug && "medien" != $parent->slug)
 			die();
 	}
 
@@ -206,7 +212,14 @@ function FrontendEditPostForm() {
 
 	// TODO find a better place for this
 	foreach($categories as $current) {
-		if(null == $current || !($current->parent == 3 || $current->parent == 9))
+		if(null == $current)
+			die();
+
+		$parent = $current;
+		while(0 < $parent->parent)
+			$parent = get_category($parent->parent);
+
+		if("veranstaltungen" != $parent->slug && "medien" != $parent->slug)
 			die();
 	}
 
@@ -214,8 +227,6 @@ function FrontendEditPostForm() {
 	acf_form_head();
 
 	// TODO do we really want these styles here?
-	$my_styles = wp_styles();
-	$my_styles->do_items();
 	$my_scripts = wp_scripts();
 	$my_scripts->do_items();
 
