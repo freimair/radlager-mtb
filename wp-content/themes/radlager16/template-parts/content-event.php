@@ -34,7 +34,22 @@
 
 
 ?>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script><div style="overflow:hidden;height:500px;width:600px;"><div id="gmap_canvas" style="height:500px;width:600px;"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style><script type="text/javascript"> function init_map(){var myOptions = {zoom:14,center:new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById("gmap_canvas"), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>)});infowindow = new google.maps.InfoWindow({content:"<?php echo $location['address'];?>" });google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);</script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script><div style="overflow:hidden;height:500px;width:600px;"><div id="gmap_canvas_<?php echo get_the_ID(); ?>" style="height:500px;width:600px;"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
+<script type="text/javascript">
+function init_map_<?php echo get_the_ID(); ?>(){
+	var myOptions = {zoom:14,
+							center:new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>),
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+							};
+	var map = new google.maps.Map(document.getElementById("gmap_canvas_<?php echo get_the_ID(); ?>"), myOptions);
+	var marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>)});
+	var infowindow = new google.maps.InfoWindow({content:"<?php echo $location['address'];?>" });
+
+	google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});
+	infowindow.open(map,marker);
+}
+google.maps.event.addDomListener(window, 'load', init_map_<?php echo get_the_ID(); ?>);
+</script>
 </div></div>
 <?php
 				echo "</div>";
