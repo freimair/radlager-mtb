@@ -38,9 +38,25 @@ function pobo_rmi_morelink_filter($link){
         $post_object= get_post($my_id);
         $content = $post_object->post_content;
         // grab only the stuff after 'more'
+
         $debris = explode('<!--more-->', $content);
 
-    $link.='</div><div class="readmoreinline" id="readmoreinline'.$my_id.'" style="display:none">'.$debris[1].'</div>';
+    $link.='</div><div class="readmoreinline" id="readmoreinline'.$my_id.'" style="display:none">'.$debris[1];
+
+	$show_gallery = false;
+	$categories = get_the_category();
+	foreach($categories as $current) {
+		$parent = $current;
+		while(0 < $parent->parent)
+			$parent = get_category($parent->parent);
+
+		if("veranstaltungen" == $parent->slug || "medien" == $parent->slug)
+			$show_gallery = true;
+	}
+
+	if($show_gallery)
+		$link .= '[gallery link="file"]';
+	$link .='</div>';
 
     return $link;
 }
