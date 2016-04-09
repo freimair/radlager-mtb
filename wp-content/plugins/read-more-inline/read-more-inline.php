@@ -33,14 +33,14 @@ function pobo_rmi_morelink_filter($link){
 
     $my_id = $post->ID;
 
-    $link = str_replace("<a ", '<a data-post_id="'.$my_id.'" ', $link);
+    $link = str_replace("<a ", '<div class="more-link-container"><a data-post_id="'.$my_id.'" ', $link);
 
         $post_object= get_post($my_id);
         $content = $post_object->post_content;
         // grab only the stuff after 'more'
         $debris = explode('<!--more-->', $content);
 
-    $link.='</p><div class="readmoreinline" id="readmoreinline'.$my_id.'" style="display:none">'.$debris[1].'</div>';
+    $link.='</div><div class="readmoreinline" id="readmoreinline'.$my_id.'" style="display:none">'.$debris[1].'</div>';
 
     return $link;
 }
