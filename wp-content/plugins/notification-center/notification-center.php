@@ -282,4 +282,16 @@ function NotificationCenterUpdatePostHook( $post_id, $post ) {
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
 add_action( 'publish_post', 'NotificationCenterUpdatePostHook', 10, 2 );
+
+function NotificationCenterPendingPostHook($post_id, $post) {
+	$editors = get_users(array('role' => 'editor'));
+
+	$subject = "Ein Beitrag wartet auf Freigabe";
+
+	foreach($editors as $current)
+		NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, get_permalink($post_id));
+}
+
+add_action( 'pending_post', 'NotificationCenterPendingPostHook', 10, 2);
+
 ?>
