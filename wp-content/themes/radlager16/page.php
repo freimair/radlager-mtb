@@ -46,7 +46,7 @@ get_header();
 			foreach($configured_categories as $current) {
 				$current_category = get_category_by_slug($current);
 
-				$child_categories = get_categories(array('parent' => $current_category->term_id));
+				$child_categories = get_categories(array('parent' => $current_category->term_id, 'hide_empty' => false));
 				if(count($child_categories)) { // in case there are child categories, add the child categories instead
 					foreach($child_categories as $child_category) {
 						$filters[$child_category->cat_ID] = $child_category->name;
