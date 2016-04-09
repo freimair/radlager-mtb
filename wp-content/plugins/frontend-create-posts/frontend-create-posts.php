@@ -224,20 +224,21 @@ function FrontendEditPostForm() {
 			die();
 	}
 
-	// include necessary styles and scripts
+	// include necessary scripts
 	acf_form_head();
 
-	// TODO do we really want these styles here?
 	$my_scripts = wp_scripts();
 	$my_scripts->do_items();
 
 
 	$html = fep_render_basic_edit_fields($post_id, $categories, $type);
+	$feedback = '<div class="ajax_spinner" style="display: none"><img src="http://localhost/wp-content/themes/radlager16/loading.gif"></div>';
 
 	$settings = array(
 		'post_id'	=> $post_id,
 		'html_before_fields' => $html,
 		'form_attributes' => array ( 'enctype' => 'multipart/form-data' ),
+		'html_after_fields' => $feedback,
 		'submit_value'	=> __('Save')
 	);
 
@@ -266,8 +267,8 @@ function frontend_edit_posts_form($post_id, $categories, $caption, $type) {
 		$category_ids[] = $current->term_id;
 	}
 ?>
-<input type="button" id="edit-post-<?php echo esc_attr($post_id); ?>" data-categories="<?php echo esc_attr(json_encode($category_ids)); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" data-type="<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($caption); ?>" onclick="frontend_create_post_stuff(jQuery(this));"/>
-<div id="edit-post-<?php echo esc_attr($post_id); ?>-form"></div>
+<div id="user_create_content"><input type="button" id="edit-post-<?php echo esc_attr($post_id); ?>" data-categories="<?php echo esc_attr(json_encode($category_ids)); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" data-type="<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($caption); ?>" onclick="frontend_create_post_stuff(jQuery(this));"/><div class="ajax_spinner" style="display: none"><img src="http://localhost/wp-content/themes/radlager16/loading.gif"></div><div class="ajax_success" style="display: none"><?php _e("Gespeichert! Ein Redakteur wird den Beitrag in Kürze veröffentlichen."); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist aufgetreten!"); ?></div>
+<div id="edit-post-<?php echo esc_attr($post_id); ?>-form"></div></div>
 <?php
 }
 
