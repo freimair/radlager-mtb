@@ -230,4 +230,116 @@ add_action( 'radlager_membership_notify_users','radlager_membership_notify_users
 
 // start cron-job on plugin activation
 register_activation_hook(__FILE__, 'radlager_membership_notify_users');
+
+/**
+ * Member list utils
+ */
+// [radlager_membership_active_member_count]
+function rl_get_active_member_count() {
+	global $wpdb;
+	return $wpdb->get_var('SELECT COUNT(meta_value) FROM '.$wpdb->usermeta.' WHERE '.$wpdb->usermeta.'.meta_key = \''.$wpdb->prefix.'capabilities\' AND  '.$wpdb->usermeta.'.meta_value NOT LIKE \'%subscriber%\'');
+}
+
+add_shortcode( 'radlager_membership_active_member_count', 'rl_get_active_member_count' );
+
+// [radlager_membership_memberlist]
+function rl_print_member_list() {
+	global $wpdb;
+
+	$current_user = wp_get_current_user();
+	$see_list = (0 == strcmp($current_user->roles[0], "contributor")) || (0 == strcmp($current_user->roles[0], "administrator"));
+
+	if(!$see_list)
+		return "";
+
+	// start gathering the HTML output
+	ob_start();
+
+	// we suddenly do want everyone to see the members
+	//if(0 == strcmp($current_user->roles[0], "subscriber"))
+	//	return;
+
+	// we do want sorting for display name everytime
+	//if(0 <> strcmp($current_user->roles[0], "subscriber")) {
+	//	$wp_user_search = $wpdb->get_results("SELECT * FROM $wpdb->users INNER JOIN $wpdb->usermeta ON ($wpdb->users.ID = $wpdb->usermeta.user_id) WHERE $wpdb->usermeta.meta_key = 'last_name' ORDER BY $wpdb->usermeta.meta_value ASC");
+	//} else {
+		$wp_user_search = $wpdb->get_results("SELECT * FROM $wpdb->users INNER JOIN $wpdb->usermeta ON ($wpdb->users.ID = $wpdb->usermeta.user_id) WHERE $wpdb->usermeta.meta_key = '".$wpdb->prefix."capabilities' AND $wpdb->usermeta.meta_value NOT LIKE '%subscriber%' ORDER BY $wpdb->users.display_name ASC");
+	//}
+
+
+	foreach ( $wp_user_search as $userid ) {
+		$user = new WP_User($userid->ID);
+		print("<div class=\"usertile\">");
+		userphoto_thumbnail($user, "<span class=\"usertile-image\">", "</span>");
+		print("<div class=\"usertile-content\"><b>");
+
+		print(get_the_author_meta("display_name", $userid->ID)."</b>");
+		if($see_list) {
+			print("<br />".get_the_author_meta("first_name", $userid->ID)." ".get_the_author_meta("last_name", $userid->ID));
+		}
+
+		foreach(array("function", "bikes", "home") as $current) {
+			if("" <> get_the_author_meta($current, $userid->ID))
+				print("<br />".get_the_author_meta($current, $userid->ID));
+		}
+
+		if($see_list) {
+			foreach(array("phone") as $current) {
+				if("" <> get_the_author_meta($current, $userid->ID))
+					print("<br />".get_the_author_meta($current, $userid->ID));
+			}
+			$email = get_the_author_meta("user_email", $userid->ID);
+			if("" <> $email)
+				print("<br /><a href=\"mailto:$email\">$email</a>");
+		}
+
+		print("</div>");
+		print("</div>");
+	}
+	// finalize gathering and return
+	return ob_get_clean();
+}
+
+add_shortcode( 'radlager_membership_memberlist', 'rl_print_member_list' );
+
+function rl_member_list_css() {
+	$current_user = wp_get_current_user();
+	$see_list = (0 == strcmp($current_user->roles[0], "contributor")) || (0 == strcmp($current_user->roles[0], "administrator"));
+
+	echo "
+	<style type='text/css'>
+	h2 {
+		
+	}
+	.usertile {
+		display: table-row;
+		margin: 10px 0;
+		width: ";
+	if($see_list) {
+		echo "49%;";
+	} else {
+		echo "33%;";
+	}
+	echo "
+		float: left;
+	}
+	.usertile-image {
+		display: table-cell;
+		width: 100px;
+		height: 90px;
+		text-align: center;
+		vertical-align: top;
+	}
+	.usertile-content {
+		display: table-cell;
+		vertical-align: top;
+		height: 130px;
+	}
+	</style>
+	";
+}
+
+add_action( 'wp_head', 'rl_member_list_css' );
+
+
 ?>
