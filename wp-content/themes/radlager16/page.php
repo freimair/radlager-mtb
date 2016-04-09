@@ -76,8 +76,10 @@ get_header();
 		$tmp = array_keys($filters);
 		if('veranstaltungen' == get_category(get_category($tmp[0])->parent)->slug)
 			$type = 'event';
-		else
+		else if('medien' == get_category(get_category($tmp[0])->parent)->slug)
 			$type = 'media';
+		else
+			$type = 'other';
 
 		// remove duplicate entries just in case
 		array_unique($filters);
