@@ -274,11 +274,10 @@ function PersonalInformation( $atts ) {
 	}
 ?>
 
-<input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="<?php _e('Save'); ?>">
+<input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="<?php _e('Save'); ?>" onclick="post_user_data(jQuery('form#personal-profile-fields')[0]);"><div class="ajax_spinner" style="display: none">
+	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+	</div><div class="ajax_success" style="display: none"><?php _e("Gespeichert!"); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist Aufgetreten!"); ?></div>
 </form>
-<script>
-jQuery("input#submit-personal-profile-fields").click(function(e) {post_user_data(jQuery("form#personal-profile-fields")[0]);});
-</script>
 <?php
 	// finalize gathering and return
 	return ob_get_clean();
@@ -298,11 +297,10 @@ function ContactInformation( $atts ) {
 	contact_info_profile_fields();
 ?>
 
-<input type="button" name="submit" id="submit-contact_information-fields" class="button button-primary" value="<?php _e('Save'); ?>">
+<input type="button" name="submit" id="submit-contact_information-fields" class="button button-primary" value="<?php _e('Save'); ?>" onclick="post_user_data(jQuery('form#contact_information-fields')[0]);"><div class="ajax_spinner" style="display: none">
+	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+	</div><div class="ajax_success" style="display: none"><?php _e("Gespeichert!"); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist Aufgetreten!"); ?></div>
 </form>
-<script>
-jQuery("input#submit-contact_information-fields").click(function(e) {post_user_data(jQuery("form#contact_information-fields")[0]);});
-</script>
 <?php
 	// finalize gathering and return
 	return ob_get_clean();
@@ -324,11 +322,10 @@ function AccountManagement( $atts ) {
 	account_management_profile_fields();
 ?>
 
-<input type="button" name="submit" id="submit-account-management-fields" class="button button-primary" value="<?php _e('Save'); ?>">
+<input type="button" name="submit" id="submit-account-management-fields" class="button button-primary" value="<?php _e('Save'); ?>" onclick="post_user_data(jQuery('form#account-management-fields')[0]);"><div class="ajax_spinner" style="display: none">
+	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+	</div><div class="ajax_success" style="display: none"><?php _e("Gespeichert!"); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist Aufgetreten!"); ?></div>
 </form>
-<script>
-jQuery("input#submit-account-management-fields").click(function(e) {post_user_data(jQuery("form#account-management-fields")[0]);});
-</script>
 <?php
 	// finalize gathering and return
 	return ob_get_clean();
