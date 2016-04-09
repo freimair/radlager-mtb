@@ -46,7 +46,7 @@ get_header();
 			foreach($configured_categories as $current) {
 				$current_category = get_category_by_slug($current);
 
-				$child_categories = get_categories(array('child_of' => $current_category->term_id));
+				$child_categories = get_categories(array('parent' => $current_category->term_id));
 				if(count($child_categories)) { // in case there are child categories, add the child categories instead
 					foreach($child_categories as $child_category) {
 						$filters[$child_category->cat_ID] = $child_category->name;
@@ -85,6 +85,7 @@ get_header();
 		// show create post form if applicable
 		if (function_exists('frontend_edit_posts_form')) {
 			if("categories" === $filtermode) {
+				$tmp = '';
 				// assemble categories from filter list
 				foreach ($filters as $key => $value) {
 				    $tmp .= $key.",";
@@ -130,6 +131,9 @@ get_header();
 			// - decide, which mode to use
 			if("categories" == $filtermode) { // use categories as tags
 				foreach(get_the_category() as $current) {
+					$parent = get_category($current->parent);
+					if("veranstaltungen" != $parent->slug && "medien" != $parent->slug)
+						$current = $parent;
 					$tags .= "filter-".$current->cat_ID." ";
 				}
 			} else if("titles" == $filtermode) { // use post id as tags
