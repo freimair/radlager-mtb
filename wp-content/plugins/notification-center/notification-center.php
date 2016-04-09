@@ -186,8 +186,8 @@ function NotificationCenter_Settings( $atts ) {
 	$notification_slugs[__('sonstige Inhalte')] = array('event_participation' => __('Teilnameinformationen'), 'administrative' => __('Administratives'));
 
 	// gather contact options
-	$contact_options[] = __('Email'); // every user has a mail contact option
-	$contact_options[] = __("Persönliche Nachricht"); // every user has personal messages
+	$contact_options['mail'] = __('Email'); // every user has a mail contact option
+	$contact_options['pm'] = __("Persönliche Nachricht"); // every user has personal messages
 	$contact_options = array_merge($contact_options, wp_get_user_contact_methods(wp_get_current_user()));
 
 	echo '<form id="notification_center_settings"><table>';
@@ -203,7 +203,7 @@ function NotificationCenter_Settings( $atts ) {
 		echo '<tr><td colspan="'.esc_html(1 + count($contact_options)).'">'.esc_html($heading).'</td></tr>';
 		foreach($items as $key => $value) {
 			echo '<tr><td>'.esc_html($value).'</td>';
-			foreach($contact_options as $current) {
+			foreach($contact_options as $current => $bla) {
 				$checked = (NotificationCenter_IsNotifyUser(get_current_user_id(), $key, $current) ? 'checked="checked"' : '');
 				echo '<td><input type="checkbox" name="'.esc_attr($key).'['.esc_attr($current).']" '.$checked.' /></td>';
 			}
@@ -235,10 +235,12 @@ function NotificationCenterSaveSettings() {
 	// delete existing config
 	$wpdb->query($wpdb->prepare("DELETE FROM $notification_center_settings_table_name WHERE user_id=%d;", get_current_user_id()));
 
+var_dump($input);
+
 	// save new config
 	foreach($input as $current_hook => $values)
-		foreach($values as $current_contact_method => $donotusethisbrain)
-			$wpdb->query($wpdb->prepare("INSERT INTO $notification_center_table_name (user_id, hook, meta_key) VALUES (%d,%s,%s);", array(get_current_user_id(), $current_hook, $current_contact_method)));
+		foreach($values as $current_contact_method => $donotusethisbrain) 
+			$wpdb->query($wpdb->prepare("INSERT INTO $notification_center_settings_table_name (user_id, hook, meta_key) VALUES (%d,%s,%s);", array(get_current_user_id(), $current_hook, $current_contact_method)));
 
 	// TODO report errors appropriatly
 	die();
