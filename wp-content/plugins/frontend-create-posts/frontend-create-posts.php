@@ -313,6 +313,7 @@ function FrontendCreatePostsScripts() {
      wp_register_script( 'frontend_create_posts_script', plugins_url( 'js/frontend_create_posts.js', __FILE__ ), array('jquery') );
      wp_localize_script( 'frontend_create_posts_script', 'fcpdata', array( 'ajax_url' => admin_url( 'admin-ajax.php' ),
 																								'cancel' => __("nein, sorry, doch nicht..."),
+																								'edit_button' => __("Edit"),
 																								'edit_event' => __("Selbst etwas veranstalten"),
 																								'edit_media' => __("Selbst etwas berichten")));
 

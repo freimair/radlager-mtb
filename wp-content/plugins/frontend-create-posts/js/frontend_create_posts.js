@@ -43,7 +43,6 @@ function frontend_create_post_stuff(current){
 								location.reload();
 							else {
 								remove_edit_field(post_id, type);
-								// TODO notify via notification field
 							}
 						}
 						jQuery(current).parent().children(".ajax_success").show();
@@ -65,5 +64,5 @@ function remove_edit_field(post_id, type) {
 		if('undefined' !== typeof tinyMCE)
 			tinyMCE.editors=[];
 		jQuery(".mce-container").remove();
-		jQuery("input#edit-post-"+post_id).val("new" != post_id ? "Ändern" : ("event" == type ? fcpdata.edit_event : fcpdata.edit_media));
+		jQuery("input#edit-post-"+post_id).val("new" != post_id ? fcpdata.edit_button : ("event" == type ? fcpdata.edit_event : fcpdata.edit_media));
 }
