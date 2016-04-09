@@ -32,9 +32,9 @@
 			if(!empty($location)) {
 				echo '<div class="event_location">';
 
-
+			wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?sensor=false' );
 ?>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script><div style="overflow:hidden;height:500px;width:600px;"><div id="gmap_canvas_<?php echo get_the_ID(); ?>" style="height:500px;width:600px;"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
+<div style="overflow:hidden;height:500px;width:600px;"><div id="gmap_canvas_<?php echo get_the_ID(); ?>" style="height:500px;width:600px;"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
 <script type="text/javascript">
 function init_map_<?php echo get_the_ID(); ?>(){
 	var myOptions = {zoom:14,
@@ -48,7 +48,9 @@ function init_map_<?php echo get_the_ID(); ?>(){
 	google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});
 	infowindow.open(map,marker);
 }
-google.maps.event.addDomListener(window, 'load', init_map_<?php echo get_the_ID(); ?>);
+jQuery(document).ready(function() {
+	google.maps.event.addDomListener(window, 'load', init_map_<?php echo get_the_ID(); ?>);
+});
 </script>
 </div></div>
 <?php
