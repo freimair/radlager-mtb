@@ -213,6 +213,7 @@ function NotificationCenter_Settings( $atts ) {
 	echo '</table>';
 
 	echo '<input type="submit" value="'.__('Save').'"/>';
+	echo '<div class="ajax_spinner" style="display: none"><img src="http://localhost/wp-content/themes/radlager16/loading.gif"></div><div class="ajax_success" style="display: none">'.__("Gespeichert!").'</div><div class="ajax_error" style="display: none">'.__("Ein fehler ist aufgetreten!").'</div>';
 	echo '</form>';
 
 	// finalize gathering and return
