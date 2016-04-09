@@ -39,7 +39,7 @@ function my_pre_save_post( $post_id ) {
 		if(null == $current)
 			die();
 
-		$parent = $current;
+		$parent = get_category($current);
 		while(0 < $parent->parent)
 			$parent = get_category($parent->parent);
 
