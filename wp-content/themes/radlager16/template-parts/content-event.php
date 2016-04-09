@@ -32,7 +32,8 @@
 			if(!empty($location)) {
 				echo '<div class="event_location">';
 
-			wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?sensor=false' );
+			// that fixed it: http://support.advancedcustomfields.com/forums/topic/typeerror-google-load-is-not-a-function/
+			wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3&sensor=false' );
 ?>
 <div style="overflow:hidden;height:500px;width:600px;"><div id="gmap_canvas_<?php echo get_the_ID(); ?>" style="height:500px;width:600px;"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
 <script type="text/javascript">

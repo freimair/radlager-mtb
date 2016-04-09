@@ -2297,6 +2297,27 @@ var acf = {
 		}
 		else
 		{
+			if (typeof google.load != 'function') {
+				$.getScript('https://www.google.com/jsapi', function() {
+
+					google.load('maps', '3', {
+						other_params: 'sensor=false&libraries=places',
+						callback: function() {
+
+							$fields.each(function() {
+
+								acf.fields.google_map.set({
+									$el: $(this)
+								}).init();
+
+							});
+
+						}
+					});
+				});
+			}
+			else
+			{
 			google.load('maps', '3', { other_params: 'sensor=false&libraries=places', callback: function(){
 				
 				$fields.each(function(){
@@ -2308,6 +2329,7 @@ var acf = {
 		    }});
 				
 		}
+	}
 		
 	});
 	
