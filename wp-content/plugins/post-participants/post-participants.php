@@ -95,15 +95,14 @@ function JoinPost($post_id, $user_id) {
 	$deadline = get_field('anmeldeschluss', $post_id);
 
 	// - check for registration deadline
-	if(date("Y-m-d H:i") > $deadline) {
+	if(!empty($deadline) && date("Y-m-d H:i") > $deadline) {
 		ReportAndExit("registration deadline passed");
 	}
 
 	// - check whether event is full already
 	$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $post_id);
 	$rows = $wpdb->get_results($sql);
-
-	if(!empty($max_participants) && count($rows) >= $max_participants) {
+	if(!empty($max_participants) && 0 < $max_participants && count($rows) >= $max_participants) {
 		ReportAndExit("event is full");
 	}
 
