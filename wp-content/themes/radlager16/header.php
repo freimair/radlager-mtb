@@ -70,6 +70,8 @@
 								?>
 							</nav><!-- .social-navigation -->
 						<?php endif; ?>
+						<div class="RL-Logo_oben">
+						</div>	
 					</div><!-- .site-header-menu -->
 				<?php endif; ?>
 				
@@ -90,6 +92,8 @@
 				
 				
 				<div class="banner">
+					<div class="RL-Logo_oben">
+					</div>
 					
 				
 					<div class="RL-Logo">

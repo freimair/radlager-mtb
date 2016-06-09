@@ -1,3 +1,43 @@
+/****************************************************************** drafts */
+
+@media screen and (min-width: 1500px) {
+	article.post {
+		width: 49%;
+		float: left;
+	}
+}
+
+article.post {
+    border: solid 1px #DCEFDD;
+    padding: 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.site-inner {
+    margin: 100px auto;
+    /* max-width: 1320px; */
+    position: relative;
+    z-index: 1;
+}
+
+#spinner {
+	clear: both;
+}
+
+div.entry-content {
+	float: none !important;
+	margin-right: 10px;
+	width: auto !important;
+	text-align: justify;
+}
+
+
+.more-link {
+	margin-left: 20px;
+}
+
+
 /*
 Theme Name: Twenty Sixteen
 Theme URI: https://wordpress.org/themes/twentysixteen/
@@ -50,12 +90,21 @@ Use it to make something cool, have fun, and share what you've learned with othe
  * 15.0 - Print
  */
 
+/**
+ * filter controls
+ */
+
+li.selected {
+	background-color: #47974C;
+	color: white;
+}
+
 
 /**
  * weather controls
  */
 div.weather_icon {
-    width: 100px;
+    width: 80px;
     height: 100px;
     background-repeat: no-repeat;
     background-size: contain;
@@ -104,6 +153,15 @@ div.weather_thunderstorm {
 div.weather_snow {
 	background-image: url("https://s.yimg.com/os/weather/1.0.1/shadow_icon/60x60/snow_day_night@2x.png");
 }
+
+div.weather_showers {
+	background-image: url("https://s.yimg.com/os/weather/1.0.1/shadow_icon/60x60/scattered_showers_day_night@2x.png");
+}
+
+div.weather_rain_and.snow {
+	background-image: url("https://s.yimg.com/os/weather/1.0.1/shadow_icon/60x60/snow_rain_mix_day_night@2x.png");
+}
+
 /**
  * 1.0 - Normalize
  *
@@ -343,19 +401,19 @@ optgroup {
 @font-face {      
 	font-family: Lato-Black;
 	local: Lato-Black;
-	src: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Black.woff2) format('woff');
+	src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');
 }
 
 @font-face {      
 	font-family: Lato-Bold;
 	local: Lato-Black;
-	src: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Bold.woff2) format('woff');
+	src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');
 }
 
 @font-face {      
 	font-family: Lato-Regular;
 	local: Lato-Black;
-	src: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Regular.woff2) format('woff');
+	src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');
 }
 
 
@@ -377,14 +435,90 @@ h4,
 h5,
 h6 {
 	clear: both;
-	font-weight: 700;
+	/*font-weight: 700;*/
 	margin: 0;
 	text-rendering: optimizeLegibility;
 }
 
-p {
+
+h1 {
+	font-family: "Lato-Regular";
+	text-transform: uppercase;
+	font-size: 19px!important;
+	letter-spacing: 0.131578947em;
+	color: #3c3b36;
+}
+
+
+
+
+h2 {
+	font-family: "Lato-Black";
+	text-transform: uppercase;
+	font-size: 18px!important;
+	letter-spacing: 0,1em;
+	color: #47974C;
+	
+}
+
+
+.intro h2{
+	font-family: "Lato-Bold";
+	text-transform: uppercase;
+	color: #47974C;
+	font-size: 35px
+}
+
+
+
+
+
+h3 {
+	font-family: "Lato-Regular";
+	text-transform: uppercase;
+	font-size: 14px!important;
+	letter-spacing: 0.131578947em;
+	color: #47974C;
+}
+
+.intro h3{
+	font-family: "Lato-Regular";
+	text-transform: uppercase;
+	color: #47974C;
+	font-size: 20px!important;
+}
+
+p {	
 	margin: 0 0 1.75em;
 }
+
+
+#secondary{
+	
+	font-family: "Lato-Regular";
+	font-size: 14pt;
+	text-transform: uppercase;
+	color: #47974C;
+	letter-spacing: 0.01em;
+	line-height: 1.8em;
+	padding-left: 20px;
+	cursor: pointer;
+	
+}
+
+#secondary ul ::before { 
+    content: ">  ";
+    font-size: 20px;
+}
+
+#secondary ul { 
+    list-style: none;
+}
+
+
+
+
+
 
 dfn,
 cite,
@@ -658,16 +792,18 @@ input[type="reset"][disabled]:focus,
 input[type="submit"],
 input[type="submit"][disabled]:hover,
 input[type="submit"][disabled]:focus {
-	background: #1a1a1a;
-	border: 0;
-	border-radius: 2px;
-	color: #fff;
-	font-family: Montserrat, "Helvetica Neue", sans-serif;
-	font-weight: 700;
-	letter-spacing: 0.046875em;
-	line-height: 1;
-	padding: 0.84375em 0.875em 0.78125em;
+	border: solid 1px #47974C;
+	color: #47974C;
+	text-decoration: none;
 	text-transform: uppercase;
+	padding: 4px;
+	text-transform: uppercase;
+	font-family: "Lato-Regular";
+	font-size: 14px;
+	margin: 0 0 1.75em;
+	letter-spacing: 0.04em;
+	line-height: 1.5em;
+	background: none;
 }
 
 button:hover,
@@ -791,7 +927,7 @@ a {
 a:hover,
 a:focus,
 a:active {
-	color: #686868;
+	
 }
 
 a:focus {
@@ -812,7 +948,7 @@ a:active {
 .textwidget a,
 .entry-footer a:hover,
 .site-info a:hover {
-	box-shadow: 0 1px 0 0 currentColor;
+	/*box-shadow: 0 1px 0 0 currentColor;*/
 }
 
 .entry-content a:hover,
@@ -847,9 +983,27 @@ a:active {
 	background-color: #47974C;
 	position: fixed;
 	z-index:99;
-	padding-left:5%;
+	
+	padding-top: 16px;
+	
 	
 }
+
+
+.menu-mainmenu-container{
+	width: 92%;
+    margin: 0 auto;
+    max-width: 1000px;
+	
+}
+
+li#menu-item-244,
+li#menu-item-115,
+li#menu-item-49
+{
+	float:right;
+}
+
 
 .site-header-menu.toggled-on,
 .no-js .site-header-menu {
@@ -857,7 +1011,7 @@ a:active {
 }
 
 .main-navigation {
-	font-family: "Lato-Bold", sans-serif;
+	font-family: "Lato-Regular";
 	font-size: 15px;
 	letter-spacing: 0.2em;
 	
@@ -878,7 +1032,7 @@ a:active {
 }
 
 .main-navigation a {
-	color: #ffffff;
+	color: #ffffff!important;
 	display: block;
 	line-height: 1.3125;
 	outline-offset: -1px;
@@ -887,14 +1041,32 @@ a:active {
 	
 }
 
-.main-navigation a:hover,
-.main-navigation a:focus {
-	color: #007acc;
-}
 
 .main-navigation .current-menu-item > a,
-.main-navigation .current-menu-ancestor > a {
-	font-weight: 700;
+.main-navigation .current-menu-ancestor > a,
+.main-navigation li:focus a,
+.main-navigation li:hover a,
+.main-navigation li:active a{
+	font-family: "Lato-Bold";
+}
+
+
+.main-navigation .current-menu-item > a::before ,
+.main-navigation .current-menu-ancestor > a::before,
+.main-navigation li:hover a::before,
+.main-navigation li:active a:before,
+.main-navigation li:focus a:before{
+	content: '|';
+	width: 6px;
+	color: white;
+	margin-left: calc(50% - 2*0.65625em + 6px);
+	margin-top: -29px;
+	position: absolute;
+    /* margin-left: 0.65625em; */
+    /* text-align: center; */
+}
+
+
 }
 
 .main-navigation ul ul {
@@ -1333,6 +1505,29 @@ a:active {
 	padding: 0 0.538461538em;
 }
 
+#up {
+    background-image: url(https://radlager-mtb.at/wp-content/themes/radlager16/Pictures/SVG/Pfeil-nach-oben.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+   
+    position: fixed;
+    right: 100px;
+    top: 96%;
+    width: 54px;
+    height: 54px;
+    cursor: pointer;
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+}
+#up.scrolled{
+    opacity:1;
+    top: 85%;
+}
+
 
 /**
  * 7.0 - Accessibility
@@ -1592,9 +1787,9 @@ blockquote:after,
 
 .site-inner {
 	margin: 100px auto;
-	max-width: 1320px;
 	position: relative;
 	z-index: 1;
+/*	max-width: 1000px;*/
 }
 
 .site-content {
@@ -1668,19 +1863,31 @@ blockquote:after,
 }
 
 
+.intro{
+	font-family: 'Lato-Regular';
+	text-align: center;
+	font-size: 14px;
+	line-height: 1.2;
+	letter-spacing: 0.04em;
+	width: 67%;
+	margin: 0 auto;
+}
+
+
 .banner{
-	background-image: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);
 	width: 100%;
 	height: 350px;
 	background-size: cover;
 	position: relative;
 	z-index: 2;
-	
+	-webkit-transition: margin-top 0.3s; /* Safari */
+        transition: margin-top 0.3s;
 }
 
 .RL-Logo{
-	background-image: url(https://rl16.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png);
-	margin: 50px auto;
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png);
+	margin: 63px auto;
 	width: 200px;
 	height: 95px;
 	position: relative;
@@ -1688,6 +1895,52 @@ blockquote:after,
 	z-index:3;
 	
 }
+
+
+.FB-Button{
+	
+	margin: 162px auto;
+	width: 250px;
+	height: 30px;
+	position: relative;
+	background-size: cover;
+	z-index: 3;
+	background-color: #47974C;
+	color: #ffffff;
+	text-align: center;
+	font-family: "Lato-Regular";
+	text-transform: uppercase;
+	font-size: 14px;
+	padding: 3px;
+	letter-spacing: 0.1em;
+	
+}
+
+.FB-Button > a {
+	color: #ffffff;
+}
+
+
+
+
+.RL-Logo_oben{
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/RL-Logo_weiss.png);
+	display: none;
+	z-index: 99;
+	left: 24px;
+	width: 130px;
+	height: 52px;
+	background-size: contain;
+	margin: 0 auto;
+	margin-top: -52px;
+	background-repeat: no-repeat;
+	-webkit-transition: opacity 0.2s; /* Safari */
+	transition: opacity 0.2s;
+	
+	
+}
+
+
 
 .menu-toggle {
 	background-color: transparent;
@@ -1760,8 +2013,8 @@ blockquote:after,
 }
 
 .entry-title {
-	font-family: Montserrat, "Helvetica Neue", sans-serif;
-	font-size: 28px;
+	font-family: "Lato-Regular";
+	font-size: 19px;
 	font-size: 1.75rem;
 	font-weight: 700;
 	line-height: 1.25;
@@ -1769,7 +2022,7 @@ blockquote:after,
 }
 
 .entry-title a {
-	color: #1a1a1a;
+	color: #47974C;
 }
 
 .entry-title a:hover,
@@ -1780,10 +2033,13 @@ blockquote:after,
 .post-thumbnail {
 	display: block;
 	margin: 0 7.6923% 1.75em;
+	float: left;
 }
 
 .post-thumbnail img {
 	display: block;
+	padding-right: 30px;
+}
 }
 
 .no-sidebar .post-thumbnail img {
@@ -1796,6 +2052,32 @@ a.post-thumbnail:focus {
 }
 
 .entry-content,
+#payment_notification{
+	float: left !important;
+	margin-bottom: 70px;
+	
+	font-family: "Lato-Regular";
+	font-size: 11pt;
+	margin: 0 0 1.75em;
+	color: #3c3b36;
+	/*letter-spacing: 0.04em;*/
+	line-height: 1.3em;
+}
+
+div.post-thumbnail {
+	width: 240px;
+}
+
+
+.entry-content ul{
+	font-family: "Lato-Regular";
+	font-size: 12pt;
+	margin: 0 0 1.75em;
+	color: #3c3b36;
+	letter-spacing: 0.04em;
+	line-height: 1.3em;
+}
+
 .entry-summary {
 	border-color: #d1d1d1;
 }
@@ -1999,7 +2281,17 @@ body:not(.search-results) .entry-summary > :last-child,
 
 .more-link {
 	white-space: nowrap;
+	border: solid 1px #47974C ;
+	color: #47974C;
+	text-decoration: none;
+	text-transform: uppercase;
+	padding: 4px;
+	float: right;
+	font-size: 14px;
 }
+
+
+
 
 .author-info {
 	border-color: inherit;
@@ -2030,6 +2322,9 @@ body:not(.search-results) .entry-summary > :last-child,
 	margin: 0;
 }
 
+
+
+
 .author-bio {
 	color: #686868;
 	font-size: 13px;
@@ -2050,6 +2345,7 @@ body:not(.search-results) .entry-summary > :last-child,
 	font-size: 0.8125rem;
 	line-height: 1.6153846154;
 	margin-top: 2.1538461538em;
+	
 }
 
 .entry-footer:empty {
@@ -2089,6 +2385,21 @@ body:not(.search-results) .entry-summary > :last-child,
 	margin-bottom: 0.5384615385em;
 	text-transform: uppercase;
 }
+
+
+
+#recent_Blog.N1 {
+	
+	width:480px;
+}
+
+#recent_Blog.N2,
+#recent_Blog.N3 {
+	
+	width:240px;
+}
+
+0
 
 /**
  * IE8 and earlier will drop any block with CSS3 selectors.
@@ -2235,12 +2546,25 @@ body.search-no-results .page-header {
 }
 
 
+.article-meta {
+    font-size: 10px;
+    color: #777676;
+    font-family: "Lato-Regular";
+    text-transform: uppercase;
+}
+
+
 /**
  * 11.4 - Comments
  */
 
-.comments-area {
-	margin: 0 7.6923% 3.5em;
+
+textarea#comment {
+	height: 70px;
+}
+
+.comments-area {	margin: 0 7.6923% 3.5em;
+	
 }
 
 .comment-list + .comment-respond,
@@ -2250,9 +2574,9 @@ body.search-no-results .page-header {
 
 .comments-title,
 .comment-reply-title {
-	border-top: 4px solid #1a1a1a;
-	font-family: Montserrat, "Helvetica Neue", sans-serif;
-	font-size: 23px;
+	
+	font-family: "Lato-Regular";
+	font-size: 19px;
 	font-size: 1.4375rem;
 	font-weight: 700;
 	line-height: 1.3125;
@@ -2297,13 +2621,6 @@ body.search-no-results .page-header {
 	width: 28px;
 }
 
-.bypostauthor > article .fn:after {
-	content: "\f304";
-	left: 3px;
-	position: relative;
-	top: 5px;
-}
-
 .comment-metadata,
 .pingback .edit-link {
 	color: #686868;
@@ -2312,7 +2629,6 @@ body.search-no-results .page-header {
 	font-size: 0.8125rem;
 	line-height: 1.6153846154;
 }
-
 .comment-metadata {
 	margin-bottom: 2.1538461538em;
 }
@@ -2506,6 +2822,43 @@ body.search-no-results .page-header {
  * 12.0 - Media
  */
 
+.event_start,
+.event_end {
+	padding: 10px 0;
+}
+
+.weather_icon{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+
+.event_location,
+.gmap_canvas{
+	overflow:hidden;
+	height:250px;
+	width:350px;
+	float: right;
+	margin-bottom: 30px;
+	margin-left: 30px;
+	padding-top: -5em;
+}
+
+.comment-reply-title,
+.comment-metadata,
+.reply {
+	display: none;
+}
+
+footer.comment-meta {
+    float: left;
+    padding-right: 10px;
+}
+
+div.comment-respond {
+	padding: 0 !important;
+}
+
 .site .avatar {
 	border-radius: 50%;
 }
@@ -2604,6 +2957,11 @@ p > video {
 
 .gallery {
 	margin: 0 -1.1666667% 1.75em;
+	
+}
+
+#p1 .gallery {
+	
 }
 
 .gallery-item {
@@ -3161,7 +3519,7 @@ p > video {
 	.content-area {
 		float: left;
 		margin-right: -100%;
-		width: 70%;
+		width: 75%;
 	}
 
 	.entry-header,
@@ -3613,7 +3971,7 @@ p > video {
 	}
 
 	body:not(.search-results) article:not(.type-page) .entry-footer {
-		float: left;
+		
 		margin-top: 0.1538461538em;
 		width: 21.42857143%;
 	}
@@ -3631,7 +3989,7 @@ p > video {
 	body:not(.search-results) article:not(.sticky) .posted-on,
 	body:not(.search-results) article:not(.type-page) .comments-link,
 	body:not(.search-results) article:not(.type-page) .entry-footer .edit-link {
-		display: block;
+		
 		margin-bottom: 0.5384615385em;
 	}
 
