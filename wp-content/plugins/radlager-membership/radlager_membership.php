@@ -46,9 +46,9 @@ add_shortcode( 'radlager_membership_login', 'RadlagerMembershipLogin' );
 function printNameIfAvailable() {
   $current_user = wp_get_current_user();
   if ( is_user_logged_in() ) {
-    echo esc_html($current_user->first_name) . " " . esc_html($current_user->last_name) . " (" . esc_html($current_user->user_login) . ")";
+    return esc_html($current_user->first_name) . " " . esc_html($current_user->last_name) . " (" . esc_html($current_user->user_login) . ")";
   } else {
-    echo "Vorname Nachname (Benutzername)";
+    return "Vorname Nachname (Benutzername)";
   }
 }
 
@@ -68,7 +68,7 @@ function RadlagerMembershipStatus( $atts ) {
 	if($show_button) :
 ?>
 
-<p>Verwendungszweck: <strong>"<?php echo esc_html(date("Y", strtotime('+61 days')));?> <?php printNameIfAvailable(); ?>"</strong></p>
+<p>Verwendungszweck: <strong>"<?php echo esc_html(date("Y", strtotime('+61 days')));?> <?php echo printNameIfAvailable(); ?>"</strong></p>
 
 <input type="button" id="radlager_membership_payment_claim" value="<?php _e("Habe bezahlt!"); ?>" />
 
