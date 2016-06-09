@@ -14,11 +14,22 @@
 		<?php endif; ?>
 
 		<?php the_title( '<h2 class="entry-title">', '</a></h2>' ); ?>
+
+		<div class="article-meta">
+
+			<?php foreach((get_the_category()) as $category) {echo $category->cat_name . ' ';}?>
+			<?php the_date('F j, Y'); ?>
+
+		</div>
+
 	</header><!-- .entry-header -->
 
-	<?php twentysixteen_excerpt(); ?>
+	<!-- moved footer forward -->
+	<footer class="entry-footer">
+	</footer><!-- .entry-footer -->
 
 	<?php twentysixteen_post_thumbnail(); ?>
+	<?php twentysixteen_excerpt(); ?>
 
 	<div class="entry-content">
 		<?php
