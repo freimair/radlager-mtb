@@ -22,11 +22,6 @@
 
 	<div class="entry-content">
 		<?php
-			echo '<div class="event_start">'.get_field('startdatum')."</div>";
-			$end = get_field('enddatum');
-			if(!empty($end))
-				echo '<div class="event_end">'.get_field('enddatum')."</div>";
-
 			// getting location information
 			$location = maybe_unserialize(get_field('ort'));
 			if(!empty($location)) {
@@ -35,7 +30,7 @@
 			// that fixed it: http://support.advancedcustomfields.com/forums/topic/typeerror-google-load-is-not-a-function/
 			wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3&sensor=false' );
 ?>
-<div style="overflow:hidden;height:500px;width:600px;"><div id="gmap_canvas_<?php echo get_the_ID(); ?>" style="height:500px;width:600px;"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
+<div class="gmap_canvas" id="gmap_canvas_<?php echo get_the_ID(); ?>"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
 <script type="text/javascript">
 function init_map_<?php echo get_the_ID(); ?>(){
 	var myOptions = {zoom:14,
@@ -53,9 +48,20 @@ jQuery(document).ready(function() {
 	google.maps.event.addDomListener(window, 'load', init_map_<?php echo get_the_ID(); ?>);
 });
 </script>
-</div></div>
+</div>
 <?php
 				echo "</div>";
+			}
+			setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de-DE', 'de', 'ge', 'de_DE.UTF8', 'de_DE@UTF8', 'German');
+			echo '<div class="event_start"><strong>Termin:</strong> '.strftime("%A, %e. %B %G - %R", strtotime(get_field('startdatum')));"</div>";
+
+			date("dS F,Y",strtotime(get_field('startdatum')));
+
+			$end = get_field('enddatum');
+			if(!empty($end))
+				echo '<div class="event_end"><strong>bis:</strong> '.strftime("%A, %e. %B %G - %R",strtotime(get_field('enddatum')))."</div>";
+
+			if(!empty($location)) {
 
 				// only check when we are near the date anyways (i.e. +10 days)
 				if(time() + (10 * 24 * 60 * 60) > time(get_field('startdatum'))) {
