@@ -25,7 +25,7 @@ function rl_add_custom_user_profile_fields( $user ) {
 				<label for="bikes">deine Bikes</label>
 			</th>
 			<td>
-				<input type="text" name="bikes" id="bikes" value="<?php echo esc_attr( get_the_author_meta( 'bikes', $user->ID ) ); ?>" class="regular-text" /><br />
+				<input type="text" name="bikes" id="bikes" value="<?php echo esc_attr( get_user_meta(get_current_user_id(), 'bikes', true)); ?>" class="regular-text" /><br />
 				<span class="description">Welche Bikes f&auml;hrst du?</span>
 			</td>
 		</tr>
@@ -34,7 +34,7 @@ function rl_add_custom_user_profile_fields( $user ) {
 				<label for="phone">deine Telefonnummer</label>
 			</th>
 			<td>
-				<input type="text" name="phone" id="phone" value="<?php echo esc_attr( get_the_author_meta( 'phone', $user->ID ) ); ?>" class="regular-text" /><br />
+				<input type="text" name="phone" id="phone" value="<?php echo esc_attr( get_user_meta(get_current_user_id(), 'phone', true)); ?>" class="regular-text" /><br />
 				<span class="description">Deine Telefonnummer? (Ist maximal für Vereinsmitgliedern sichtbar!)</span>
 			</td>
 		</tr>
@@ -43,7 +43,7 @@ function rl_add_custom_user_profile_fields( $user ) {
 				<label for="home">Wo ist dein Basecamp?</label>
 			</th>
 			<td>
-				<input type="text" name="home" id="home" value="<?php echo esc_attr( get_the_author_meta( 'home', $user->ID ) ); ?>" class="regular-text" /><br />
+				<input type="text" name="home" id="home" value="<?php echo esc_attr( get_user_meta(get_current_user_id(), 'home', true)); ?>" class="regular-text" /><br />
 				<span class="description">Von wo aus startest du deine Touren haupts&auml;chlich? Anders gefragt: Wo wohnst du? Aber bitte nicht zu genau werden. Sowas wie <em>Graz</em>, <em>Villach</em> oder <em>Deutschland/Bayern</em> beispielsweise wäre optimal. (Auch dieses Feld ist maxmial für Vereinsmitglieder sichtbar)</span>
 			</td>
 		</tr>
