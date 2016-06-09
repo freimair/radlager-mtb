@@ -232,7 +232,7 @@ function FrontendEditPostForm() {
 
 
 	$html = fep_render_basic_edit_fields($post_id, $categories, $type);
-	$feedback = '<div class="ajax_spinner" style="display: none"><img src="http://localhost/wp-content/themes/radlager16/loading.gif"></div>';
+	$feedback = '<div class="ajax_spinner" style="display: none"><<img src="'.get_site_url().'/wp-content/themes/radlager16/loading.gif"></div></div>';
 
 	$settings = array(
 		'post_id'	=> $post_id,
@@ -267,7 +267,7 @@ function frontend_edit_posts_form($post_id, $categories, $caption, $type) {
 		$category_ids[] = $current->term_id;
 	}
 ?>
-<div id="user_create_content"><input type="button" id="edit-post-<?php echo esc_attr($post_id); ?>" data-categories="<?php echo esc_attr(json_encode($category_ids)); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" data-type="<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($caption); ?>" onclick="frontend_create_post_stuff(jQuery(this));"/><div class="ajax_spinner" style="display: none"><img src="http://localhost/wp-content/themes/radlager16/loading.gif"></div><div class="ajax_success" style="display: none"><?php _e("Gespeichert! Ein Redakteur wird den Beitrag in Kürze veröffentlichen."); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist aufgetreten!"); ?></div>
+<div id="user_create_content"><input type="button" id="edit-post-<?php echo esc_attr($post_id); ?>" data-categories="<?php echo esc_attr(json_encode($category_ids)); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" data-type="<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($caption); ?>" onclick="frontend_create_post_stuff(jQuery(this));"/><div class="ajax_spinner" style="display: none"><img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif"></div><div class="ajax_success" style="display: none"><?php _e("Gespeichert! Ein Redakteur wird den Beitrag in Kürze veröffentlichen."); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist aufgetreten!"); ?></div>
 <div id="edit-post-<?php echo esc_attr($post_id); ?>-form"></div></div>
 <?php
 }

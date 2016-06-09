@@ -274,8 +274,8 @@ function PersonalInformation( $atts ) {
 	}
 ?>
 
-<input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="<?php _e('Save'); ?>" onclick="post_user_data(jQuery('form#personal-profile-fields')[0]);"><div class="ajax_spinner" style="display: none">
-	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+<input type="button" name="submit" id="submit-personal-profile-fields" class="button button-primary" value="<?php _e('Save'); ?>" onclick="post_user_data(jQuery('form#personal-profile-fields')[0]);"><div id="ajax_spinner" style="display: none">
+	  <img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif">
 	</div><div class="ajax_success" style="display: none"><?php _e("Gespeichert!"); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist Aufgetreten!"); ?></div>
 </form>
 <?php
@@ -298,7 +298,7 @@ function ContactInformation( $atts ) {
 ?>
 
 <input type="button" name="submit" id="submit-contact_information-fields" class="button button-primary" value="<?php _e('Save'); ?>" onclick="post_user_data(jQuery('form#contact_information-fields')[0]);"><div class="ajax_spinner" style="display: none">
-	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+	   <img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif">
 	</div><div class="ajax_success" style="display: none"><?php _e("Gespeichert!"); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist Aufgetreten!"); ?></div>
 </form>
 <?php
@@ -323,7 +323,7 @@ function AccountManagement( $atts ) {
 ?>
 
 <input type="button" name="submit" id="submit-account-management-fields" class="button button-primary" value="<?php _e('Save'); ?>" onclick="post_user_data(jQuery('form#account-management-fields')[0]);"><div class="ajax_spinner" style="display: none">
-	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+	   <img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif">
 	</div><div class="ajax_success" style="display: none"><?php _e("Gespeichert!"); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist Aufgetreten!"); ?></div>
 </form>
 <?php

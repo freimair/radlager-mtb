@@ -163,7 +163,7 @@ get_header();
 
 	</main><!-- .site-main -->
 	<div id="spinner">
-	  <img src="http://localhost/wp-content/themes/radlager16/loading.gif">
+	  <img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif">
 	</div>
 
 	<?php get_sidebar( 'content-bottom' ); ?>
