@@ -67,8 +67,8 @@ jQuery(document).on("ready resize scroll", function() {
 			if(!empty($location)) {
 
 				// only check when we are near the date anyways (i.e. +10 days)
-				if(time() + (10 * 24 * 60 * 60) > time(get_field('startdatum'))) {
-					echo '<div id="event_'.get_the_ID().'" class="event_weather">';
+				if(time() + (9 * 24 * 60 * 60) > strtotime(get_field('startdatum'))) {
+					echo '<div id="event_'.get_the_ID().'" class="event_weather"><strong>Wetterbericht:</strong> ';
 ?>
 
 <script type="text/javascript">
