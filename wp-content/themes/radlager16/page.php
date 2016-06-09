@@ -81,6 +81,10 @@ get_header();
 		else
 			$type = 'other';
 
+		// TODO böses hack
+		if('titles' == $filtermode)
+			$type = 'other';
+
 		// remove duplicate entries just in case
 		array_unique($filters);
 
