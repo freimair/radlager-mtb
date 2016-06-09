@@ -44,8 +44,11 @@ function init_map_<?php echo get_the_ID(); ?>(){
 	google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});
 	infowindow.open(map,marker);
 }
-jQuery(document).ready(function() {
-	google.maps.event.addDomListener(window, 'load', init_map_<?php echo get_the_ID(); ?>);
+jQuery(document).on("ready resize scroll", function()
+	if(typeof loaded_<?php echo get_the_ID();?> != 'undefined' || null == loaded_<?php echo get_the_ID(); ?>) {
+		google.maps.event.addDomListener(window, 'load', init_map_<?php echo get_the_ID(); ?>);
+		var loaded_<?php echo get_the_ID(); ?> = true;
+ }
 });
 </script>
 </div>
