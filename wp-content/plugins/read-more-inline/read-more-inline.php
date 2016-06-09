@@ -50,8 +50,10 @@ function pobo_rmi_morelink_filter($link){
 		while(0 < $parent->parent)
 			$parent = get_category($parent->parent);
 
-		if("veranstaltungen" == $parent->slug || "medien" == $parent->slug)
+		if("veranstaltungen" == $parent->slug || "medien" == $parent->slug) {
 			$show_gallery = true;
+			break;
+		}
 	}
 
 	if($show_gallery)
