@@ -95,6 +95,11 @@
 					<div class="RL-Logo">
 						
 					</div>
+					<a target="_blank" href="https://www.facebook.com/RadlagerMTB">
+					<div class="FB-Button">
+						<img style="margin-top:-3px;" src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/SVG/facebook-icon-header.png">&nbsp;&nbsp;Radlager auf Facebook
+					</div>
+					</a>
 				
 				</div>
 				
