@@ -285,6 +285,9 @@ function twentysixteen_hex2rgb( $color ) {
 	return array( 'red' => $r, 'green' => $g, 'blue' => $b );
 }
 
+//admin bar fuer alle user entfernen
+add_filter( 'show_admin_bar', '__return_false' );
+
 /**
  * Custom template tags for this theme.
  */
