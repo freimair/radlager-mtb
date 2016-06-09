@@ -227,6 +227,8 @@ function FrontendEditPostForm() {
 	// include necessary scripts
 	acf_form_head();
 
+	$my_styles = wp_styles();
+	$my_styles->do_items();
 	$my_scripts = wp_scripts();
 	$my_scripts->do_items();
 
