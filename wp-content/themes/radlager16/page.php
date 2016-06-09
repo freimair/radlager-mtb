@@ -19,7 +19,7 @@ get_header();
 <?php
 	if('open' === get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true) && is_user_logged_in()) :
 ?>
-<div id="payment_notification"><strong>Zahl endlich!</strong> Hier die direkte Erinnerung, sollte der Mitgliedsbeitrag noch nicht bezahlt worden sein. Vielleicht auch als Overlay das man nur wegbekommt wenn man den Button da drückt. <input type="button" value="<?php _e("Später..."); ?>" onclick="jQuery('div#payment_notification').remove();"/></div>
+<div id="payment_notification"><strong>Zahl endlich!</strong> Lt. unseren Aufzeichnung hast du noch nicht bezahlt. Weitere Infos hierzu findest du in deinem Profil. Sobald du bezahlt hast verschwindet auch diese Erinnerung. Danke!<input type="button" value="<?php _e("Später..."); ?>" onclick="jQuery('div#payment_notification').remove();"/></div>
 <?php
 	endif;
 ?>
