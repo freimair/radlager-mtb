@@ -990,16 +990,14 @@ a:active {
 }
 
 
-.menu-mainmenu-container{
+.menu-container{
 	width: 92%;
     margin: 0 auto;
     max-width: 1000px;
 	
 }
 
-li#menu-item-244,
-li#menu-item-115,
-li#menu-item-49
+.main-navigation ul.primary-menu li:nth-child(n+3)
 {
 	float:right;
 }

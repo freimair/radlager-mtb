@@ -52,6 +52,7 @@
 									wp_nav_menu( array(
 										'theme_location' => 'primary',
 										'menu_class'     => 'primary-menu',
+										'container_class' => 'menu-container',
 									 ) );
 								?>
 							</nav><!-- .main-navigation -->
