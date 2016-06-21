@@ -93,12 +93,12 @@
 				
 				
 				
-				<div class="banner">
+				<div class="banner-<?php echo $navigation ?>">
 					<div class="RL-Logo_oben">
 					</div>
 					
 				
-					<div class="RL-Logo">
+					<div class="RL-Logo-<?php echo $navigation ?>">
 						
 					</div>
 					<a target="_blank" href="https://www.facebook.com/RadlagerMTB">
