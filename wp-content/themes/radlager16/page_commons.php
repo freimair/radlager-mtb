@@ -6,22 +6,30 @@
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
 		$configuration = $post->post_content;
-		if(!preg_match("/^[a-z,-]+;[a-z_]+$/", $configuration)) {
+		if(!preg_match("/^[a-z,-]+;[a-z_]+(;[a-z,-]+)?$/", $configuration)) {
 			echo("Configuration error in: ".$post->post_title);
 			exit;
 		}
 
+		// - parse config
+		$config = preg_split("/;/", $configuration);
+
 		// - find categories to be displayed
-		$categories = preg_split("/;/", $configuration);
-		$categories = $categories[0];
+		$categories = $config[0];
 
 		// - find filter configuration and prepare filter gui
-		$filterconfiguration = preg_split("/;/", $configuration);
-		$filterconfiguration = $filterconfiguration[1];
-		if(preg_match("/^use_categories$/", $filterconfiguration)) { // use categories as tags
+		if(preg_match("/^use_categories$/", $config[1])) { // use categories as tags
 			$filtermode = "categories";
-			$configured_categories = preg_split("/,/", $categories);
-			foreach($configured_categories as $current) {
+
+			// - find categories to be used for filters
+			if(2 < count($config))
+				$filter_categories = preg_split("/,/", $config[2]);
+			else
+				// failsafe in case the page is not configured following the new structure
+				$filter_categories = preg_split("/,/", $config[0]);
+
+			// now add the additional categories if any
+			foreach($filter_categories as $current) {
 				$current_category = get_category_by_slug($current);
 
 				$child_categories = get_categories(array('parent' => $current_category->term_id, 'hide_empty' => false));
@@ -34,7 +42,7 @@
 				}
 
 			}
-		} else if(preg_match("/^use_titles$/", $filterconfiguration)) { // use post id as tags
+		} else if(preg_match("/^use_titles$/", $config[1])) { // use post id as tags
 			$filtermode = "titles";
 			$posts_array = get_posts( array( 'post_status' => 'publish', 'category_name' => $categories, 'posts_per_page' => '-1' ));
 			foreach($posts_array as $current) {
