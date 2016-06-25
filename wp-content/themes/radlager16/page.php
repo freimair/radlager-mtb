@@ -32,6 +32,7 @@ get_header();
 
 </div>
 <?php
+$allow_reporting = true;
 include('page_commons.php');
  ?>
 

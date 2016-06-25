@@ -76,7 +76,7 @@
 
 
 		// show create post form if applicable
-		if (function_exists('frontend_edit_posts_form')) {
+		if (function_exists('frontend_edit_posts_form') && $allow_reporting) {
 			if("categories" === $filtermode) {
 				$tmp = '';
 				// assemble categories from filter list

@@ -17,5 +17,6 @@
 ?>
 <div id="primary" class="content-area">
 <?php
+$allow_reporting = false;
 	include('page_commons.php');
  ?>
