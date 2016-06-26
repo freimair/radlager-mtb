@@ -6,7 +6,7 @@
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
 		$configuration = $post->post_content;
-		if(!preg_match("/^[a-z,-]+;[a-z_]+(;[a-z,-]+)?$/", $configuration)) {
+		if(!preg_match("/^[a-z,_-]+;[a-z_]+(;[a-z,-]+)?$/", $configuration)) {
 			echo("Configuration error in: ".$post->post_title);
 			exit;
 		}
