@@ -6,5 +6,6 @@ $j(document).on('resize ready', function(){
 		e.preventDefault();
 		var post_id = jQuery(this).attr("data-post_id");
 		$j('#readmoreinline' + post_id).toggle();
+		$j('#masonry-grid').masonry();
 	});
 });
