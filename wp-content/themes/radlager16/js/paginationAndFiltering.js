@@ -15,7 +15,7 @@
 					loadmore = 'on';
 					jQuery('#spinner').css('visibility', 'hidden');
 					contents = result.children();
-					jQuery('#main').append(contents).masonry( 'appended', contents );
+					jQuery('#masonry-grid').append(contents).masonry( 'appended', contents );
 				});
 			}
 		});
@@ -61,5 +61,5 @@ updateFilter();
 			jQuery("article[class^=filter-]").hide();
 			jQuery(".filter-" + selected[0].getAttribute('value')).show();
 		}
-		jQuery('#main').masonry(); // update grid
+		jQuery('#masonry-grid').masonry(); // update grid
 	}

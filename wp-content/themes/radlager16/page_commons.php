@@ -1,7 +1,7 @@
 
 
 
-	<main id="main" class="site-main" role="main" data-masonry='{ "itemSelector": "article", "percentPosition": "true"}'>
+	<main id="main" class="site-main" role="main">
 		<?php
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
@@ -88,6 +88,9 @@
 				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), ('media' == $type ? 'Selbst etwas berichten!' : 'Selbst etwas veranstalten!'), $type);
 			}
 		}
+?>
+		<div id="masonry-grid" data-masonry='{ "itemSelector": "article", "percentPosition": "true"}'>
+<?php
 
 		// create new loop based on the categories named in the title of the post
 		// - now start the query
@@ -149,11 +152,11 @@
 			get_template_part( 'template-parts/content', 'none' );
 		endif;
 ?>
-
-	</main><!-- .site-main -->
+	</div>
 	<div id="spinner">
 	  <img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif">
 	</div>
+	</main><!-- .site-main -->
 
 	<?php get_sidebar( 'content-bottom' ); ?>
 
