@@ -1,7 +1,7 @@
 
 
 
-	<main id="main" class="site-main" role="main">
+	<main id="main" class="site-main" role="main" data-masonry='{ "itemSelector": "article", "percentPosition": "true"}'>
 		<?php
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
@@ -105,7 +105,6 @@
 
 		if($query->have_posts()) :
 ?>
-		<div class="page" id="p<?php echo $paged; ?>">
 <?php
 		// Start the loop.
 		while ( $query->have_posts() ) : $query->the_post();
@@ -145,7 +144,6 @@
 
 		wp_reset_postdata(); //resetting the post query
 		?>
-		</div>
 <?php
 		else :
 			get_template_part( 'template-parts/content', 'none' );
