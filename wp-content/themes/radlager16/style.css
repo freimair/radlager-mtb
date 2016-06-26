@@ -2012,7 +2012,6 @@ blockquote:after,
  */
 
 .site-main > article {
-	margin-bottom: 3.5em;
 	position: relative;
 }
 
@@ -3257,10 +3256,6 @@ p > video {
 		display: inline-block;
 	}
 
-	.site-main > article {
-		margin-bottom: 5.25em;
-	}
-
 	.entry-header,
 	.post-thumbnail,
 	.entry-content,
@@ -3845,10 +3840,6 @@ p > video {
 
 	.widget {
 		margin-bottom: 4.307692308em;
-	}
-
-	.site-main > article {
-		margin-bottom: 7.0em;
 	}
 
 	.entry-title {
