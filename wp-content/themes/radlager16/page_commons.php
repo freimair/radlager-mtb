@@ -88,6 +88,9 @@
 				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), ('media' == $type ? 'Selbst etwas berichten!' : 'Selbst etwas veranstalten!'), $type);
 			}
 		}
+?>
+		<div id="masonry-grid" data-masonry='{ "itemSelector": "article", "percentPosition": "true"}'>
+<?php
 
 		// create new loop based on the categories named in the title of the post
 		// - now start the query
@@ -105,7 +108,6 @@
 
 		if($query->have_posts()) :
 ?>
-		<div class="page" id="p<?php echo $paged; ?>">
 <?php
 		// Start the loop.
 		while ( $query->have_posts() ) : $query->the_post();
@@ -145,17 +147,16 @@
 
 		wp_reset_postdata(); //resetting the post query
 		?>
-		</div>
 <?php
 		else :
 			get_template_part( 'template-parts/content', 'none' );
 		endif;
 ?>
-
-	</main><!-- .site-main -->
+	</div>
 	<div id="spinner">
 	  <img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif">
 	</div>
+	</main><!-- .site-main -->
 
 	<?php get_sidebar( 'content-bottom' ); ?>
 

@@ -8,12 +8,15 @@
 			if ('on' == loadmore && jQuery(window).scrollTop() + jQuery(window).height() + 60 > jQuery('#spinner').offset().top) {
 				loadmore = 'off';
 				jQuery('#spinner').css('visibility', 'visible');
-				// do the funny string concatination because whenever this js gets pulled in by the following ajax call, the very same string is found and the cleanup job cannot determine if there are more sites to load. Hence, leaven the '+' out results in an infinite loop.
-				jQuery('#main').append(jQuery('<div class'+'="page" id="p' + page + '">').load(window.location + '?page=' + page + ' .page > *', function() {
+
+				// load new content into temporary container <newContent> and append its .children() to the main content
+				result = jQuery('<newContent>').load(window.location + '?page=' + page + ' article', function() {
 					page++;
 					loadmore = 'on';
 					jQuery('#spinner').css('visibility', 'hidden');
-				}));
+					contents = result.children();
+					jQuery('#masonry-grid').append(contents).masonry( 'appended', contents );
+				});
 			}
 		});
 
@@ -21,14 +24,13 @@
 		jQuery( document ).ajaxComplete(function( event, xhr, options ) {
 updateFilter();
 			// do the funny string concatination because whenever this js gets delivered via ajax, the very same string is found which of course results in an infinite loop
-			if (xhr.responseText.indexOf('<div class'+'="page"') == -1) {
+			if (xhr.responseText.indexOf('<article ') == -1) {
 				// disable ajax loading if there is nothing more to get
 				loadmore = 'off';
 			} else if ('on' == loadmore) {
 				// retrigger the check event. the event will seize creating new ajax events as soon as the spinner is out of sight
 				jQuery(document).trigger("resize");
 			}
-
 		});
 
 	});
@@ -59,4 +61,5 @@ updateFilter();
 			jQuery("article[class^=filter-]").hide();
 			jQuery(".filter-" + selected[0].getAttribute('value')).show();
 		}
+		jQuery('#masonry-grid').masonry(); // update grid
 	}
