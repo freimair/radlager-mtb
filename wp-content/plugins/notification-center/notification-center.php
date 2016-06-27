@@ -281,7 +281,7 @@ function NotificationCenterUpdatePostHook( $post_id, $post ) {
 
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
-add_action( 'publish_post', 'NotificationCenterUpdatePostHook', 10, 2 );
+add_action( 'pending_to_publish_post', 'NotificationCenterUpdatePostHook', 10, 2 );
 
 function NotificationCenterPendingPostHook($post_id, $post) {
 	$editors = get_users(array('role' => 'editor'));
