@@ -11,7 +11,7 @@ function pobo_rmi_js()
 {
 
     // Register the script like this for a plugin:
-    wp_register_script( 'custom-script', plugins_url( 'js/pobo_rmi.js', __FILE__ ), array(), 1, TRUE );
+    wp_register_script( 'custom-script', plugins_url( 'js/pobo_rmi.js', __FILE__ ), array(), "20160626", TRUE );
 
     // For either a plugin or a theme, you can then enqueue the script:
     wp_enqueue_script( 'custom-script' );

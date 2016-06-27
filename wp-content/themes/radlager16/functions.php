@@ -222,11 +222,21 @@ function twentysixteen_scripts() {
 		'collapse' => __( 'collapse child menu', 'twentysixteen' ),
 	) );
 
-	wp_enqueue_script( 'radlager16_pagination_and_filtering', get_template_directory_uri() . '/js/paginationAndFiltering.js', array('jquery'), '20160331', true );
+	wp_enqueue_script( 'radlager16_pagination_and_filtering', get_template_directory_uri() . '/js/paginationAndFiltering.js', array('jquery'), '20160626', true );
 
 	wp_enqueue_script( 'radlager16_masonry_script', get_template_directory_uri() . '/js/masonry.pkgd.min.js', array('jquery'), '20160626', true);
 }
 add_action( 'wp_enqueue_scripts', 'twentysixteen_scripts' );
+
+/**
+ * change default style.css version number to files modify date. Fixes client die caching.
+ */
+function my_wp_default_styles($styles)
+{
+	//use release date for version
+	$styles->default_version = filemtime( get_stylesheet_directory() . '/style.css' );
+}
+add_action("wp_default_styles", "my_wp_default_styles");
 
 /**
  * Adds custom classes to the array of body classes.
