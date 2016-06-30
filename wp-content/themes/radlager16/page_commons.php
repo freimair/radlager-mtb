@@ -95,7 +95,7 @@
 		// create new loop based on the categories named in the title of the post
 		// - now start the query
 		$paged = get_query_var( 'page' ) ? get_query_var( 'page' ) : 1;
-		$args = array ('post_status' => 'publish', 'category_name' => $categories , 'posts_per_page' => 3, 'paged' => $paged );
+		$args = array ('post_status' => 'publish', 'category_name' => $categories , 'posts_per_page' => 4, 'paged' => $paged );
 		if('event' == $type) {
 			$args['orderby'] = 'meta_value';
 			$args['order'] = 'ASC';

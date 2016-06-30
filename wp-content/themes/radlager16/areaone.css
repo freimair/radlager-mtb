@@ -1,3 +1,5 @@
+/** colors */
+
 li.selected {
 	background-color: #4A0F0A;
 }
@@ -10,10 +12,6 @@ h2 {
 .intro h2{
 	color: #4A0F0A;
 }
-
-
-
-
 
 h3 {
 	color: #4A0F0A;
@@ -53,11 +51,23 @@ input[type="submit"][disabled]:focus {
 	color: #4A0F0A;
 }
 
-
 .more-link {
 	border: solid 1px #4A0F0A ;
 	color: #4A0F0A;
 }
 
 
+/** banners and logos */
+.banner{
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_areaone_01.jpg);
+}
 
+.RL-Logo {
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/areaone.png);
+	height: 121px;
+	margin-bottom: -26px;
+}
+
+.RL-Logo_oben{
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/areaone_weiss.png);
+}
