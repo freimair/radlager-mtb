@@ -1,0 +1,63 @@
+li.selected {
+	background-color: #4A0F0A;
+}
+
+h2 {
+	color: #4A0F0A;
+}
+
+
+.intro h2{
+	color: #4A0F0A;
+}
+
+
+
+
+
+h3 {
+	color: #4A0F0A;
+}
+
+.intro h3{
+	color: #4A0F0A;
+}
+
+#secondary{
+	color: #4A0F0A;
+}
+
+button,
+button[disabled]:hover,
+button[disabled]:focus,
+input[type="button"],
+input[type="button"][disabled]:hover,
+input[type="button"][disabled]:focus,
+input[type="reset"],
+input[type="reset"][disabled]:hover,
+input[type="reset"][disabled]:focus,
+input[type="submit"],
+input[type="submit"][disabled]:hover,
+input[type="submit"][disabled]:focus {
+	border: solid 1px #4A0F0A;
+}
+
+.site-header-menu {
+	background-color: #4A0F0A;
+}
+
+.FB-Button{
+	background-color: #4A0F0A;
+}
+.entry-title a {
+	color: #4A0F0A;
+}
+
+
+.more-link {
+	border: solid 1px #4A0F0A ;
+	color: #4A0F0A;
+}
+
+
+

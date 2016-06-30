@@ -12,6 +12,7 @@
  * @since Twenty Sixteen 1.0
  */
 
+wp_enqueue_style( 'areaone', get_template_directory_uri() . '/areaone.css', array( 'twentysixteen-style' ), '20160630' );
 
 	get_header("area_one");
 ?>
