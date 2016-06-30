@@ -96,12 +96,19 @@
 					<div class="RL-Logo">
 						
 					</div>
+
 					<a target="_blank" href="https://www.facebook.com/RadlagerMTB">
 					<div class="FB-Button">
 						<img style="margin-top:-3px;" src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/SVG/facebook-icon-header.png">&nbsp;&nbsp;Radlager auf Facebook
 					</div>
 					</a>
 				
+					<div class="nav_to_subsite" ><a href="<?php 
+// TODO that is nasty. fix that someday!
+if("area_one" == $navigation)
+	echo get_site_url() ;
+else
+	echo get_site_url() . "/index.php/area_one_medien/"; ?>" style="display: block; width: 100%; height: 100%"></a></div>
 				</div>
 				
 				

@@ -71,3 +71,9 @@ input[type="submit"][disabled]:focus {
 .RL-Logo_oben{
 	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/areaone_weiss.png);
 }
+
+.nav_to_subsite {
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/hiergehtszumradlager.png);
+	background-size: contain;
+
+}

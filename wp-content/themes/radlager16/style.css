@@ -1900,6 +1900,17 @@ blockquote:after,
 	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png);
 }
 
+.nav_to_subsite {
+	width: 200px;
+	height: 140px;
+	position: relative;
+	background-size: cover;
+	z-index: 3;
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/hiergehtszurareaone.png);
+	left: 75%;
+	top: -450px;
+}
+
 .FB-Button{
 	
 	margin: 162px auto;
