@@ -38,6 +38,7 @@ input[type="submit"],
 input[type="submit"][disabled]:hover,
 input[type="submit"][disabled]:focus {
 	border: solid 1px #4A0F0A;
+	color: #4A0F0A;
 }
 
 .site-header-menu {
@@ -55,6 +56,11 @@ input[type="submit"][disabled]:focus {
 	border: solid 1px #4A0F0A ;
 	color: #4A0F0A;
 }
+
+article.post {
+	border: solid 1px rgba(74, 15, 10, 0.27);
+}
+
 
 
 /** banners and logos */
