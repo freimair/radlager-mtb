@@ -28,7 +28,7 @@
 				get_the_title()
 			) );
 
-			echo do_shortcode('[gallery]');
+			echo do_shortcode('[gallery order="ASC" orderby="title"]');
 
 			wp_link_pages( array(
 				'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
