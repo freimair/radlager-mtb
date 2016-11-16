@@ -116,7 +116,11 @@ jQuery(document).on("ready resize scroll", function() {
 			if($applicable && is_user_logged_in()) :
 				// - display button
 ?>
+<div class="participate">
 				<input type="button" class="post_participate" data-task="<?php echo CheckParticipationStatus(get_current_user_id(), get_the_ID()) ? "leave" : "join"; ?>" data-post_id="<?php echo the_ID(); ?>" value="<?php echo CheckParticipationStatus(get_current_user_id(), get_the_ID()) ? "Abmelden" : "Bin dabei!"; ?>" />
+<div class="ajax_spinner" style="display: none"><img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif"></div>
+<div id="edit-post-<?php echo esc_attr($post_id); ?>-form"></div></div>
+
 <?php
 
 				// If comments are open or we have at least one comment, load up the comment template.

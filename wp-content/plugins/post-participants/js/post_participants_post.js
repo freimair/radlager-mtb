@@ -5,6 +5,11 @@ jQuery(document).on('resize ready', function(){
 		var post_id = jQuery(this).attr("data-post_id");
 		var task = jQuery(this).attr("data-task");
 
+
+		var current = this; // memorize for later
+		jQuery(current).prop('disabled', true);
+		jQuery(current).parent().children(".ajax_spinner").show();
+
 		jQuery.ajax({
 			type : "post",
 			async : true,
@@ -21,6 +26,8 @@ jQuery(document).on('resize ready', function(){
 					current.attr("data-task", response.result);
 				} else
 					console.log(response.result);
+				jQuery(current).parent().children(".ajax_spinner").hide();
+				jQuery(current).prop('disabled', false);
 			}
 		});
 	});
