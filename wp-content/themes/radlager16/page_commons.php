@@ -90,7 +90,7 @@
 			}
 		}
 ?>
-		<div id="masonry-grid" data-masonry='{ "itemSelector": "article", "percentPosition": "true"}'>
+		<div id="masonry-grid" data-masonry='{ "itemSelector": ".post", "percentPosition": "true"}'>
 <?php
 
 		// create new loop based on the categories named in the title of the post
