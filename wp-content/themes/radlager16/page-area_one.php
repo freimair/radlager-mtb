@@ -18,6 +18,6 @@ wp_enqueue_style( 'areaone', get_template_directory_uri() . '/areaone.css', arra
 ?>
 <div id="primary" class="content-area">
 <?php
-$allow_reporting = false;
+$allow_reporting = true;
 	include('page_commons.php');
  ?>

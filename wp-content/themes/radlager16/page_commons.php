@@ -62,6 +62,8 @@
 		$tmp = array_keys($filters);
 		if('veranstaltungen' == get_category(get_category($tmp[0])->parent)->slug)
 			$type = 'event';
+		else if('areaone-veranstaltungen' == get_category(get_category($tmp[0])->parent)->slug)
+			$type = 'event';
 		else if('medien' == get_category(get_category($tmp[0])->parent)->slug)
 			$type = 'media';
 		else
@@ -74,14 +76,13 @@
 		// remove duplicate entries just in case
 		array_unique($filters);
 
-
 		// show create post form if applicable
 		if (function_exists('frontend_edit_posts_form') && $allow_reporting) {
 			if("categories" === $filtermode) {
 				$tmp = '';
 				// assemble categories from filter list
 				foreach ($filters as $key => $value) {
-				    $tmp .= $key.",";
+				    $tmp .= $key.", ";
 				}
 
 				// render editor

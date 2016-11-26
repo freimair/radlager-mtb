@@ -195,10 +195,6 @@ function fep_render_basic_edit_fields($post_id, $categories, $type) {
 
 function FrontendEditPostForm() {
 
-	// do user permission check
-	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
-		return;
-
 	// do security checks
 	$category_ids = $_POST['category_ids'];
 	$post_id = $_POST['post_id'];
@@ -220,9 +216,14 @@ function FrontendEditPostForm() {
 		while(0 < $parent->parent)
 			$parent = get_category($parent->parent);
 
-		if("veranstaltungen" != $parent->slug && "medien" != $parent->slug)
+		if("veranstaltungen" != $parent->slug && "medien" != $parent->slug && "areaone-veranstaltungen" != $parent->slug)
 			die();
 	}
+
+	if("areaone-veranstaltungen" != $parent->slug)
+		// do user permission check
+		if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
+			return;
 
 	// include necessary scripts
 	acf_form_head();
