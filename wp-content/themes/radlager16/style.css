@@ -1,21 +1,70 @@
 /****************************************************************** drafts */
 
-@media screen and (min-width: 1500px) {
+@media screen and (min-width: 1025px) {
 	article.post {
+		width: 33%;
+		float: left;
+	}
+}
+
+
+@media (max-width:1024px) and (min-width:321px) {
+		article.post {
 		width: 49%;
 		float: left;
 	}
 }
 
-article.post {
-    border: solid 1px #DCEFDD;
-    padding: 15px;
-    margin-right: 5px;
-    margin-bottom: 5px;
+
+
+@media screen and (max-width: 320px) {
+	article.post {
+		width: 99%;
+		float: left;
+	}
 }
 
+
+
+
+
+
+article.post {
+    padding: 1%;
+	
+	
+
+}
+
+.artcont{
+background-color: rgba(191, 191, 191, 0.34);
+    border-radius: 10px;
+    padding: 15px;
+	margin-top: 20px;
+}
+
+#News{
+background-color: rgb(165, 181, 166);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+
+article.post img {
+	width: 100%;
+	padding-bottom: 20px;
+}
+
+article.post:hover{
+
+
+
+}
+
+
+
 .site-inner {
-    margin: 100px auto;
+    margin: 30px auto;
     /* max-width: 1320px; */
     position: relative;
     z-index: 1;
@@ -27,7 +76,6 @@ article.post {
 
 div.entry-content {
 	float: none !important;
-	margin-right: 10px;
 	width: auto !important;
 	text-align: justify;
 }
@@ -401,19 +449,22 @@ optgroup {
 @font-face {      
 	font-family: Lato-Black;
 	local: Lato-Black;
-	src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');
+	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');*/
+	src: url(http://localhost/radlager16/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');
 }
 
 @font-face {      
 	font-family: Lato-Bold;
 	local: Lato-Black;
-	src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');
+	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');*/
+	src: url(http://localhost/radlager16/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');
 }
 
 @font-face {      
 	font-family: Lato-Regular;
 	local: Lato-Black;
-	src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');
+	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');*/
+	src: url(http://localhost/radlager16/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');
 }
 
 
@@ -457,7 +508,7 @@ h2 {
 	text-transform: uppercase;
 	font-size: 18px!important;
 	letter-spacing: 0,1em;
-	color: #47974C;
+	/*color: #47974C;*/
 	
 }
 
@@ -468,7 +519,6 @@ h2 {
 	color: #47974C;
 	font-size: 35px
 }
-
 
 
 
@@ -490,29 +540,36 @@ h3 {
 
 p {	
 	margin: 0 0 1.75em;
+	word-wrap: normal;
 }
 
 
 #secondary{
 	
 	font-family: "Lato-Regular";
-	font-size: 14pt;
+	font-size: 12pt;
 	text-transform: uppercase;
 	color: #47974C;
+	position: fixed;
 	letter-spacing: 0.01em;
 	line-height: 1.8em;
-	padding-left: 20px;
 	cursor: pointer;
+	background-color: #ffffff;
+	z-index: 7;
+	margin-top: 54px;
 	
 }
 
-#secondary ul ::before { 
-    content: ">  ";
-    font-size: 20px;
+#secondary ul li{
+	float: left;
+	text-decoration: none;
 }
 
 #secondary ul { 
     list-style: none;
+	display: flex;
+    justify-content: space-between;
+	margin:	0;
 }
 
 
@@ -656,7 +713,7 @@ html {
 }
 
 body {
-	background: #1a1a1a;
+	    background: #ffffff;
 	/* Fallback for when there is no custom background color defined. */
 }
 
@@ -920,7 +977,7 @@ input[type="search"].search-field {
  */
 
 a {
-	color: #007acc;
+	color: #47974c;
 	text-decoration: none;
 }
 
@@ -980,7 +1037,7 @@ a:active {
 	flex: 0 1 100%;
 	
 	width: 100%;
-	background-color: #47974C;
+	background-color: #3c3d3c;
 	position: fixed;
 	z-index:99;
 	
@@ -1016,8 +1073,16 @@ a:active {
 }
 
 .site-footer .main-navigation {
-	margin-bottom: 1.75em;
 }
+
+.site-footer .main-navigation li{
+	float: none!important;
+	height:	1.5em;
+}
+.site-footer .main-navigation a:before{
+	display:none!important;
+}
+
 
 .main-navigation ul {
 	list-style: none;
@@ -1146,18 +1211,16 @@ a:active {
 }
 
 .social-navigation li {
-	float: left;
+    height: 1em;
 	margin: 0 0.4375em 0.4375em 0;
 }
 
 .social-navigation a {
-	border: 1px solid #d1d1d1;
-	border-radius: 50%;
-	color: #1a1a1a;
+	
+	color: #ffffff;
 	display: block;
 	height: 35px;
 	position: relative;
-	width: 35px;
 }
 
 .social-navigation a:before {
@@ -1509,13 +1572,13 @@ a:active {
     background-size: contain;
    
     position: fixed;
-    right: 100px;
+    right: 10px;
     top: 96%;
     width: 54px;
     height: 54px;
     cursor: pointer;
     opacity: 0;
-    -webkit-transition: all 0.5s ease-in-out;
+    -webkit-: all 0.5s ease-in-out;
         -moz-transition: all 0.5s ease-in-out;
         -ms-transition: all 0.5s ease-in-out;
         -o-transition: all 0.5s ease-in-out;
@@ -1784,7 +1847,7 @@ blockquote:after,
 }
 
 .site-inner {
-	margin: 100px auto;
+	margin: 30px auto;
 	position: relative;
 	z-index: 1;
 /*	max-width: 1000px;*/
@@ -1874,12 +1937,13 @@ blockquote:after,
 
 .banner {
 	width: 100%;
-	height: 350px;
+	margin-top: 134px;
+	height: 390px;
 	background-size: cover;
 	position: relative;
 	z-index: 2;
-	-webkit-transition: margin-top 0.3s; /* Safari */
-        transition: margin-top 0.3s;
+	-webkit-transition: margin-top 0.6s; /* Safari */
+        transition: margin-top 0.6s;
 }
 
 .banner {
@@ -1887,7 +1951,7 @@ blockquote:after,
 }
 
 .RL-Logo {
-	margin: 63px auto;
+	margin: -20px auto;
 	width: 200px;
 	height: 95px;
 	position: relative;
@@ -1910,10 +1974,17 @@ blockquote:after,
 	left: 75%;
 	top: -450px;
 }
+.nav_to_subsite{
+	
+	margin-top: -187px;
+	
+}
+
+
 
 .FB-Button{
 	
-	margin: 162px auto;
+	margin: 253px auto;
 	width: 250px;
 	height: 30px;
 	position: relative;
@@ -2034,7 +2105,6 @@ li {
 	font-size: 1.75rem;
 	font-weight: 700;
 	line-height: 1.25;
-	margin-bottom: 1em;
 }
 
 .entry-title a {
@@ -2048,15 +2118,13 @@ li {
 
 .post-thumbnail {
 	display: block;
-	margin: 0 7.6923% 1.75em;
-	float: left;
+	width: 100%;
 }
 
 .post-thumbnail img {
 	display: block;
-	padding-right: 30px;
 }
-}
+
 
 .no-sidebar .post-thumbnail img {
 	margin: 0 auto;
@@ -2078,10 +2146,14 @@ a.post-thumbnail:focus {
 	color: #3c3b36;
 	/*letter-spacing: 0.04em;*/
 	line-height: 1.3em;
+	
+	
+	
+	
 }
 
 div.post-thumbnail {
-	width: 240px;
+	width: 100%;
 }
 
 
@@ -2360,7 +2432,6 @@ body:not(.search-results) .entry-summary > :last-child,
 	font-size: 13px;
 	font-size: 0.8125rem;
 	line-height: 1.6153846154;
-	margin-top: 2.1538461538em;
 	
 }
 
@@ -2403,19 +2474,78 @@ body:not(.search-results) .entry-summary > :last-child,
 }
 
 
+/*------------- Startseite ------------------*/
 
-#recent_Blog.N1 {
-	
-	width:480px;
+
+h6 {    font-family: "Lato-Regular";
+    text-transform: uppercase;
+    font-size: 20px!important;
+    letter-spacing: 0.3px;
+    color: white;
+    line-height: 1.4em;
 }
 
-#recent_Blog.N2,
-#recent_Blog.N3 {
-	
-	width:240px;
+
+h7,h8 {    font-family: "Lato-Black";
+    text-transform: uppercase;
+    font-size: 30px!important;
+    letter-spacing: 0.3px;
+    line-height: 1.4em;
+	font-weight: 700;
 }
 
-0
+
+h7{color:#4f6b51;}
+h8{color:#ffffff;}
+
+.start-entry-content{
+    float: none !important;
+    margin: 0 10px 0 10px;
+    width: auto !important;
+    text-align: justify;
+	    line-height: 1.4em;
+    font-size: 15px;
+}
+.start-title{
+		background-color: #4f6b51;
+		padding: 17px;
+		}
+
+#N1, #N2, #N3 {
+		background-color: rgba(210, 210, 210, 0.18);
+		
+}
+
+
+
+/*
+.recent_Blog#N1,
+.recent_News#N3
+{
+	
+	width: calc(40% + 20px);
+	min-width: 380px;
+}
+
+.recent_Blog#N2,
+.recent_Blog#N3,
+.recent_News#N1,
+.recent_News#N2
+{
+	
+	width:20%;
+	min-width: 180px;
+}
+
+*/
+.more-news{
+		margin-top: 20px;
+		
+		width:calc(100% - 20px);
+		clear: left;
+		background-color: #4f6b51;
+		
+}
 
 /**
  * IE8 and earlier will drop any block with CSS3 selectors.
@@ -2567,7 +2697,26 @@ body.search-no-results .page-header {
     color: #777676;
     font-family: "Lato-Regular";
     text-transform: uppercase;
+
+	width: 100%
 }
+
+.article-meta #category{
+    font-size: 14px;
+    color: #000000;
+    font-family: "Lato-Regular";
+    text-transform: uppercase;
+	float: left;
+}
+
+.article-meta #date{
+
+    color: #000000;
+    font-family: "Lato-Regular";
+    text-transform: uppercase;
+	float: right;
+}
+
 
 
 /**
@@ -2804,14 +2953,16 @@ textarea#comment {
 }
 
 .site-info {
-	color: #686868;
+	color: #ffffff;
 	font-size: 13px;
 	font-size: 0.8125rem;
 	line-height: 1.6153846154;
+    width: 60%;
+    text-align: center;
 }
 
 .site-info a {
-	color: #686868;
+	color: #ffffff;
 }
 
 .site-info a:hover,
@@ -2986,7 +3137,6 @@ p > video {
 	padding: 0 1.1400652% 2.2801304%;
 	text-align: center;
 	vertical-align: top;
-	width: 100%;
 }
 
 .gallery-columns-1 .gallery-item {
@@ -3278,7 +3428,6 @@ p > video {
 		font-size: 33px;
 		font-size: 2.0625rem;
 		line-height: 1.2727272727;
-		margin-bottom: 0.8484848485em;
 	}
 
 	.entry-content blockquote.alignleft,
@@ -3519,8 +3668,8 @@ p > video {
 	.dropdown-toggle,
 	.main-navigation ul .dropdown-toggle.toggled-on,
 	.menu-toggle,
-	.site-header .social-navigation,
-	.site-footer .main-navigation {
+	.site-header .social-navigation
+	 {
 		display: none;
 	}
 
@@ -3531,7 +3680,7 @@ p > video {
 	.content-area {
 		float: left;
 		margin-right: -100%;
-		width: 75%;
+		width: 100%;
 	}
 
 	.entry-header,
@@ -3552,9 +3701,8 @@ p > video {
 
 	.sidebar {
 		float: left;
-		margin-left: 75%;
 		padding: 0;
-		width: 25%;
+		width: 100%;
 	}
 
 	.widget {
@@ -3754,9 +3902,7 @@ p > video {
 	}
 
 	.site-footer {
-		-webkit-align-items: center;
-		-ms-flex-align: center;
-		align-items: center;
+		background-color: #47974c;
 		display: -webkit-flex;
 		display: -ms-flexbox;
 		display: flex;
@@ -3850,7 +3996,8 @@ p > video {
 		font-size: 40px;
 		font-size: 2.5rem;
 		line-height: 1.225;
-		margin-bottom: 1.05em;
+		color: #ffffff;
+		padding: 10px;
 	}
 
 	.format-aside .entry-title,
@@ -3866,10 +4013,6 @@ p > video {
 		font-size: 1.4375em;
 		line-height: 1.304347826;
 		margin-bottom: 1.826086957em;
-	}
-
-	.post-thumbnail {
-		margin-bottom: 2.625em;
 	}
 
 	.entry-content h1,
@@ -3980,7 +4123,7 @@ p > video {
 
 	body:not(.search-results) article:not(.type-page) .entry-footer {
 		
-		margin-top: 0.1538461538em;
+
 		width: 21.42857143%;
 	}
 
