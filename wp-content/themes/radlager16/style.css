@@ -1936,7 +1936,6 @@ blockquote:after,
 
 
 .banner {
-	display: none;
 	width: 100%;
 	margin-top: 134px;
 	height: 390px;
@@ -1948,7 +1947,7 @@ blockquote:after,
 }
 
 .banner {
-	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);
+/*	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);*/
 }
 
 .RL-Logo {
