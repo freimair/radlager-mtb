@@ -1936,6 +1936,7 @@ blockquote:after,
 
 
 .banner {
+	display: none;
 	width: 100%;
 	margin-top: 134px;
 	height: 390px;
@@ -2369,13 +2370,14 @@ body:not(.search-results) .entry-summary > :last-child,
 
 .more-link {
 	white-space: nowrap;
-	border: solid 1px #47974C ;
-	color: #47974C;
+	border: solid 1px #ffffff ;
+	color: #ffffff;
 	text-decoration: none;
 	text-transform: uppercase;
 	padding: 4px;
 	float: right;
 	font-size: 14px;
+	background-color: #3c3d3c;
 }
 
 

@@ -95,13 +95,13 @@ updateFilter();
 			jQuery(".filter-" + selected[0].getAttribute('value')).show();
 		}
 			
-			/*
-		jQuery('#masonry-grid').imagesLoaded( function() {
+			
+	
     jQuery('#masonry-grid').masonry({
-        itemSelector: '.post',
-        percentPosition: true,
+		columnwidth: 1,
+    
    
-    }); 
-}); */
+
+}); 
 	}
 	
