@@ -5,7 +5,7 @@
 
 		// hook the scroll, resize and ready events to see if the spinner is visible
 		jQuery(document).on('scroll resize ready', function() {
-			if ('on' == loadmore && jQuery(window).scrollTop() + jQuery(window).height() + 60 > jQuery('#spinner').offset().top) {
+			if ('on' == loadmore && jQuery(window).scrollTop() + jQuery(window).height() + 200 > jQuery('#spinner').offset().top) {
 				loadmore = 'off';
 				jQuery('#spinner').css('visibility', 'visible');
 
@@ -15,9 +15,40 @@
 					loadmore = 'on';
 					jQuery('#spinner').css('visibility', 'hidden');
 					contents = result.children();
-					jQuery('#masonry-grid').append(contents).masonry( 'appended', contents );
+					
+				
+					
+				jQuery('#masonry-grid').append(contents).masonry( 'appended', contents );
+				
+				
+				 // init Masonry after all images have loaded
+				var $grid = jQuery('#masonry-grid').imagesLoaded( function() {
+					 $grid.masonry({
+					  
+					});
+				});
+
+
+/* init masonry grid pictures are loaded
+ * 
+var $grid = jQuery('#masonry-grid').masonry({
+  itemSelector: '.post',
+        percentPosition: true,
+});
+// layout Masonry after each image loads
+$grid.imagesLoaded().progress( function() {
+  $grid.masonry('layout');
+});
+
+
+*/
+
+
+				
 				});
 			}
+			
+			
 		});
 
 		// also hook the ajaxComplete event in order to clean up after each ajax load
@@ -48,8 +79,10 @@ updateFilter();
 			// apply the filter
 			updateFilter();
 			// see if we have room for more content after the filter was applied
-			jQuery(document).trigger("resize");
+		 	jQuery(document).trigger("resize");
+			
 		});
+	
 	});
 
 	// this function checks applies the filter to the articles
@@ -61,5 +94,14 @@ updateFilter();
 			jQuery("article[class^=filter-]").hide();
 			jQuery(".filter-" + selected[0].getAttribute('value')).show();
 		}
-		jQuery('#masonry-grid').masonry(); // update grid
+			
+			/*
+		jQuery('#masonry-grid').imagesLoaded( function() {
+    jQuery('#masonry-grid').masonry({
+        itemSelector: '.post',
+        percentPosition: true,
+   
+    }); 
+}); */
 	}
+	

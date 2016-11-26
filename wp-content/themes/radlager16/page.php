@@ -24,13 +24,7 @@ get_header();
 	endif;
 ?>
 
-		<div style="border-color: red;border-style: solid;border-width: 1px;background-color: #FFE4E4;margin-bottom: 20px;padding:10px;font-size:12px;"><p>Wir bekommen gerade eine neue Website. Es funktioniert noch nicht alles ganz wie es soll. <a href="https://alt.radlager-mtb.at">Hier</a>, jedenfalls, gehts zur alten Website!</p>
-<p>Und natürlich gibts noch Kinderkrankheiten:
-<ul><li>Wie es scheint ist beim Übersiedeln der Profile (speziell die Bikes und die Telefonnummern) teilweise was durcheinander gekommen. Sollte das bei dir der Fall sein bitte teil uns das kurz mit an <a href="mailto:<?php echo antispambot("web@radlager-mtb.at")."?subject=Profilproblem ".printNameIfAvailable()."&body=Danke!\">".antispambot("web@radlager-mtb.at"); ?></a>. Wir kümmern uns drum!</li>
-<li>Benachrichtigungen scheinen bei jeder Änderung eines Beitrags ausgesendet zu werden. Ist bekannt :).</li>
-</ul></p>
 
-</div>
 <?php
 $allow_reporting = true;
 include('page_commons.php');
