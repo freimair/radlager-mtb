@@ -13,7 +13,7 @@
 			<span class="sticky-post"><?php _e( 'Featured', 'twentysixteen' ); ?></span>
 		<?php endif; ?>
 
-		<?php the_title( '<h2 class="entry-title">', '</a></h2>' ); ?>
+		<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
 
 		<div class="article-meta">
 
