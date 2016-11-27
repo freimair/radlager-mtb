@@ -222,7 +222,7 @@ function twentysixteen_scripts() {
 		'collapse' => __( 'collapse child menu', 'twentysixteen' ),
 	) );
 
-	wp_enqueue_script( 'radlager16_pagination_and_filtering', get_template_directory_uri() . '/js/paginationAndFiltering.js', array('jquery'), '20160626', true );
+	wp_enqueue_script( 'radlager16_pagination_and_filtering', get_template_directory_uri() . '/js/paginationAndFiltering.js', array('jquery'), '20161127', true );
 
 	wp_enqueue_script( 'radlager16_masonry_script', get_template_directory_uri() . '/js/masonry.pkgd.min.js', array('jquery'), '20160626', true);
 
