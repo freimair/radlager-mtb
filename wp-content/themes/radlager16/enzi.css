@@ -1,0 +1,85 @@
+/** colors */
+
+li.selected {
+	background-color: #4A0F0A;
+}
+
+h2 {
+	color: #4A0F0A;
+}
+
+
+.intro h2{
+	color: #4A0F0A;
+}
+
+h3 {
+	color: #4A0F0A;
+}
+
+.intro h3{
+	color: #4A0F0A;
+}
+
+#secondary{
+	color: #4A0F0A;
+}
+
+button,
+button[disabled]:hover,
+button[disabled]:focus,
+input[type="button"],
+input[type="button"][disabled]:hover,
+input[type="button"][disabled]:focus,
+input[type="reset"],
+input[type="reset"][disabled]:hover,
+input[type="reset"][disabled]:focus,
+input[type="submit"],
+input[type="submit"][disabled]:hover,
+input[type="submit"][disabled]:focus {
+	border: solid 1px #4A0F0A;
+	color: #4A0F0A;
+}
+
+.site-header-menu {
+	background-color: #4A0F0A;
+}
+
+.FB-Button{
+	background-color: #4A0F0A;
+}
+.entry-title a {
+	color: #4A0F0A;
+}
+
+.more-link {
+	border: solid 1px #4A0F0A ;
+	color: #4A0F0A;
+}
+
+article.post {
+	border: solid 1px rgba(74, 15, 10, 0.27);
+}
+
+
+
+/** banners and logos */
+.banner{
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_areaone_01.jpg);
+}
+
+.RL-Logo {
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/areaone.png);
+	height: 121px;
+	margin-bottom: -26px;
+}
+
+.RL-Logo_oben{
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/areaone_weiss.png);
+}
+
+.nav_to_subsite {
+	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/hiergehtszumradlager.png);
+	background-size: contain;
+
+}
