@@ -197,6 +197,9 @@ jQuery('#up').click(function() {
 		<?php
 		endforeach;
 		?>
+			<li class="filter">
+				<input id="searchbox" type="text" name="searchterm" value="Mickey">
+			</li>
 		</ul>
 
 	</aside><!-- .sidebar .widget-area -->

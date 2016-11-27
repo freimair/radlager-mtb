@@ -50,6 +50,10 @@ updateFilter();
 			// see if we have room for more content after the filter was applied
 			jQuery(document).trigger("resize");
 		});
+
+		jQuery("#searchbox").on("input", function() {
+			updateFilter();
+		});
 	});
 
 	// this function checks applies the filter to the articles
@@ -59,7 +63,9 @@ updateFilter();
 			jQuery("article[class^=filter-]").show();
 		} else {
 			jQuery("article[class^=filter-]").hide();
-			jQuery(".filter-" + selected[0].getAttribute('value')).show();
+			searchterms = jQuery("#searchbox").val();
+			jQuery("article:contains(" + searchterms + ")").show();
+	//		jQuery(".filter-" + selected[0].getAttribute('value')).show();
 		}
 		jQuery('#masonry-grid').masonry(); // update grid
 	}
