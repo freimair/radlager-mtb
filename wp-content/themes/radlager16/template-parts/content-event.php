@@ -26,31 +26,8 @@
 			$location = maybe_unserialize(get_field('ort'));
 			if(!empty($location)) {
 				echo '<div class="event_location">';
-
-			// that fixed it: http://support.advancedcustomfields.com/forums/topic/typeerror-google-load-is-not-a-function/
-			wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3&sensor=false' );
 ?>
-<div class="gmap_canvas" id="gmap_canvas_<?php echo get_the_ID(); ?>"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
-<script type="text/javascript">
-function init_map_<?php echo get_the_ID(); ?>(){
-	var myOptions = {zoom:14,
-							center:new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>),
-							mapTypeId: google.maps.MapTypeId.ROADMAP
-							};
-	var map = new google.maps.Map(document.getElementById("gmap_canvas_<?php echo get_the_ID(); ?>"), myOptions);
-	var marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(<?php echo $location['lat']?>, <?php echo $location['lng'];?>)});
-	var infowindow = new google.maps.InfoWindow({content:"<?php echo $location['address'];?>" });
-
-	google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});
-	infowindow.open(map,marker);
-}
-jQuery(document).on("ready resize scroll", function() {
-	if(typeof loaded_<?php echo get_the_ID();?> != 'undefined' || null == loaded_<?php echo get_the_ID(); ?>) {
-		google.maps.event.addDomListener(window, 'load', init_map_<?php echo get_the_ID(); ?>);
-		var loaded_<?php echo get_the_ID(); ?> = true;
-   }
-});
-</script>
+<div class="gmap_canvas" id="gmap_canvas_<?php echo get_the_ID(); ?>" postid="<?php echo get_the_ID();?>" lat="<?php echo $location['lat'];?>" lng="<?php echo $location['lng'];?>" address="<?php echo $location['address']; ?>"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
 </div>
 <?php
 				echo "</div>";
