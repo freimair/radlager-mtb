@@ -226,9 +226,9 @@ function twentysixteen_scripts() {
 
 	wp_enqueue_script( 'radlager16_masonry_script', get_template_directory_uri() . '/js/masonry.pkgd.min.js', array('jquery'), '20160626', true);
 
-	wp_enqueue_script( 'googlemapsforevents', get_template_directory_uri() . '/js/googlemapsforevents.js', array('jquery'), filemtime( get_template_directory_uri() . '/js/googlemapsforevents.js'));
+	wp_enqueue_script( 'googlemapsforevents', get_template_directory_uri() . '/js/googlemapsforevents.js', array('jquery'), '20161127');
 
-	wp_enqueue_script( 'headerfunctions', get_template_directory_uri() . '/js/header-functions.js', array('jquery'), filemtime(get_template_directory_uri() . '/js/header-functions.js'));
+	wp_enqueue_script( 'headerfunctions', get_template_directory_uri() . '/js/header-functions.js', array('jquery'), '20161127'));
 }
 add_action( 'wp_enqueue_scripts', 'twentysixteen_scripts' );
 
