@@ -33,7 +33,7 @@
 				echo "</div>";
 			}
 			setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de-DE', 'de', 'ge', 'de_DE.UTF8', 'de_DE@UTF8', 'German');
-			echo '<div class="event_start"><strong>Termin:</strong> '.strftime("%A, %e. %B %G - %R", strtotime(get_field('startdatum')));"</div>";
+			echo '<div class="event_start"><strong>Termin:</strong> '.strftime("%A, %e. %B %G - %R", strtotime(get_field('startdatum')))."</div>";
 
 			date("dS F,Y",strtotime(get_field('startdatum')));
 
