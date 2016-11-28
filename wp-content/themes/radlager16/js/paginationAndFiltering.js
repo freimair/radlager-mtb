@@ -59,6 +59,16 @@ updateFilter();
 			// retrigger the check event. in case the spinner just moved into view due to search inputs
 			jQuery(document).trigger("resize");
 		});
+
+		// fetch searchterm from URL for permalinks
+		searchterm = window.location.href.split("?")[1];
+		if(null != searchterm) {
+			jQuery("#searchbox").val(searchterm);
+			// TODO add limiter! because of attacks and shit
+			updateFilter();
+			// retrigger the check event. in case the spinner just moved into view due to search inputs
+			jQuery(document).trigger("resize");
+		}
 	});
 
 	// this function checks applies the filter to the articles
