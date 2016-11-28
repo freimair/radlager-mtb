@@ -199,7 +199,7 @@ jQuery('#up').click(function() {
 		?>
 			<li class="filter">
 				<input id="searchbox" type="text" name="searchterm" value="">
-				<input id="clearsearch" type="button" value="X" onclick="jQuery('#searchbox').val('')">
+				<input id="clearsearch" type="button" value="X" onclick="jQuery('#searchbox').val(''); updateFilter();">
 			</li>
 		</ul>
 
