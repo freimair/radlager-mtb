@@ -198,7 +198,7 @@ jQuery('#up').click(function() {
 		endforeach;
 		?>
 			<li class="filter">
-				<input id="searchbox" type="text" name="searchterm" value="Mickey">
+				<input id="searchbox" type="text" name="searchterm" value="">
 			</li>
 		</ul>
 

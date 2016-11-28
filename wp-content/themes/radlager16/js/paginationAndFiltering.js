@@ -36,9 +36,12 @@ updateFilter();
 	});
 
 	// these scripts control the filter mechanism
-   jQuery(document).ready(function() {
-	// this function controls selecting and deselecting filters and applies the filter afterwards
-	jQuery(".filter").click(function() {
+	jQuery(document).ready(function() {
+		// this function controls selecting and deselecting filters and applies the filter afterwards
+		jQuery(".filter").click(function() {
+			// cancel filter handling if we have the searchbox at hand
+			if(jQuery.contains(this, jQuery("#searchbox")[0]))
+				return;
 			if(jQuery(this).hasClass("selected")) {
 				jQuery(".filter").removeClass("selected");
 			} else {
@@ -53,6 +56,8 @@ updateFilter();
 
 		jQuery("#searchbox").on("input", function() {
 			updateFilter();
+			// retrigger the check event. in case the spinner just moved into view due to search inputs
+			jQuery(document).trigger("resize");
 		});
 	});
 
@@ -63,9 +68,13 @@ updateFilter();
 			jQuery("article[class^=filter-]").show();
 		} else {
 			jQuery("article[class^=filter-]").hide();
-			searchterms = jQuery("#searchbox").val();
-			jQuery("article:contains(" + searchterms + ")").show();
-	//		jQuery(".filter-" + selected[0].getAttribute('value')).show();
+			jQuery(".filter-" + selected[0].getAttribute('value')).show();
+		}
+
+		// do the search box stuff. logical AND!
+		searchterms = jQuery("#searchbox").val();
+		if(3 < searchterms.length) {
+			jQuery("article[class^=filter-]:not(:contains(" + searchterms + "))").hide();
 		}
 		jQuery('#masonry-grid').masonry(); // update grid
 	}
