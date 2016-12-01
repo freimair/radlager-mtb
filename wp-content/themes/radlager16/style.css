@@ -1566,29 +1566,6 @@ a:active {
 	padding: 0 0.538461538em;
 }
 
-#up {
-    background-image: url(https://radlager-mtb.at/wp-content/themes/radlager16/Pictures/SVG/Pfeil-nach-oben.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-   
-    position: fixed;
-    right: 10px;
-    top: 96%;
-    width: 54px;
-    height: 54px;
-    cursor: pointer;
-    opacity: 0;
-    -webkit-: all 0.5s ease-in-out;
-        -moz-transition: all 0.5s ease-in-out;
-        -ms-transition: all 0.5s ease-in-out;
-        -o-transition: all 0.5s ease-in-out;
-        transition: all 0.5s ease-in-out;
-}
-#up.scrolled{
-    opacity:1;
-    top: 85%;
-}
-
 
 /**
  * 7.0 - Accessibility

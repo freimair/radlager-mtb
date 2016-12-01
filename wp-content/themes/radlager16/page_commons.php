@@ -223,26 +223,7 @@ jQuery('#masonry-grid').imagesLoaded( function() {
 
 </div><!-- .content-area -->
 
-<script type="text/javascript">
 
-jQuery(document).ready(function() {
-jQuery(window).scroll(function(){
-    var fromTopPx = 200; // distance to trigger
-    var scrolledFromtop = jQuery(window).scrollTop();
-    if(scrolledFromtop > fromTopPx){
-        jQuery('#up').addClass('scrolled');
-    }else{
-        jQuery('#up').removeClass('scrolled');
-    }
-});
-jQuery('#up').click(function() {
-        jQuery('html, body').stop().animate({
-           scrollTop: 1
-        }, 600)
-    });
- });
-
-</script>
 
 <span id="up"></span>
 
