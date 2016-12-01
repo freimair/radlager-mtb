@@ -40,7 +40,6 @@ article.post {
 background-color: rgba(191, 191, 191, 0.34);
     border-radius: 10px;
     padding: 15px;
-	margin-top: 20px;
 }
 
 #News{
@@ -2675,14 +2674,17 @@ body.search-no-results .page-header {
     color: #777676;
     font-family: "Lato-Regular";
     text-transform: uppercase;
-
-	width: 100%
+	display: flex;
+	display: -webkit-flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+	width: 100%;
 }
 
 .article-meta #category{
     font-size: 14px;
-    color: #000000;
-    font-family: "Lato-Regular";
+    color: #47974c;
+    font-family: "Lato-Bold";
     text-transform: uppercase;
 	float: left;
 }
