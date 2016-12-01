@@ -549,26 +549,26 @@ p {
 	font-family: "Lato-Regular";
 	font-size: 12pt;
 	text-transform: uppercase;
-	color: #47974C;
+	color: #ffffff;
 	position: fixed;
 	letter-spacing: 0.01em;
 	line-height: 1.8em;
 	cursor: pointer;
-	background-color: #ffffff;
+	background-color: #3c3d3c;;
 	z-index: 7;
-	margin-top: 54px;
-	
+	top: 40%;
+	right: 0px;
+	padding: 10px;
 }
 
 #secondary ul li{
-	float: left;
 	text-decoration: none;
+	margin-left: 0px;
 }
 
 #secondary ul { 
     list-style: none;
-	display: flex;
-    justify-content: space-between;
+	
 	margin:	0;
 }
 
@@ -3680,7 +3680,6 @@ p > video {
 	.sidebar {
 		float: left;
 		padding: 0;
-		width: 100%;
 	}
 
 	.widget {
