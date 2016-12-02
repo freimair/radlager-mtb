@@ -378,4 +378,15 @@ function twentysixteen_widget_tag_cloud_args( $args ) {
 }
 add_filter( 'widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args' );
 
+/**
+ * fix redirect after posting a comment.
+ *
+ * It happens that there is always a #comment-id behind the url and that breaks our stuff.
+ */
+function clean_post_comment_link( $location, $comment) {
+	wp_redirect(preg_split("/#/", $location)[0]);
+	exit();
+}
+add_filter( 'comment_post_redirect', 'clean_post_comment_link' );
+
 ?>
