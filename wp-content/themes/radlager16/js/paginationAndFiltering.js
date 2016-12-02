@@ -66,7 +66,7 @@ updateFilter();
 		searchterm = window.location.href.split("?")[1];
 		if(null != searchterm) {
 			permalinkbox = jQuery("#permalink");
-			permalinkbox.val(searchterm);
+			permalinkbox.attr("value", searchterm);
 			permalinkbox.addClass("selected");
 			permalinkbox.show();
 			updateFilter();
@@ -83,7 +83,7 @@ updateFilter();
 			jQuery("article[class^=filter-]").show();
 		} else if("permalink" === selected.attr('id')) {
 			jQuery("article[class^=filter-]").hide();
-			result = jQuery("article[class^=filter-]:contains(" + jQuery('#permalink').val() + ")");
+			result = jQuery("#" + jQuery('#permalink')[0].getAttribute('value'));
 			if(1 <= result.length) {
 				result.show();
 				// stop loading stuff
