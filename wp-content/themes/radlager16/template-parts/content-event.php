@@ -27,6 +27,9 @@
 			$location = maybe_unserialize(get_field('ort'));
 			if(!empty($location)) {
 				echo '<div class="event_location">';
+
+			if(!wp_script_is( "gmaps", 'enqueued' ))
+				wp_enqueue_script("gmaps", "https://maps.googleapis.com/maps/api/js?v=3&sensor=false&_=1480242950508");
 ?>
 <div class="gmap_canvas" id="gmap_canvas_<?php echo get_the_ID(); ?>" postid="<?php echo get_the_ID();?>" lat="<?php echo $location['lat'];?>" lng="<?php echo $location['lng'];?>" address="<?php echo $location['address']; ?>"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
 </div>

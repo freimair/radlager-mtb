@@ -21,8 +21,6 @@
 	<?php endif; ?>
 	<?php wp_head(); ?>
 
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false&_=1480242950508"></script>
-
 	<!-- google analytcs tracking code -->
 
 	<script>
