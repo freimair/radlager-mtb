@@ -69,7 +69,6 @@ updateFilter();
 			permalinkbox.val(searchterm);
 			permalinkbox.addClass("selected");
 			permalinkbox.show();
-			// TODO add limiter! because of attacks and shit
 			updateFilter();
 			// retrigger the check event. in case the spinner just moved into view due to search inputs
 			jQuery(document).trigger("resize");
@@ -78,6 +77,7 @@ updateFilter();
 
 	// this function checks applies the filter to the articles
 	function updateFilter() {
+		loadmore = 'on';
 		selected = jQuery('.filter.selected');
 		if(0 == selected.length) {
 			jQuery("article[class^=filter-]").show();
@@ -88,7 +88,7 @@ updateFilter();
 				result.show();
 				// stop loading stuff
 				loadmore = 'off';
-				jQuery('#spinner').hide();
+				jQuery('#spinner').css('visibility', 'hidden');
 			}
 		} else {
 			jQuery("article[class^=filter-]").hide();
