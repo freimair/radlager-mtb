@@ -1,7 +1,9 @@
+	// make it global so that we can stop loading things if we need it
+	var loadmore = 'on'; // ready to go
+
 	// these scripts control the ajax pagination
 	jQuery(function(){
 		var page = 2; // start at page 2
-		var loadmore = 'on'; // ready to go
 
 		// hook the scroll, resize and ready events to see if the spinner is visible
 		jQuery(document).on('scroll resize ready', function() {
@@ -63,7 +65,10 @@ updateFilter();
 		// fetch searchterm from URL for permalinks
 		searchterm = window.location.href.split("?")[1];
 		if(null != searchterm) {
-			jQuery("#searchbox").val(searchterm);
+			permalinkbox = jQuery("#permalink");
+			permalinkbox.val(searchterm);
+			permalinkbox.addClass("selected");
+			permalinkbox.show();
 			// TODO add limiter! because of attacks and shit
 			updateFilter();
 			// retrigger the check event. in case the spinner just moved into view due to search inputs
@@ -76,6 +81,15 @@ updateFilter();
 		selected = jQuery('.filter.selected');
 		if(0 == selected.length) {
 			jQuery("article[class^=filter-]").show();
+		} else if("permalink" === selected.attr('id')) {
+			jQuery("article[class^=filter-]").hide();
+			result = jQuery("article[class^=filter-]:contains(" + jQuery('#permalink').val() + ")");
+			if(1 <= result.length) {
+				result.show();
+				// stop loading stuff
+				loadmore = 'off';
+				jQuery('#spinner').hide();
+			}
 		} else {
 			jQuery("article[class^=filter-]").hide();
 			jQuery(".filter-" + selected[0].getAttribute('value')).show();

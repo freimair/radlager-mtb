@@ -201,6 +201,7 @@ jQuery('#up').click(function() {
 				<input id="searchbox" type="text" name="searchterm" value="">
 				<input id="clearsearch" type="button" value="X" onclick="jQuery('#searchbox').val(''); updateFilter();">
 			</li>
+			<li class="filter" id="permalink" style="display:none;">Permalink</li>
 		</ul>
 
 	</aside><!-- .sidebar .widget-area -->
