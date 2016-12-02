@@ -12,7 +12,11 @@
 				jQuery('#spinner').css('visibility', 'visible');
 
 				// load new content into temporary container <newContent> and append its .children() to the main content
-				result = jQuery('<newContent>').load(window.location + '?page=' + page + ' .post', function() {
+				if(-1 < window.location.href.indexOf("?"))
+					delimiter = "&";
+				else
+					delimiter = "?";
+				result = jQuery('<newContent>').load(window.location + delimiter + "page=" + page + " .post", function() {
 					page++;
 					loadmore = 'on';
 					jQuery('#spinner').css('visibility', 'hidden');
