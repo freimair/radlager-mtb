@@ -14,6 +14,7 @@
 		<?php endif; ?>
 
 		<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
+		<a class="permalink" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>">permalink</a>
 
 		<div class="article-meta">
 
