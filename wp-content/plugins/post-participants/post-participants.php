@@ -275,7 +275,7 @@ function ManageOwnEventsUI( $atts ) {
 
 		echo '<span class="eventcontrols">';
 		// display edit button
-		frontend_edit_posts_form($currentevent->ID, $categories, __("Edit"), "event");
+		frontend_edit_posts_form($currentevent->ID, $categories, __("Ändern"), "event");
 		// display edit button
 		frontend_edit_posts_form($currentevent->ID, $categories, __("Kopieren"), "event", true);
 		echo '</span>';
@@ -296,7 +296,7 @@ function ManageOwnEventsUI( $atts ) {
 					<span class="participant_phone"><?php echo esc_html($usermeta['phone'][0]); ?></span>
 				</span>
 				<span class="participantcontrols">
-					<input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="<?php _e("kick"); ?>"/>
+					<input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="<?php _e("Rausschmeißen"); ?>"/>
 				</span>
 			</li>
 			<?php
