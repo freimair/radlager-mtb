@@ -293,4 +293,20 @@ function NotificationCenterPendingPostHook($post_id, $post) {
 
 add_action( 'pending_post', 'NotificationCenterPendingPostHook', 10, 2);
 
+function FillTemplate($template, $values) {
+	$notification_templates = array('notify_editor' => '
+<p>Ein neuer Beitrag wartet auf Freigabe!</p>
+<p><a href="%URL%">Hier</a> gehts direkt zur Liste.</p>
+<p>Danke!</p>
+<p>Deine Radlager-Mtb Website</p>
+<p>Dies ist eine automatisch generierte Nachricht. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
+');
+
+	$filled = $notification_templates[$template];
+	foreach($values as $key => $value)
+		$filled = preg_replace("/%$key%/", $value, $filled);
+
+	return $filled;
+}
+
 ?>
