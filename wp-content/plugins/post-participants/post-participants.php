@@ -235,10 +235,11 @@ function ManageOwnEventsUI( $atts ) {
 	$user_id = get_current_user_id();
 
 	// get posts the user created
-	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen'));
+	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen', 'orderby' => 'meta_value', 'order' => 'ASC', 'meta_key' => 'startdatum', 'meta_value' => time(), 'meta_compare' => '>', 'posts_per_page' => -1));
 	echo '<ul id="eventlist_asorganizer">';
 	foreach($posts as $currentevent) :
 		echo '<li class="event">';
+		echo '<span class="eventdate">'.get_field('startdatum', $currentevent->ID).'</span> ';
 		echo '<span class="eventtitle">'.esc_html($currentevent->post_title).'</span>';
 		// fetch appropriate categories
 		// - it is sufficient to fetch one of the categories and get the parent and then all childs
