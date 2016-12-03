@@ -89,7 +89,6 @@ function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	global $wpdb, $notification_center_table_name;
 
 	$subject = sanitize_text_field($subject);
-	$message = sanitize_text_field($message);
 
 	// trigger notifications
 	// fetch user notification settings
@@ -145,7 +144,7 @@ function NotificationCenter_ListMessages( $atts ) {
 
 	echo "<ul>";
 	foreach ($messages as $currentmessage) {
-	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".esc_html($currentmessage->message).' <input id="notification_center_delete_message" type="button" value="'.__('Löschen').'" onclick="NotificationCenter_DeleteMessage(jQuery(this), '.esc_attr($currentmessage->id).')"/></li>';
+	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".$currentmessage->message.' <input id="notification_center_delete_message" type="button" value="'.__('Löschen').'" onclick="NotificationCenter_DeleteMessage(jQuery(this), '.esc_attr($currentmessage->id).')"/></li>';
 	}
 	echo "</ul>";
 
