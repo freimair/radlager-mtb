@@ -202,7 +202,6 @@ function ManageEventsUI( $atts ) {
 	// start gathering the HTML output
 	ob_start();
 
-	// first get all events the user created
 	global $wpdb, $post_participants_table_name;
 	$user_id = get_current_user_id();
 
@@ -210,12 +209,16 @@ function ManageEventsUI( $atts ) {
 	$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE user_id = %d;", $user_id);
 	$participations = $wpdb->get_results($sql);
 
-	echo '<ul>';
+	echo '<ul id="eventlist_asparticipant">';
 	foreach($participations as $current) {
-		// get posts the user created
 		$post = get_post((int)$current->post_id);
-
-		echo '<li>'.esc_html($post->post_title).'</li>';
+		if(time() < get_field('startdatum', $post->ID, false)) {
+			echo '<li class="event">';
+			echo '<span class="eventdate">'.get_field('startdatum', $post->ID).'</span> ';
+			echo '<span class="eventtitle">'.esc_html($post->post_title).'</span> ';
+			echo '<span class="eventcontrols"><a href="'.get_site_url()."/index.php/veranstaltungen?post-".$post->ID.'">ansehen</a></span>'; 
+			echo '</li>';
+		}
 	}
 	echo '</ul>';
 
