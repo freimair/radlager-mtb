@@ -45,7 +45,9 @@ function frontend_create_post_stuff(current, copy){
 					cache: false,
 					processData: false,
 					success: function (returndata) {
-						if('new' !== post_id) {
+						if(copy)
+							location.reload();
+						else if('new' !== post_id) {
 							// remove input field
 							remove_edit_field(post_id, type, copy);
 						} else {
