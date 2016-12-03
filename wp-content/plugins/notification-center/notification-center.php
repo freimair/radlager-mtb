@@ -265,18 +265,13 @@ function NotificationCenterScripts() {
 add_action('init', 'NotificationCenterScripts');
 
 /**
- * Notification Hook for informing users on freshly published posts.
+ * Notification Hook for informing users on freshly published media posts.
  */
-function NotificationCenterUpdatePostHook($post) {
+function NotifyOnMedia($post, $category_slugs) {
 	$post_title = $post->post_title;
 	$post_url = site_url()."/index.php?post-".$post->ID;
 	$img_url = get_the_post_thumbnail_url($post->ID);
 	$teaser_text = substr($post->post_content, 0, strlen($post->post_content) > 300 ? 300 : strlen($post->post_content));
-
-	$categories = get_the_category($post->ID);
-	$category_slugs = array();
-	foreach($categories as $current)
-		$category_slugs[] = $current->slug;
 
 	$subject = "Neuer Bericht: $post_title";
 
@@ -284,7 +279,30 @@ function NotificationCenterUpdatePostHook($post) {
 
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
-add_action( 'pending_to_publish', 'NotificationCenterUpdatePostHook', 10, 2 );
+
+/**
+ * Hook for any publish action. Used as a duplexer point.
+ */
+function NotificationCenterPublishPostHook($post_id, $post) {
+	// gather categories so that we can decide which notification to trigger
+	$categories = get_the_category($post->ID);
+
+	foreach($categories as $current) {
+		$category_slugs[] = $current->slug;
+
+		while(null != $current->parent) {
+			$current = get_category($current->parent);
+			$category_slugs[] = $current->slug;
+		}
+	}
+
+	$categoriy_slugs = array_unique($category_slugs);
+
+	if(in_array('media', $category_slugs) || in_array('trailbau', $category_slugs)) {
+		NotifyOnMedia($post, $category_slugs);
+	}
+}
+add_action(  'publish_post',  'NotificationCenterPublishPostHook', 10, 3 );
 
 /**
  * Notification Hook for notifying editors on new pending posts.
