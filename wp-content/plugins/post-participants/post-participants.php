@@ -197,7 +197,7 @@ function PostParticipantsScripts() {
 
 add_action('init', 'PostParticipantsScripts');
 
-//[post_participants_manage_own_events]
+//[post_participants_manage_joined_events]
 function ManageEventsUI( $atts ) {
 	// start gathering the HTML output
 	ob_start();
@@ -236,9 +236,10 @@ function ManageOwnEventsUI( $atts ) {
 
 	// get posts the user created
 	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen'));
-	echo "<ul>";
+	echo '<ul id="eventlist_asorganizer">';
 	foreach($posts as $currentevent) :
-		echo "<li>".esc_html($currentevent->post_title);
+		echo '<li class="event">';
+		echo '<span class="eventtitle">'.esc_html($currentevent->post_title).'</span>';
 		// fetch appropriate categories
 		// - it is sufficient to fetch one of the categories and get the parent and then all childs
 		$basis = get_the_category($currentevent->ID);
@@ -246,8 +247,10 @@ function ManageOwnEventsUI( $atts ) {
 		// - get all child of the parent category
 		$categories = get_categories(array( 'child_of' => $basis ));
 
+		echo '<span class="eventcontrols">';
 		// display edit button
 		frontend_edit_posts_form($currentevent->ID, $categories, __("Edit"), "event");
+		echo '</span>';
 
 		// fetch participants
 		$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $currentevent->ID);
