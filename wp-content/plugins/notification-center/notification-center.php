@@ -182,7 +182,7 @@ function NotificationCenter_Settings( $atts ) {
 	}
 
 	// add special subscription hooks
-	$notification_slugs[__('sonstige Inhalte')] = array('event_participation' => __('Teilnameinformationen'), 'administrative' => __('Administratives'));
+	$notification_slugs[__('sonstige Inhalte')] = array('event_participation' => __('Teilnahmeinformationen'), 'administrative' => __('Administratives'), 'newsletter' => __('Newsletter'));
 
 	// gather contact options
 	$contact_options['mail'] = __('Email'); // every user has a mail contact option
@@ -281,6 +281,16 @@ function NotifyOnMedia($post, $category_slugs) {
 }
 
 /**
+ * Notification Hook for informing users on newsletters.
+ */
+function NotifyOnNewsletter($post, $category_slugs) {
+	$subject = $post->post_title;
+	$message = FillTemplate('newsletter', array('CONTENT' => $post->post_content));
+
+	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
+}
+
+/**
  * Hook for any publish action. Used as a duplexer point.
  */
 function NotificationCenterPublishPostHook($post_id, $post) {
@@ -300,6 +310,8 @@ function NotificationCenterPublishPostHook($post_id, $post) {
 
 	if(in_array('media', $category_slugs) || in_array('trailbau', $category_slugs)) {
 		NotifyOnMedia($post, $category_slugs);
+	} else if(in_array('newsletter', $category_slugs)) {
+		NotifyOnNewsletter($post, $category_slugs);
 	}
 }
 add_action(  'publish_post',  'NotificationCenterPublishPostHook', 10, 3 );
@@ -333,6 +345,10 @@ function FillTemplate($template, $values) {
 <p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
 <p>Viel Spass beim Lesen!</p>
 <p>Deine Radlager-Mtb Website</p>
+<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
+';
+	$notification_templates['newsletter'] = '
+%CONTENT%
 <p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
 ';
 
