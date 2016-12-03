@@ -234,8 +234,22 @@ function ManageOwnEventsUI( $atts ) {
 	global $wpdb, $post_participants_table_name;
 	$user_id = get_current_user_id();
 
+	// get a list of recent but outdated events
+	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen', 'orderby' => 'meta_value', 'order' => 'ASC', 'meta_key' => 'startdatum', 'meta_value' => time(), 'meta_compare' => '<', 'posts_per_page' => 5));
+	echo '<h2>Vergangene Veranstaltungen</h2>';
+	echo '<ul id="eventlist_asorganizer_recent">';
+	foreach($posts as $currentevent) :
+		echo '<li class="event">';
+		echo '<span class="eventdate">'.get_field('startdatum', $currentevent->ID).'</span> ';
+		echo '<span class="eventtitle">'.esc_html($currentevent->post_title).'</span>';
+		echo '<span class="eventcontrols">CLONE';
+		echo '</span>';
+	endforeach;
+	echo "</ul>";
+
 	// get posts the user created
 	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen', 'orderby' => 'meta_value', 'order' => 'ASC', 'meta_key' => 'startdatum', 'meta_value' => time(), 'meta_compare' => '>', 'posts_per_page' => -1));
+	echo '<h2>kommende Veranstaltungen</h2>';
 	echo '<ul id="eventlist_asorganizer">';
 	foreach($posts as $currentevent) :
 		echo '<li class="event">';
