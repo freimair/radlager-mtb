@@ -270,11 +270,22 @@ function ManageOwnEventsUI( $atts ) {
 		// fetch participants
 		$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $currentevent->ID);
 		$participants = $wpdb->get_results($sql);
-		?><ul><?php
+		?><ul class="eventparticipants"><?php
 		foreach ($participants as $current) :
 
 			?>
-			<li><?php echo esc_html(get_user_by('id', $current->user_id)->display_name); ?><input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="<?php _e("kick"); ?>"/></li>
+			<li class="eventparticipant">
+				<span class="participant_contact">
+					<?php $user = get_user_by('id', $current->user_id); ?>
+					<?php	$usermeta = get_user_meta($current->user_id); ?>
+					<span class="participant_name"><?php echo esc_html($usermeta['first_name'][0]." ".$usermeta['last_name'][0]); ?> (<?php echo $user->display_name; ?>)</span>, 
+					<span class="participant_email"><a href="mailto:<?php echo $user->user_email; ?>">email</a></span>, 
+					<span class="participant_phone"><?php echo esc_html($usermeta['phone'][0]); ?></span>
+				</span>
+				<span class="participantcontrols">
+					<input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="<?php _e("kick"); ?>"/>
+				</span>
+			</li>
 			<?php
 
 		endforeach;
