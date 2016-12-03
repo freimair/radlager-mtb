@@ -245,7 +245,15 @@ function ManageOwnEventsUI( $atts ) {
 		echo '<li class="event">';
 		echo '<span class="eventdate">'.get_field('startdatum', $currentevent->ID).'</span> ';
 		echo '<span class="eventtitle">'.esc_html($currentevent->post_title).'</span>';
-		echo '<span class="eventcontrols">CLONE';
+		echo '<span class="eventcontrols">';
+		// fetch appropriate categories
+		// - it is sufficient to fetch one of the categories and get the parent and then all childs
+		$basis = get_the_category($currentevent->ID);
+		$basis = $basis[0]->parent;
+		// - get all child of the parent category
+		$categories = get_categories(array( 'child_of' => $basis ));
+		// display edit button
+		frontend_edit_posts_form($currentevent->ID, $categories, __("Kopieren"), "event", true);
 		echo '</span>';
 	endforeach;
 	echo "</ul>";
@@ -268,6 +276,8 @@ function ManageOwnEventsUI( $atts ) {
 		echo '<span class="eventcontrols">';
 		// display edit button
 		frontend_edit_posts_form($currentevent->ID, $categories, __("Edit"), "event");
+		// display edit button
+		frontend_edit_posts_form($currentevent->ID, $categories, __("Kopieren"), "event", true);
 		echo '</span>';
 
 		// fetch participants

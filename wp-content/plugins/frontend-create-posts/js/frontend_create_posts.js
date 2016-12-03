@@ -1,4 +1,6 @@
-function frontend_create_post_stuff(current){
+function frontend_create_post_stuff(current, copy){
+	if(!copy)
+		copy=false;
 	var post_id = current.attr("data-post_id");
 	var type = current.attr("data-type");
 	if(jQuery("div#edit-post-"+post_id+"-form").is(':empty')) {
@@ -25,7 +27,15 @@ function frontend_create_post_stuff(current){
 				// manually save its contents back to the form
 				tinymce.triggerSave();
 
-				var postData = new FormData(jQuery("div#edit-post-"+post_id+"-form form")[0]);
+				// get form
+				form = jQuery("div#edit-post-"+post_id+"-form form");
+
+				// if we want to copy the post
+				if(copy)
+					form.find("input[name='post_id']").attr("value", "new");
+
+				// create formdata for transfer
+				var postData = new FormData(form[0]);
 				postData.append("action", "frontend_save_post_form");
 				jQuery.ajax({
 					type: "post",

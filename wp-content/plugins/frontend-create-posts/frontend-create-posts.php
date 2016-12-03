@@ -261,7 +261,7 @@ add_action('wp_ajax_nopriv_frontend_edit_post_form', 'FrontendEditPostForm');
  * @param post-id, "new" if a new post should be created
  * @param categories: the categories that should be available to select from
  */
-function frontend_edit_posts_form($post_id, $categories, $caption, $type) {
+function frontend_edit_posts_form($post_id, $categories, $caption, $type, $copy=false) {
 	if(!is_user_logged_in() || !current_user_can('edit_posts') || !current_user_can('create_media') || !current_user_can('publish_event'))
 		return;
 
@@ -270,7 +270,7 @@ function frontend_edit_posts_form($post_id, $categories, $caption, $type) {
 		$category_ids[] = $current->term_id;
 	}
 ?>
-<div id="user_create_content"><input type="button" id="edit-post-<?php echo esc_attr($post_id); ?>" data-categories="<?php echo esc_attr(json_encode($category_ids)); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" data-type="<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($caption); ?>" onclick="frontend_create_post_stuff(jQuery(this));"/><div class="ajax_spinner" style="display: none"><img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif"></div><div class="ajax_success" style="display: none"><?php _e("Gespeichert! Ein Redakteur wird den Beitrag in Kürze veröffentlichen."); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist aufgetreten!"); ?></div>
+<div id="user_create_content"><input type="button" id="edit-post-<?php echo esc_attr($post_id); ?>" data-categories="<?php echo esc_attr(json_encode($category_ids)); ?>" data-post_id="<?php echo esc_attr($post_id); ?>" data-type="<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($caption); ?>" onclick="frontend_create_post_stuff(jQuery(this), <?php echo $copy?"true":"false";?>);"/><div class="ajax_spinner" style="display: none"><img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/loading.gif"></div><div class="ajax_success" style="display: none"><?php _e("Gespeichert! Ein Redakteur wird den Beitrag in Kürze veröffentlichen."); ?></div><div class="ajax_error" style="display: none"><?php _e("Ein fehler ist aufgetreten!"); ?></div>
 <div id="edit-post-<?php echo esc_attr($post_id); ?>-form"></div></div>
 <?php
 }
