@@ -282,13 +282,17 @@ function NotificationCenterUpdatePostHook( $post_id, $post ) {
 }
 add_action( 'pending_to_publish_post', 'NotificationCenterUpdatePostHook', 10, 2 );
 
+/**
+ * Notification Hook for notifying editors on new pending posts.
+ */
 function NotificationCenterPendingPostHook($post_id, $post) {
 	$editors = get_users(array('role' => 'editor'));
 
 	$subject = "Ein Beitrag wartet auf Freigabe";
+	$message = FillTemplate('notify_editor', array('URL' => admin_url( 'edit.php' )));
 
 	foreach($editors as $current)
-		NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, get_permalink($post_id));
+		NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
 }
 
 add_action( 'pending_post', 'NotificationCenterPendingPostHook', 10, 2);
