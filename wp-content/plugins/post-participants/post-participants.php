@@ -197,12 +197,11 @@ function PostParticipantsScripts() {
 
 add_action('init', 'PostParticipantsScripts');
 
-//[post_participants_manage_own_events]
+//[post_participants_manage_joined_events]
 function ManageEventsUI( $atts ) {
 	// start gathering the HTML output
 	ob_start();
 
-	// first get all events the user created
 	global $wpdb, $post_participants_table_name;
 	$user_id = get_current_user_id();
 
@@ -210,12 +209,16 @@ function ManageEventsUI( $atts ) {
 	$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE user_id = %d;", $user_id);
 	$participations = $wpdb->get_results($sql);
 
-	echo '<ul>';
+	echo '<ul id="eventlist_asparticipant">';
 	foreach($participations as $current) {
-		// get posts the user created
 		$post = get_post((int)$current->post_id);
-
-		echo '<li>'.esc_html($post->post_title).'</li>';
+		if(time() < get_field('startdatum', $post->ID, false)) {
+			echo '<li class="event">';
+			echo '<span class="eventdate">'.get_field('startdatum', $post->ID).'</span> ';
+			echo '<span class="eventtitle">'.esc_html($post->post_title).'</span> ';
+			echo '<span class="eventcontrols"><a href="'.get_site_url()."/index.php/veranstaltungen?post-".$post->ID.'">ansehen</a></span>'; 
+			echo '</li>';
+		}
 	}
 	echo '</ul>';
 
@@ -234,11 +237,35 @@ function ManageOwnEventsUI( $atts ) {
 	global $wpdb, $post_participants_table_name;
 	$user_id = get_current_user_id();
 
-	// get posts the user created
-	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen'));
-	echo "<ul>";
+	// get a list of recent but outdated events
+	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen', 'orderby' => 'meta_value', 'order' => 'ASC', 'meta_key' => 'startdatum', 'meta_value' => time(), 'meta_compare' => '<', 'posts_per_page' => 5));
+	echo '<h2>Vergangene Veranstaltungen</h2>';
+	echo '<ul id="eventlist_asorganizer_recent">';
 	foreach($posts as $currentevent) :
-		echo "<li>".esc_html($currentevent->post_title);
+		echo '<li class="event">';
+		echo '<span class="eventdate">'.get_field('startdatum', $currentevent->ID).'</span> ';
+		echo '<span class="eventtitle">'.esc_html($currentevent->post_title).'</span>';
+		echo '<span class="eventcontrols">';
+		// fetch appropriate categories
+		// - it is sufficient to fetch one of the categories and get the parent and then all childs
+		$basis = get_the_category($currentevent->ID);
+		$basis = $basis[0]->parent;
+		// - get all child of the parent category
+		$categories = get_categories(array( 'child_of' => $basis ));
+		// display edit button
+		frontend_edit_posts_form($currentevent->ID, $categories, __("Kopieren"), "event", true);
+		echo '</span>';
+	endforeach;
+	echo "</ul>";
+
+	// get posts the user created
+	$posts = get_posts( array ( 'author' => $user_id , 'category_name' => 'veranstaltungen', 'orderby' => 'meta_value', 'order' => 'ASC', 'meta_key' => 'startdatum', 'meta_value' => time(), 'meta_compare' => '>', 'posts_per_page' => -1));
+	echo '<h2>kommende Veranstaltungen</h2>';
+	echo '<ul id="eventlist_asorganizer">';
+	foreach($posts as $currentevent) :
+		echo '<li class="event">';
+		echo '<span class="eventdate">'.get_field('startdatum', $currentevent->ID).'</span> ';
+		echo '<span class="eventtitle">'.esc_html($currentevent->post_title).'</span>';
 		// fetch appropriate categories
 		// - it is sufficient to fetch one of the categories and get the parent and then all childs
 		$basis = get_the_category($currentevent->ID);
@@ -246,17 +273,32 @@ function ManageOwnEventsUI( $atts ) {
 		// - get all child of the parent category
 		$categories = get_categories(array( 'child_of' => $basis ));
 
+		echo '<span class="eventcontrols">';
 		// display edit button
-		frontend_edit_posts_form($currentevent->ID, $categories, __("Edit"), "event");
+		frontend_edit_posts_form($currentevent->ID, $categories, __("Ändern"), "event");
+		// display edit button
+		frontend_edit_posts_form($currentevent->ID, $categories, __("Kopieren"), "event", true);
+		echo '</span>';
 
 		// fetch participants
 		$sql = $wpdb->prepare("SELECT * FROM $post_participants_table_name WHERE post_id = %d;", $currentevent->ID);
 		$participants = $wpdb->get_results($sql);
-		?><ul><?php
+		?><ul class="eventparticipants"><?php
 		foreach ($participants as $current) :
 
 			?>
-			<li><?php echo esc_html(get_user_by('id', $current->user_id)->display_name); ?><input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="<?php _e("kick"); ?>"/></li>
+			<li class="eventparticipant">
+				<span class="participant_contact">
+					<?php $user = get_user_by('id', $current->user_id); ?>
+					<?php	$usermeta = get_user_meta($current->user_id); ?>
+					<span class="participant_name"><?php echo esc_html($usermeta['first_name'][0]." ".$usermeta['last_name'][0]); ?> (<?php echo $user->display_name; ?>)</span>, 
+					<span class="participant_email"><a href="mailto:<?php echo $user->user_email; ?>">email</a></span>, 
+					<span class="participant_phone"><?php echo esc_html($usermeta['phone'][0]); ?></span>
+				</span>
+				<span class="participantcontrols">
+					<input type="button" class="PostParticipantsKickParticipant" data-post_id="<?php echo esc_attr($currentevent->ID); ?>" data-user_id="<?php echo esc_attr($current->user_id); ?>" value="<?php _e("Rausschmeißen"); ?>"/>
+				</span>
+			</li>
 			<?php
 
 		endforeach;
