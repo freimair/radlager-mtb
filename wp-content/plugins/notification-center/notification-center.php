@@ -264,23 +264,27 @@ function NotificationCenterScripts() {
 
 add_action('init', 'NotificationCenterScripts');
 
-function NotificationCenterUpdatePostHook( $post_id, $post ) {
+/**
+ * Notification Hook for informing users on freshly published posts.
+ */
+function NotificationCenterUpdatePostHook($post) {
 	$post_title = $post->post_title;
-	$post_url = get_permalink( $post_id );
+	$post_url = site_url()."/index.php?post-".$post->ID;
+	$img_url = get_the_post_thumbnail_url($post->ID);
+	$teaser_text = substr($post->post_content, 0, strlen($post->post_content) > 300 ? 300 : strlen($post->post_content));
 
-	$categories = get_the_category($post_id);
+	$categories = get_the_category($post->ID);
 	$category_slugs = array();
 	foreach($categories as $current)
 		$category_slugs[] = $current->slug;
 
-	$subject = 'Neues auf der Website';
+	$subject = "Neuer Bericht: $post_title";
 
-	$message = "Neuer Content auf der Website:\n\n";
-	$message .= $post_title . ": " . $post_url;
+	$message = FillTemplate('new_post', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url));
 
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
-add_action( 'pending_to_publish_post', 'NotificationCenterUpdatePostHook', 10, 2 );
+add_action( 'pending_to_publish', 'NotificationCenterUpdatePostHook', 10, 2 );
 
 /**
  * Notification Hook for notifying editors on new pending posts.
@@ -303,8 +307,16 @@ function FillTemplate($template, $values) {
 <p><a href="%URL%">Hier</a> gehts direkt zur Liste.</p>
 <p>Danke!</p>
 <p>Deine Radlager-Mtb Website</p>
-<p>Dies ist eine automatisch generierte Nachricht. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
+<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
 ');
+	$notification_templates['new_post'] = '
+<p>Radlager-Mtb hat einen neuen Bericht für dich der dich interessieren könnte!</p>
+<h1>%TITLE%</h1>
+<p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
+<p>Viel Spass beim Lesen!</p>
+<p>Deine Radlager-Mtb Website</p>
+<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
+';
 
 	$filled = $notification_templates[$template];
 	foreach($values as $key => $value)
