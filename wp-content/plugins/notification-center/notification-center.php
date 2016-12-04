@@ -329,7 +329,7 @@ function NotificationCenterPublishPostHook($post_id, $post) {
 		}
 	}
 
-	$categoriy_slugs = array_unique($category_slugs);
+	$category_slugs = array_unique($category_slugs);
 
 	if(in_array('media', $category_slugs) || in_array('trailbau', $category_slugs)) {
 		NotifyOnMedia($post, $category_slugs);
