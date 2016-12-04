@@ -291,6 +291,29 @@ function NotifyOnNewsletter($post, $category_slugs) {
 }
 
 /**
+ * Notification Hook for informing users on events.
+ */
+function NotifyOnEvent($post, $category_slugs) {
+	$post_title = $post->post_title;
+	$post_url = site_url()."/index.php/veranstaltungen?post-".$post->ID;
+	$img_url = get_the_post_thumbnail_url($post->ID);
+	$teaser_text = substr($post->post_content, 0, strlen($post->post_content) > 300 ? 300 : strlen($post->post_content));
+
+	$date = get_field('startdatum', $post->ID);
+	$location = maybe_unserialize(get_field('ort', $post->ID)['address']);
+
+	$categories = get_the_category($post->ID);
+	foreach($categories as $current) {
+		$tags[] = $current->cat_name;
+	}
+
+	$subject = "Neue Veranstaltung: ".$post->post_title;
+	$message = FillTemplate('event', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags)));
+
+	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
+}
+
+/**
  * Hook for any publish action. Used as a duplexer point.
  */
 function NotificationCenterPublishPostHook($post_id, $post) {
@@ -312,6 +335,8 @@ function NotificationCenterPublishPostHook($post_id, $post) {
 		NotifyOnMedia($post, $category_slugs);
 	} else if(in_array('newsletter', $category_slugs)) {
 		NotifyOnNewsletter($post, $category_slugs);
+	} else if(in_array('veranstaltungen', $category_slugs)) {
+		NotifyOnEvent($post, $category_slugs);
 	}
 }
 add_action(  'publish_post',  'NotificationCenterPublishPostHook', 10, 3 );
@@ -349,6 +374,17 @@ function FillTemplate($template, $values) {
 ';
 	$notification_templates['newsletter'] = '
 %CONTENT%
+<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
+';
+	$notification_templates['event'] = '
+<p>Radlager-Mtb hat eine neue Veranstaltung die dich interessieren könnte!</p>
+<h1>%TITLE%</h1>
+<p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
+<p><strong>Wann:</strong> %DATE%</ br>
+<p><strong>Wo:</strong> %LOCATION%</ br>
+<p><strong>Tags:</strong> %TAGS%</p>
+<p><a href="%URL%">Hier</a> gehts zu allen Details und zur Anmeldung.</p>
+<p>Deine Radlager-Mtb Website</p>
 <p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
 ';
 
