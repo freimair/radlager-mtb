@@ -27,10 +27,6 @@
 
 
 
-
-
-
-
 @media (min-width:910px) { 
 .main-navigation ul.primary-menu li:nth-child(n+3) {
 	float: right;
@@ -50,9 +46,11 @@
 }
 }
 
-
-
-
+	.menu-toggle {
+		position: fixed;
+		top: 30%;
+		right:0px;
+	}
 
 
 article.post {
@@ -2012,16 +2010,6 @@ li {
 }
 
 
-
-.menu-toggle {
-	background-color: transparent;
-	border: 1px solid #d1d1d1;
-	color: #1a1a1a;
-	font-size: 13px;
-	font-size: 0.8125rem;
-	margin: 1.076923077em 0;
-	padding: 0.769230769em;
-}
 
 .no-js .menu-toggle {
 	display: none;
