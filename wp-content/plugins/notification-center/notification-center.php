@@ -361,36 +361,34 @@ function NotificationCenterFillTemplate($template, $values) {
 <p>Ein neuer Beitrag wartet auf Freigabe!</p>
 <p><a href="%URL%">Hier</a> gehts direkt zur Liste.</p>
 <p>Danke!</p>
-<p>Deine Radlager-Mtb Website</p>
-<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
 ');
 	$notification_templates['new_post'] = '
 <p>Radlager-Mtb hat einen neuen Bericht für dich der dich interessieren könnte!</p>
 <h1>%TITLE%</h1>
 <p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
 <p>Viel Spass beim Lesen!</p>
-<p>Deine Radlager-Mtb Website</p>
-<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
 ';
 	$notification_templates['newsletter'] = '
 %CONTENT%
-<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
 ';
 	$notification_templates['event'] = '
 <p>Radlager-Mtb hat eine neue Veranstaltung die dich interessieren könnte!</p>
 <h1>%TITLE%</h1>
 <p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
-<p><strong>Wann:</strong> %DATE%</ br>
-<p><strong>Wo:</strong> %LOCATION%</ br>
-<p><strong>Tags:</strong> %TAGS%</p>
+<p><strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
 <p><a href="%URL%">Hier</a> gehts zu allen Details und zur Anmeldung.</p>
-<p>Deine Radlager-Mtb Website</p>
-<p>Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden nicht gelesen.</p>
 ';
 
 	$filled = $notification_templates[$template];
 	foreach($values as $key => $value)
 		$filled = preg_replace("/%$key%/", $value, $filled);
+
+	// add some general information to the foot of each message
+	$filled .= '<p>Deine Radlager-Mtb Website</p>
+<p style="font-size: small;">Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden <strong>nicht</strong> gelesen.</p>
+<p style="font-size: small;">Wenn dir diese Nachrichten schon auf die Nerven gehen kannst du in deinem <a href="'.site_url("index.php/profil").'">Profil</a> deine persönlichen Benachrichtungseinstellungen ändern!</p>';
 
 	return $filled;
 }
