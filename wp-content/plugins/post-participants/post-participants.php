@@ -120,7 +120,23 @@ function JoinPost($post_id, $user_id) {
 
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
-		NotificationCenter_NotifyUser(array('event_participation'), $user_id, __("Du hast dich angemeldet"), get_post($post_id)->post_title);
+
+		$post = get_post($post_id);
+
+		$post_title = $post->post_title;
+		$post_url = site_url()."/index.php/veranstaltungen?post-".$post->ID;
+		$date = get_field('startdatum', $post->ID);
+		$location = maybe_unserialize(get_field('ort', $post->ID)['address']);
+
+		$categories = get_the_category($post->ID);
+		foreach($categories as $current) {
+			$tags[] = $current->cat_name;
+		}
+
+		$subject = "Anmeldungbestätigung: ".$post->post_title;
+		$message = NotificationCenterFillTemplate('eventanmeldung', array('TITLE' => $post_title, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags)));
+
+			NotificationCenter_NotifyUser(array('event_participation'), $user_id, $subject, $message);
 	}
 
 	ReportAndExit("leave");
@@ -135,12 +151,23 @@ function LeavePost($post_id, $user_id, $forced = false) {
 
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
-		if($forced)
-			$message = __("Deine Anmeldung wurde zurückgesetzt");
-		else
-			$message = __("Du hast dich abgemeldet");
 
-		NotificationCenter_NotifyUser(array('event_participation'), $user_id, $message, get_post($post_id)->post_title);
+		$post = get_post($post_id);
+
+		$post_title = $post->post_title;
+		$post_url = site_url()."/index.php/veranstaltungen?post-".$post->ID;
+		$date = get_field('startdatum', $post->ID);
+		$location = maybe_unserialize(get_field('ort', $post->ID)['address']);
+
+		$categories = get_the_category($post->ID);
+		foreach($categories as $current) {
+			$tags[] = $current->cat_name;
+		}
+
+		$subject = "Abmeldungbestätigung: ".$post->post_title;
+		$message = NotificationCenterFillTemplate('eventabmeldung', array('TITLE' => $post_title, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags)));
+
+		NotificationCenter_NotifyUser(array('event_participation'), $user_id, $subject, $message);
 	}
 
 	// join participants from the waiting list

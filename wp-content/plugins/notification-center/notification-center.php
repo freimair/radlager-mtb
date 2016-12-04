@@ -389,6 +389,22 @@ function NotificationCenterFillTemplate($template, $values) {
 <ul>%COMMENTS%</ul>
 <p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
 ';
+	$notification_templates['eventanmeldung'] = '
+<p>Du hast dich zu einer Veranstaltung angemeldet!</p>
+<p><strong>Titel:</strong> %TITLE%<br />
+<strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
+<p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+';
+	$notification_templates['eventabmeldung'] = '
+<p>Du hast dich oder wurdest von folgender Veranstaltung abgemeldet!</p>
+<p><strong>Titel:</strong> %TITLE%<br />
+<strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
+<p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+';
 
 	$filled = $notification_templates[$template];
 	foreach($values as $key => $value)
