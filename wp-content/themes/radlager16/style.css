@@ -1,5 +1,33 @@
 /****************************************************************** drafts */
 
+
+@font-face {      
+	font-family: Lato-Black;
+	local: Lato-Black;
+	src: url('../radlager16/Fonts/Lato-Black.woff2') format('woff2');
+}
+
+@font-face {      
+	font-family: Lato-Bold;
+	local: Lato-Black;
+	src: url('../radlager16/Fonts/Lato-Bold.woff2') format('woff2');
+}
+
+@font-face {      
+	font-family: Lato-Regular;
+	local: Lato-Black;
+	src: url('../radlager16/Fonts/Lato-Regular.woff2') format('woff2');
+}
+
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('../radlager16/Fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 @media screen and (min-width: 1025px) {
 	article.post {
 		width: 33%;
@@ -482,26 +510,6 @@ optgroup {
  * 3.0 - Typography
  */
 
-@font-face {      
-	font-family: Lato-Black;
-	local: Lato-Black;
-	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');*/
-	src: url(http://localhost/radlager-mtb/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');
-}
-
-@font-face {      
-	font-family: Lato-Bold;
-	local: Lato-Black;
-	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');*/
-	src: url(http://localhost/radlager-mtb/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');
-}
-
-@font-face {      
-	font-family: Lato-Regular;
-	local: Lato-Black;
-	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');*/
-	src: url(http://localhost/radlager-mtb/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');
-}
 
 
 body,
