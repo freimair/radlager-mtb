@@ -50,6 +50,19 @@
 		position: fixed;
 		top: 30%;
 		right:0px;
+		z-index:100;
+	}
+	
+	
+	
+	
+	#edit-post-new{
+		position: fixed;
+		top:	25%;
+		right: 0px;
+		z-index: 7;
+		
+		
 	}
 
 
