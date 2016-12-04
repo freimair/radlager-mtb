@@ -361,12 +361,14 @@ function NotificationCenterFillTemplate($template, $values) {
 <p>Ein neuer Beitrag wartet auf Freigabe!</p>
 <p><a href="%URL%">Hier</a> gehts direkt zur Liste.</p>
 <p>Danke!</p>
+<p>Deine Radlager-Mtb Website</p>
 ');
 	$notification_templates['new_post'] = '
 <p>Radlager-Mtb hat einen neuen Bericht für dich der dich interessieren könnte!</p>
 <h1>%TITLE%</h1>
 <p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
 <p>Viel Spass beim Lesen!</p>
+<p>Deine Radlager-Mtb Website</p>
 ';
 	$notification_templates['newsletter'] = '
 %CONTENT%
@@ -379,6 +381,7 @@ function NotificationCenterFillTemplate($template, $values) {
 <strong>Wo:</strong> %LOCATION%<br />
 <strong>Tags:</strong> %TAGS%</p>
 <p><a href="%URL%">Hier</a> gehts zu allen Details und zur Anmeldung.</p>
+<p>Deine Radlager-Mtb Website</p>
 ';
 	$notification_templates['comment'] = '
 <p>Eine Veranstaltung zu der du angemeldet bist wurde kommentiert!</p>
@@ -388,22 +391,25 @@ function NotificationCenterFillTemplate($template, $values) {
 <strong>Tags:</strong> %TAGS%</p>
 <ul>%COMMENTS%</ul>
 <p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+<p>Deine Radlager-Mtb Website</p>
 ';
 	$notification_templates['eventanmeldung'] = '
-<p>Du hast dich zu einer Veranstaltung angemeldet!</p>
+<p>Du hast dich zu einer Veranstaltung <strong>angemeldet</strong>!</p>
 <p><strong>Titel:</strong> %TITLE%<br />
 <strong>Wann:</strong> %DATE%<br />
 <strong>Wo:</strong> %LOCATION%<br />
 <strong>Tags:</strong> %TAGS%</p>
 <p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+<p>Deine Radlager-Mtb Website</p>
 ';
 	$notification_templates['eventabmeldung'] = '
-<p>Du hast dich oder wurdest von folgender Veranstaltung abgemeldet!</p>
+<p>Du hast dich oder wurdest von folgender Veranstaltung <strong>abgemeldet</strong>!</p>
 <p><strong>Titel:</strong> %TITLE%<br />
 <strong>Wann:</strong> %DATE%<br />
 <strong>Wo:</strong> %LOCATION%<br />
 <strong>Tags:</strong> %TAGS%</p>
 <p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+<p>Deine Radlager-Mtb Website</p>
 ';
 
 	$filled = $notification_templates[$template];
@@ -411,9 +417,9 @@ function NotificationCenterFillTemplate($template, $values) {
 		$filled = preg_replace("/%$key%/", $value, $filled);
 
 	// add some general information to the foot of each message
-	$filled .= '<p>Deine Radlager-Mtb Website</p>
-<p style="font-size: small;">Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden <strong>nicht</strong> gelesen.</p>
-<p style="font-size: small;">Wenn dir diese Nachrichten schon auf die Nerven gehen kannst du in deinem <a href="'.site_url("index.php/profil").'">Profil</a> deine persönlichen Benachrichtungseinstellungen ändern!</p>';
+	$filled .= '
+<p style="font-size: smaller;">Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden <strong>nicht</strong> gelesen.</p>
+<p style="font-size: smaller;">Wenn dir diese Nachrichten schon auf die Nerven gehen kannst du in deinem <a href="'.site_url("index.php/profil").'">Profil</a> deine persönlichen Benachrichtungseinstellungen ändern!</p>';
 
 	return $filled;
 }
