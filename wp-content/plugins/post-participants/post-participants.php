@@ -147,7 +147,10 @@ function LeavePost($post_id, $user_id, $forced = false) {
 
 	// remove participant
 	$sql = $wpdb->prepare("DELETE FROM $post_participants_table_name WHERE post_id = %d AND user_id = %d", array($post_id, $user_id));
-	$wpdb->query($sql);
+	$rows_affected = $wpdb->query($sql);
+
+	if (0 >= $rows_affected)
+		ReportAndExit("user does not participate");
 
 	// notify the user
 	if (function_exists('NotificationCenter_NotifyUser')) {
