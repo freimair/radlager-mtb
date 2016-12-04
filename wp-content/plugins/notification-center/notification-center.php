@@ -275,7 +275,7 @@ function NotifyOnMedia($post, $category_slugs) {
 
 	$subject = "Neuer Bericht: $post_title";
 
-	$message = FillTemplate('new_post', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url));
+	$message = NotificationCenterFillTemplate('new_post', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url));
 
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
@@ -285,7 +285,7 @@ function NotifyOnMedia($post, $category_slugs) {
  */
 function NotifyOnNewsletter($post, $category_slugs) {
 	$subject = $post->post_title;
-	$message = FillTemplate('newsletter', array('CONTENT' => $post->post_content));
+	$message = NotificationCenterFillTemplate('newsletter', array('CONTENT' => $post->post_content));
 
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
@@ -308,7 +308,7 @@ function NotifyOnEvent($post, $category_slugs) {
 	}
 
 	$subject = "Neue Veranstaltung: ".$post->post_title;
-	$message = FillTemplate('event', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags)));
+	$message = NotificationCenterFillTemplate('event', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags)));
 
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
@@ -348,7 +348,7 @@ function NotificationCenterPendingPostHook($post_id, $post) {
 	$editors = get_users(array('role' => 'editor'));
 
 	$subject = "Ein Beitrag wartet auf Freigabe";
-	$message = FillTemplate('notify_editor', array('URL' => admin_url( 'edit.php' )));
+	$message = NotificationCenterFillTemplate('notify_editor', array('URL' => admin_url( 'edit.php' )));
 
 	foreach($editors as $current)
 		NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
@@ -356,7 +356,7 @@ function NotificationCenterPendingPostHook($post_id, $post) {
 
 add_action( 'pending_post', 'NotificationCenterPendingPostHook', 10, 2);
 
-function FillTemplate($template, $values) {
+function NotificationCenterFillTemplate($template, $values) {
 	$notification_templates = array('notify_editor' => '
 <p>Ein neuer Beitrag wartet auf Freigabe!</p>
 <p><a href="%URL%">Hier</a> gehts direkt zur Liste.</p>
