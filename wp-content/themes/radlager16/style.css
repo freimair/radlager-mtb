@@ -29,6 +29,19 @@
 
 
 
+
+
+@media (min-width:910px) { 
+.main-navigation ul.primary-menu li:nth-child(n+3) {
+	float: right;
+	}   
+}
+
+
+
+
+
+
 article.post {
     padding: 1%;
 	
@@ -449,21 +462,21 @@ optgroup {
 	font-family: Lato-Black;
 	local: Lato-Black;
 	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');*/
-	src: url(http://localhost/radlager16/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');
+	src: url(http://localhost/radlager-mtb/wp-content/themes/radlager16/Fonts/Lato-Black.ttf) format('truetype');
 }
 
 @font-face {      
 	font-family: Lato-Bold;
 	local: Lato-Black;
 	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');*/
-	src: url(http://localhost/radlager16/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');
+	src: url(http://localhost/radlager-mtb/wp-content/themes/radlager16/Fonts/Lato-Bold.ttf) format('truetype');
 }
 
 @font-face {      
 	font-family: Lato-Regular;
 	local: Lato-Black;
 	/*src: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');*/
-	src: url(http://localhost/radlager16/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');
+	src: url(http://localhost/radlager-mtb/wp-content/themes/radlager16/Fonts/Lato-Regular.ttf) format('truetype');
 }
 
 
@@ -1053,10 +1066,6 @@ a:active {
 	
 }
 
-.main-navigation ul.primary-menu li:nth-child(n+3)
-{
-	float:right;
-}
 
 
 .site-header-menu.toggled-on,
