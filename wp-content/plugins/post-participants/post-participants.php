@@ -326,19 +326,34 @@ function PostParticipantsNotifyOnComment( $comment_ID, $comment_approved ) {
 	if( 1 !== $comment_approved )
 		return;
 
-	$comment = get_comment($comment_id);
+	$comment = get_comment($comment_ID);
 	$post_id = $comment->comment_post_ID;
 	$post = get_post($post_id);
 
-	// notify the post creator
-	NotificationCenter_NotifyUser(array('event_participation'), $post->post_author, __("Ein neuer Kommentar wurde abgegeben"), $comment->content);
+	$post_title = $post->post_title;
+	$post_url = site_url()."/index.php/veranstaltungen?post-".$post->ID;
+	$date = get_field('startdatum', $post->ID);
+	$location = maybe_unserialize(get_field('ort', $post->ID)['address']);
+
+	$categories = get_the_category($post->ID);
+	foreach($categories as $current) {
+		$tags[] = $current->cat_name;
+	}
+
+	$comments = "comments";
+
+	$subject = "Veranstaltungsupdate: ".$post->post_title;
+	$message = NotificationCenterFillTemplate('comment', array('TITLE' => $post_title, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags), 'COMMENTS' => $comments));
 
 	// fetch subscribed users
 	$participating_users = PostParticipantsGetSubscribedUsers($post_id);
+	// add post creator
+	$participating_users[] = $post->post_author;
+	$participating_users = array_unique($participating_users);
 
 	// notify them
 	foreach($participating_users as $participating_user)
-		NotificationCenter_NotifyUser(array('event_participation'), $participating_user, __("Ein neuer Kommentar wurde abgegeben"), $comment->content);
+		NotificationCenter_NotifyUser(array('event_participation'), $participating_user, $subject, $message);
 }
 
 add_action( 'comment_post', 'PostParticipantsNotifyOnComment', 10, 2 );

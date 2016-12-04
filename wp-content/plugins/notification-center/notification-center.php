@@ -380,6 +380,15 @@ function NotificationCenterFillTemplate($template, $values) {
 <strong>Tags:</strong> %TAGS%</p>
 <p><a href="%URL%">Hier</a> gehts zu allen Details und zur Anmeldung.</p>
 ';
+	$notification_templates['comment'] = '
+<p>Eine Veranstaltung zu der du angemeldet bist wurde kommentiert!</p>
+<p><strong>Titel:</strong> %TITLE%<br />
+<strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
+<ul>%COMMENTS%</ul>
+<p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+';
 
 	$filled = $notification_templates[$template];
 	foreach($values as $key => $value)
