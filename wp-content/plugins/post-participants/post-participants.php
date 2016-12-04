@@ -322,7 +322,10 @@ function PostParticipantsGetSubscribedUsers($post_id) {
 	return $result;
 }
 
-function wp_notify_postauthor($comment_id) {
+function PostParticipantsNotifyOnComment( $comment_ID, $comment_approved ) {
+	if( 1 !== $comment_approved )
+		return;
+
 	$comment = get_comment($comment_id);
 	$post_id = $comment->comment_post_ID;
 	$post = get_post($post_id);
@@ -337,4 +340,6 @@ function wp_notify_postauthor($comment_id) {
 	foreach($participating_users as $participating_user)
 		NotificationCenter_NotifyUser(array('event_participation'), $participating_user, __("Ein neuer Kommentar wurde abgegeben"), $comment->content);
 }
+
+add_action( 'comment_post', 'PostParticipantsNotifyOnComment', 10, 2 );
 ?>
