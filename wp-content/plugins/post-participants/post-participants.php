@@ -340,7 +340,11 @@ function PostParticipantsNotifyOnComment( $comment_ID, $comment_approved ) {
 		$tags[] = $current->cat_name;
 	}
 
-	$comments = "comments";
+	$commentlist = get_comments( array('post_id' => $post->ID, 'number' => 3, 'status' => 'approve' ));
+	foreach($commentlist as $current) {
+		$comments .= '<li><strong>'.$current->comment_author.':</strong> '.$current->comment_content.'</li>';
+	}
+	$comments .= '<li>...</li>';
 
 	$subject = "Veranstaltungsupdate: ".$post->post_title;
 	$message = NotificationCenterFillTemplate('comment', array('TITLE' => $post_title, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags), 'COMMENTS' => $comments));
