@@ -102,8 +102,11 @@ function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	foreach($rows as $current) {
 		switch($current->meta_key) {
 			case 'mail' :
-				//wp_mail( 'admin@example.com', $subject, $message );
-				break;	// TODO implement email notification
+				$headers[] = 'From: Radlager Website <no-reply@radlager-mtb.at>';
+				$headers[] = 'Content-Type: text/html;';
+				$user = get_user_by('id', $user_id);
+				wp_mail($user->user_email, $subject, $message, $headers);
+				break;
 			case 'pm' :
 				// save to database
 				$sql = $wpdb->prepare("INSERT INTO $notification_center_table_name (user_id,date_time,subject,message) VALUES (%d,%s,%s,%s);", array($user_id, date("Y-m-d H:i:s"), $subject, $message));
