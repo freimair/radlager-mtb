@@ -198,21 +198,45 @@ function radlager_membership_notify_users($state) {
 		case 'reset':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				update_user_meta($current->ID, 'radlager_membership_fee_status', 'open');
-				NotificationCenter_NotifyUser(array('administrative'), $current->ID, __('Der Mitgliedbeitrag ist fällig'), __('Mehr Info auf der Website!'));
+
+				$username = get_user_meta($current->ID, 'first_name', true);
+				if(empty($username))
+					$username = $current->user_login;
+
+				$subject = 'Der Mitgliedsbeitrag für '.date("Y", strtotime("next year")).' ist fällig';
+				$message = NotificationCenterFillTemplate('membership_reminder', array('FIRSTNAME' => $username));
+				NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
 			}
 			break;
 		case 'reminder':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				$usermeta = get_user_meta($user_id, 'radlager_membership_fee_status', true);
-				if(!empty($usermeta))
-					NotificationCenter_NotifyUser(array('administrative'), $current->ID, __('Der Mitgliedbeitrag ist fällig'), __('Mehr Info auf der Website!'));
+				if(!empty($usermeta)) {
+
+					$username = get_user_meta($current->ID, 'first_name', true);
+					if(empty($username))
+						$username = $current->user_login;
+
+					$subject = 'Der Mitgliedsbeitrag für '.date("Y", strtotime("next year")).' ist fällig';
+					$message = NotificationCenterFillTemplate('membership_reminder', array('FIRSTNAME' => $username));
+					NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
+				}
 			}
 			break;
 		case 'kick':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				$usermeta = get_user_meta($user_id, 'radlager_membership_fee_status', true);
-				if(!empty($usermeta) && !in_array('administrator',$current->roles))
+				if(!empty($usermeta) && !in_array('administrator',$current->roles)) {
+
+					$username = get_user_meta($current->ID, 'first_name', true);
+					if(empty($username))
+						$username = $current->user_login;
+
 					$current->set_role('subscriber');
+					$subject = 'Der Mitgliedsbeitrag für '.date("Y", strtotime("next year")).' ist fällig';
+					$message = NotificationCenterFillTemplate('membership_leave', array('FIRSTNAME' => $username));
+					NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
+				}
 			}
 			break;
 	}
