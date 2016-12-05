@@ -20,8 +20,7 @@
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 	<?php endif; ?>
 	<?php wp_head(); ?>
-	<script type="text/javascript" src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/js/header-functions.js"></script>
-  <script type="text/javascript" src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/js/imagesloaded.pkgd.min.js"></script>
+
 	<!-- google analytcs tracking code -->
 
 	<script>
@@ -77,14 +76,38 @@
 					</div><!-- .site-header-menu -->
 				<?php endif; ?>
 				
+				<div class="site-branding">
+					<?php if ( is_front_page() && is_home() ) : ?>
+						<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<?php else : ?>
+						<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+					<?php endif; ?>
+				</div><!-- .site-branding -->
 
+				
+				
+				
+				<div class="banner">
+					<div class="RL-Logo_oben">
+					</div>
+					
+				
+					<div class="RL-Logo">
+						
+					</div>
 
+					<a target="_blank" href="https://www.facebook.com/RadlagerMTB">
+					<div class="FB-Button">
+						<img style="margin-top:-3px;" src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/SVG/facebook-icon-header.png">&nbsp;&nbsp;Radlager auf Facebook
+					</div>
+					</a>
+				
 					<div class="nav_to_subsite" ><a href="<?php 
 // TODO that is nasty. fix that someday!
 if("area_one" == $navigation)
 	echo get_site_url() ;
 else
-	echo get_site_url() . "/index.php/areaonemedien/"; ?>" style="display: block; width: 100%; height: 100%"></a></div>
+	echo get_site_url() . "/index.php/area_one_medien/"; ?>" style="display: block; width: 100%; height: 100%"></a></div>
 				</div>
 				
 				
@@ -115,4 +138,5 @@ else
 				</div><!-- .header-image -->
 			<?php endif; // End header image check. ?>
 		</header><!-- .site-header -->
-	
+	<div class="site-inner">
+		<div id="content" class="site-content">

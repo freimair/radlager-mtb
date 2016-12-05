@@ -8,59 +8,29 @@
  */
 ?>
 
-
-
-
 	<header class="entry-header">
 		<?php if ( is_sticky() && is_home() && ! is_paged() ) : ?>
 			<span class="sticky-post"><?php _e( 'Featured', 'twentysixteen' ); ?></span>
 		<?php endif; ?>
 
-	<div class="article-meta">
-		
-		<div id="category">
-			<?php foreach((get_the_category()) as $category) {echo $category->cat_name . ' ';}?>
-		</div>
-		<div id="date">
-			<?php the_date('j F, Y'); ?>
-		</div>	
-	</div>
+		<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
+		<a class="permalink" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>">permalink</a>
 
-		
-		
-	
+		<div class="article-meta">
+
+			<?php foreach((get_the_category()) as $category) {echo $category->cat_name . ' ';}?>
+			<?php the_date('F j, Y'); ?>
+
+		</div>
 
 	</header><!-- .entry-header -->
-	
+
 	<!-- moved footer forward -->
 	<footer class="entry-footer">
-	
-		
 	</footer><!-- .entry-footer -->
-	
 
-	
-	<div class="artcont" id="<?php foreach((get_the_category()) as $category){echo $category->cat_name . '';}?>">
-	
-	
-	<div style="position: relative";>
-		<?php if ( has_post_thumbnail() ) : ?>
-    	 <?php twentysixteen_post_thumbnail('full'); ?>
-	    <span style="position:absolute; bottom: 20px; background-color: rgba(23, 38, 21, 0.63); width:	100%">  <?php the_title( '<h2 class="entry-title">', '</a></h2>' ); ?></span>
-	
-
-<?php else: the_title( '<h2 class="entry-title">', '</a></h2>' ); 
- endif; ?>
-
-
-	</div>	
-	 
-	
-
-	
+	<?php twentysixteen_post_thumbnail(); ?>
 	<?php twentysixteen_excerpt(); ?>
-
-	
 
 	<div class="entry-content">
 		<?php
@@ -87,6 +57,5 @@
 		?>
 	</div><!-- .entry-content -->
 
-	</div>
 	
 	

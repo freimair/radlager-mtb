@@ -89,7 +89,6 @@ function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	global $wpdb, $notification_center_table_name;
 
 	$subject = sanitize_text_field($subject);
-	$message = sanitize_text_field($message);
 
 	// trigger notifications
 	// fetch user notification settings
@@ -103,8 +102,11 @@ function NotificationCenter_NotifyUser($hooks, $user_id, $subject, $message) {
 	foreach($rows as $current) {
 		switch($current->meta_key) {
 			case 'mail' :
-				//wp_mail( 'admin@example.com', $subject, $message );
-				break;	// TODO implement email notification
+				$headers[] = 'From: Radlager Website <no-reply@radlager-mtb.at>';
+				$headers[] = 'Content-Type: text/html;';
+				$user = get_user_by('id', $user_id);
+				wp_mail($user->user_email, $subject, $message, $headers);
+				break;
 			case 'pm' :
 				// save to database
 				$sql = $wpdb->prepare("INSERT INTO $notification_center_table_name (user_id,date_time,subject,message) VALUES (%d,%s,%s,%s);", array($user_id, date("Y-m-d H:i:s"), $subject, $message));
@@ -145,7 +147,7 @@ function NotificationCenter_ListMessages( $atts ) {
 
 	echo "<ul>";
 	foreach ($messages as $currentmessage) {
-	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".esc_html($currentmessage->message).' <input id="notification_center_delete_message" type="button" value="'.__('Löschen').'" onclick="NotificationCenter_DeleteMessage(jQuery(this), '.esc_attr($currentmessage->id).')"/></li>';
+	    echo "<li>".esc_html($currentmessage->date_time)." - ".esc_html($currentmessage->subject).": ".$currentmessage->message.' <input id="notification_center_delete_message" type="button" value="'.__('Löschen').'" onclick="NotificationCenter_DeleteMessage(jQuery(this), '.esc_attr($currentmessage->id).')"/></li>';
 	}
 	echo "</ul>";
 
@@ -183,7 +185,7 @@ function NotificationCenter_Settings( $atts ) {
 	}
 
 	// add special subscription hooks
-	$notification_slugs[__('sonstige Inhalte')] = array('event_participation' => __('Teilnameinformationen'), 'administrative' => __('Administratives'));
+	$notification_slugs[__('sonstige Inhalte')] = array('event_participation' => __('Teilnahmeinformationen'), 'administrative' => __('Administratives'), 'newsletter' => __('Newsletter'));
 
 	// gather contact options
 	$contact_options['mail'] = __('Email'); // every user has a mail contact option
@@ -265,33 +267,164 @@ function NotificationCenterScripts() {
 
 add_action('init', 'NotificationCenterScripts');
 
-function NotificationCenterUpdatePostHook( $post_id, $post ) {
+/**
+ * Notification Hook for informing users on freshly published media posts.
+ */
+function NotifyOnMedia($post, $category_slugs) {
 	$post_title = $post->post_title;
-	$post_url = get_permalink( $post_id );
+	$post_url = site_url()."/index.php?post-".$post->ID;
+	$img_url = get_the_post_thumbnail_url($post->ID);
+	$teaser_text = substr($post->post_content, 0, strlen($post->post_content) > 300 ? 300 : strlen($post->post_content));
 
-	$categories = get_the_category($post_id);
-	$category_slugs = array();
-	foreach($categories as $current)
-		$category_slugs[] = $current->slug;
+	$subject = "Neuer Bericht: $post_title";
 
-	$subject = 'Neues auf der Website';
-
-	$message = "Neuer Content auf der Website:\n\n";
-	$message .= $post_title . ": " . $post_url;
+	$message = NotificationCenterFillTemplate('new_post', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url));
 
 	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
 }
-add_action( 'pending_to_publish_post', 'NotificationCenterUpdatePostHook', 10, 2 );
 
+/**
+ * Notification Hook for informing users on newsletters.
+ */
+function NotifyOnNewsletter($post, $category_slugs) {
+	$subject = $post->post_title;
+	$message = NotificationCenterFillTemplate('newsletter', array('CONTENT' => $post->post_content));
+
+	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
+}
+
+/**
+ * Notification Hook for informing users on events.
+ */
+function NotifyOnEvent($post, $category_slugs) {
+	$post_title = $post->post_title;
+	$post_url = site_url()."/index.php/veranstaltungen?post-".$post->ID;
+	$img_url = get_the_post_thumbnail_url($post->ID);
+	$teaser_text = substr($post->post_content, 0, strlen($post->post_content) > 300 ? 300 : strlen($post->post_content));
+
+	$date = get_field('startdatum', $post->ID);
+	$location = maybe_unserialize(get_field('ort', $post->ID)['address']);
+
+	$categories = get_the_category($post->ID);
+	foreach($categories as $current) {
+		$tags[] = $current->cat_name;
+	}
+
+	$subject = "Neue Veranstaltung: ".$post->post_title;
+	$message = NotificationCenterFillTemplate('event', array('TITLE' => $post_title, 'IMG' => $img_url, 'TEASER' => $teaser_text, 'URL' => $post_url, 'DATE' => $date, 'LOCATION' => $location, 'TAGS' => implode(", ", $tags)));
+
+	NotificationCenter_NotifyUsers($category_slugs, $subject, $message);
+}
+
+/**
+ * Hook for any publish action. Used as a duplexer point.
+ */
+function NotificationCenterPublishPostHook($post_id, $post) {
+	// gather categories so that we can decide which notification to trigger
+	$categories = get_the_category($post->ID);
+
+	foreach($categories as $current) {
+		$category_slugs[] = $current->slug;
+
+		while(null != $current->parent) {
+			$current = get_category($current->parent);
+			$category_slugs[] = $current->slug;
+		}
+	}
+
+	$category_slugs = array_unique($category_slugs);
+
+	if(in_array('media', $category_slugs) || in_array('trailbau', $category_slugs)) {
+		NotifyOnMedia($post, $category_slugs);
+	} else if(in_array('newsletter', $category_slugs)) {
+		NotifyOnNewsletter($post, $category_slugs);
+	} else if(in_array('veranstaltungen', $category_slugs)) {
+		NotifyOnEvent($post, $category_slugs);
+	}
+}
+add_action(  'publish_post',  'NotificationCenterPublishPostHook', 10, 3 );
+
+/**
+ * Notification Hook for notifying editors on new pending posts.
+ */
 function NotificationCenterPendingPostHook($post_id, $post) {
 	$editors = get_users(array('role' => 'editor'));
 
 	$subject = "Ein Beitrag wartet auf Freigabe";
+	$message = NotificationCenterFillTemplate('notify_editor', array('URL' => admin_url( 'edit.php' )));
 
 	foreach($editors as $current)
-		NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, get_permalink($post_id));
+		NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
 }
 
 add_action( 'pending_post', 'NotificationCenterPendingPostHook', 10, 2);
+
+function NotificationCenterFillTemplate($template, $values) {
+	$notification_templates = array('notify_editor' => '
+<p>Ein neuer Beitrag wartet auf Freigabe!</p>
+<p><a href="%URL%">Hier</a> gehts direkt zur Liste.</p>
+<p>Danke!</p>
+<p>Deine Radlager-Mtb Website</p>
+');
+	$notification_templates['new_post'] = '
+<p>Radlager-Mtb hat einen neuen Bericht für dich der dich interessieren könnte!</p>
+<h1>%TITLE%</h1>
+<p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
+<p>Viel Spass beim Lesen!</p>
+<p>Deine Radlager-Mtb Website</p>
+';
+	$notification_templates['newsletter'] = '
+%CONTENT%
+';
+	$notification_templates['event'] = '
+<p>Radlager-Mtb hat eine neue Veranstaltung die dich interessieren könnte!</p>
+<h1>%TITLE%</h1>
+<p><img src="%IMG%" width="250px" style="float:left; margin-right:10px;">%TEASER%... <a href="%URL%">weiterlesen</a></p>
+<p><strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
+<p><a href="%URL%">Hier</a> gehts zu allen Details und zur Anmeldung.</p>
+<p>Deine Radlager-Mtb Website</p>
+';
+	$notification_templates['comment'] = '
+<p>Eine Veranstaltung zu der du angemeldet bist wurde kommentiert!</p>
+<p><strong>Titel:</strong> %TITLE%<br />
+<strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
+<ul>%COMMENTS%</ul>
+<p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+<p>Deine Radlager-Mtb Website</p>
+';
+	$notification_templates['eventanmeldung'] = '
+<p>Du hast dich zu einer Veranstaltung <strong>angemeldet</strong>!</p>
+<p><strong>Titel:</strong> %TITLE%<br />
+<strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
+<p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+<p>Deine Radlager-Mtb Website</p>
+';
+	$notification_templates['eventabmeldung'] = '
+<p>Du hast dich oder wurdest von folgender Veranstaltung <strong>abgemeldet</strong>!</p>
+<p><strong>Titel:</strong> %TITLE%<br />
+<strong>Wann:</strong> %DATE%<br />
+<strong>Wo:</strong> %LOCATION%<br />
+<strong>Tags:</strong> %TAGS%</p>
+<p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
+<p>Deine Radlager-Mtb Website</p>
+';
+
+	$filled = $notification_templates[$template];
+	foreach($values as $key => $value)
+		$filled = preg_replace("/%$key%/", $value, $filled);
+
+	// add some general information to the foot of each message
+	$filled .= '
+<p style="font-size: smaller;">Bitte beachte, dass dies eine automatisch generierte Nachricht ist. Nachrichten an diese eMail Adresse werden <strong>nicht</strong> gelesen.</p>
+<p style="font-size: smaller;">Wenn dir diese Nachrichten schon auf die Nerven gehen kannst du in deinem <a href="'.site_url("index.php/profil").'">Profil</a> deine persönlichen Benachrichtungseinstellungen ändern!</p>';
+
+	return $filled;
+}
 
 ?>

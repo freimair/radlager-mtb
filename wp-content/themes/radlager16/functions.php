@@ -222,9 +222,13 @@ function twentysixteen_scripts() {
 		'collapse' => __( 'collapse child menu', 'twentysixteen' ),
 	) );
 
-	wp_enqueue_script( 'radlager16_pagination_and_filtering', get_template_directory_uri() . '/js/paginationAndFiltering.js', array('jquery'), '20160626', true );
+	wp_enqueue_script( 'radlager16_pagination_and_filtering', get_template_directory_uri() . '/js/paginationAndFiltering.js', array('jquery'), '20161127', true );
 
 	wp_enqueue_script( 'radlager16_masonry_script', get_template_directory_uri() . '/js/masonry.pkgd.min.js', array('jquery'), '20160626', true);
+
+	wp_enqueue_script( 'googlemapsforevents', get_template_directory_uri() . '/js/googlemapsforevents.js', array('jquery'), '20161127');
+
+	wp_enqueue_script( 'headerfunctions', get_template_directory_uri() . '/js/header-functions.js', array('jquery'), '20161127');
 }
 add_action( 'wp_enqueue_scripts', 'twentysixteen_scripts' );
 
@@ -373,5 +377,16 @@ function twentysixteen_widget_tag_cloud_args( $args ) {
 	return $args;
 }
 add_filter( 'widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args' );
+
+/**
+ * fix redirect after posting a comment.
+ *
+ * It happens that there is always a #comment-id behind the url and that breaks our stuff.
+ */
+function clean_post_comment_link( $location, $comment) {
+	wp_redirect(preg_split("/#/", $location)[0]);
+	exit();
+}
+add_filter( 'comment_post_redirect', 'clean_post_comment_link' );
 
 ?>

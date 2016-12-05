@@ -1,7 +1,7 @@
 
 
 
-	
+	<main id="main" class="site-main" role="main">
 		<?php
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
@@ -62,6 +62,8 @@
 		$tmp = array_keys($filters);
 		if('veranstaltungen' == get_category(get_category($tmp[0])->parent)->slug)
 			$type = 'event';
+		else if('areaone-veranstaltungen' == get_category(get_category($tmp[0])->parent)->slug)
+			$type = 'event';
 		else if('medien' == get_category(get_category($tmp[0])->parent)->slug)
 			$type = 'media';
 		else
@@ -74,14 +76,13 @@
 		// remove duplicate entries just in case
 		array_unique($filters);
 
-
 		// show create post form if applicable
 		if (function_exists('frontend_edit_posts_form') && $allow_reporting) {
 			if("categories" === $filtermode) {
 				$tmp = '';
 				// assemble categories from filter list
 				foreach ($filters as $key => $value) {
-				    $tmp .= $key.",";
+				    $tmp .= $key.", ";
 				}
 
 				// render editor
@@ -89,68 +90,7 @@
 			}
 		}
 ?>
-
-	<aside id="secondary" class="sidebar widget-area" role="complementary">
-		<ul>
-		<?php
-		// create the filter controls
-		// do a listitem for each filter
-		foreach ($filters as $key => $value):
-		?>
-			<li class="filter" value="<?php echo $key.'">'.$value; ?></li>
-		<?php
-		endforeach;
-		?>
-		</ul>
-
-	</aside><!-- .sidebar .widget-area -->
-	
-				
-				
-				<div class="banner">
-					<div class="RL-Logo_oben">
-					</div>
-					
-				
-					<div class="RL-Logo">
-						
-					</div>
-
-					<a target="_blank" href="https://www.facebook.com/RadlagerMTB">
-					<div class="FB-Button">
-						<img style="margin-top:-3px;" src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/SVG/facebook-icon-header.png">&nbsp;&nbsp;Radlager auf Facebook
-					</div>
-					</a>
-				</div>	
-	
-
-<div class="site-inner">
-		<div id="content" class="site-content">
-
-<main id="main" class="site-main" role="main">
-	
-	
-	
-	<!-- 	<div id="masonry-grid" data-masonry='{ "itemSelector": ".post", "percentPosition": "true"}'> -->
-<!-- 	
-	<script type="text/javascript">
-	
-	
-jQuery(document).ready(function() {	
-jQuery('#masonry-grid').imagesLoaded( function() {
-    jQuery('#masonry-grid').masonry({
-        itemSelector: '.post',
-        percentPosition: true,
-   
-    }); 
-});
-});
-	</script>-->
-	
-
-<div id="masonry-grid" >
-
-
+		<div id="masonry-grid" data-masonry='{ "itemSelector": ".post", "percentPosition": "true"}'>
 <?php
 
 		// create new loop based on the categories named in the title of the post
@@ -219,15 +159,51 @@ jQuery('#masonry-grid').imagesLoaded( function() {
 	</div>
 	</main><!-- .site-main -->
 
-  <?php get_sidebar( 'content-bottom' ); ?>
+	<?php get_sidebar( 'content-bottom' ); ?>
 
 </div><!-- .content-area -->
 
+<script type="text/javascript">
 
+jQuery(document).ready(function() {
+jQuery(window).scroll(function(){
+    var fromTopPx = 200; // distance to trigger
+    var scrolledFromtop = jQuery(window).scrollTop();
+    if(scrolledFromtop > fromTopPx){
+        jQuery('#up').addClass('scrolled');
+    }else{
+        jQuery('#up').removeClass('scrolled');
+    }
+});
+jQuery('#up').click(function() {
+        jQuery('html, body').stop().animate({
+           scrollTop: 1
+        }, 600)
+    });
+ });
+
+</script>
 
 <span id="up"></span>
 
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<ul>
+		<?php
+		// create the filter controls
+		// do a listitem for each filter
+		foreach ($filters as $key => $value):
+		?>
+			<li class="filter" value="<?php echo $key.'">'.$value; ?></li>
+		<?php
+		endforeach;
+		?>
+			<li class="filter">
+				<input id="searchbox" type="text" name="searchterm" value="">
+				<input id="clearsearch" type="button" value="X" onclick="jQuery('#searchbox').val(''); updateFilter();">
+			</li>
+			<li class="filter" id="permalink" style="display:none;">Permalink</li>
+		</ul>
 
-
+	</aside><!-- .sidebar .widget-area -->
 
 <?php get_footer(); ?>
