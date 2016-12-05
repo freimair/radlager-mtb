@@ -187,9 +187,8 @@ function radlager_membership_notify_users($state) {
 	if(empty($state)) {
 		krsort($transitions);
 		foreach ($transitions as $key => $value) {
-			if(date("m-d") < $key)
-				$state = $key;
-			else
+			$state = $key;
+			if(date("m-d") >= $key)
 				break;
 		}
 	}
@@ -219,9 +218,9 @@ function radlager_membership_notify_users($state) {
 	}
 
 	// calculate next execution timestamp
-	$next_date = strtotime(date("Y").'-'.$state);
+	$next_date = strtotime(date("Y").'-'.$transitions[$state]);
 	if(time() > $next_date)
-		$next_date = strtotime(date("Y", strtotime("next year")).'-'.$state);
+		$next_date = strtotime(date("Y", strtotime("next year")).'-'.$transitions[$state]);
 
 	// schedule next execution
 	wp_schedule_single_event($next_date, 'radlager_membership_notify_users', $transition[$state]);
