@@ -57,13 +57,15 @@ function RadlagerMembershipStatus( $atts ) {
 	// check the payment status
 	$payment_status = get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true);
 	$show_button = true;
-	if('open' !== $payment_status) {
-		echo '<div class="payment_status">'.__("Du hast bereits bezahlt.").'</div>';
-		$show_button = false;
-	}
+
 
 	// start gathering the HTML output
 	ob_start();
+
+	if('open' !== $payment_status) {
+		echo '<div class="payment_status">'.__("Du hast bereits bezahlt. Danke!").'</div>';
+		$show_button = false;
+	}
 
 	if($show_button) :
 ?>
