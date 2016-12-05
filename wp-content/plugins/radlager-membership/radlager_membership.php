@@ -180,9 +180,13 @@ add_filter( 'pre_user_query', 'pre_user_query');
 add_filter( 'query_vars', 'add_query_vars_filter' );
 */
 
+function getTransitions() {
+	return array('11-01' => '01-15', '01-15' => '02-01', '02-01' => '02-14', '02-14' => '03-01', '03-01' => '11-01');
+}
+
 // setup and maintain cron job
 function radlager_membership_notify_users($state) {
-	$transitions = array('11-01' => '01-15', '01-15' => '02-01', '02-01' => '02-14', '02-14' => '03-01', '03-01' => '11-01');
+	$transitions = getTransitions();
 	$action = array('11-01' => 'reset', '01-15' => 'reminder', '02-01' => 'reminder', '02-14' => 'reminder', '03-01' => 'kick');
 
 	// find start state if we just got fired up
@@ -249,12 +253,23 @@ function radlager_membership_notify_users($state) {
 		$next_date = strtotime(date("Y", strtotime("next year")).'-'.$transitions[$state]);
 
 	// schedule next execution
-	wp_schedule_single_event($next_date, 'radlager_membership_notify_users', $transition[$state]);
+	wp_schedule_single_event($next_date, 'radlager_membership_notify_users', $transitions[$state]);
 }
 add_action( 'radlager_membership_notify_users','radlager_membership_notify_users' );
 
 // start cron-job on plugin activation
 register_activation_hook(__FILE__, 'radlager_membership_notify_users');
+
+// stop cron-job on plugin deactivation
+function radlager_membership_deactivate_cron() {
+	$transitions = getTransitions();
+
+	foreach($transitions as $key => $value) {
+		$nextrun = wp_next_scheduled('radlager_membership_notify_users', $key);
+		wp_unschedule_event($nextrun, 'radlager_membership_notify_users', $key);
+	}
+}
+register_deactivation_hook(__FILE__, 'radlager_membership_deactivate_cron');
 
 /**
  * Member list utils
