@@ -1,5 +1,5 @@
 jQuery(document).on('resize ready', function(){
-	jQuery(".post_participate").off(".click");
+	jQuery(document).off("click", ".post_participate");
 	jQuery(document).on("click", ".post_participate", function(e){
 		e.preventDefault();
 		var post_id = jQuery(this).attr("data-post_id");
@@ -32,8 +32,8 @@ jQuery(document).on('resize ready', function(){
 		});
 	});
 
-	jQuery(".PostParticipantsKickParticipant").off("click");
-	jQuery(".PostParticipantsKickParticipant").click(function(e) {
+	jQuery(document).off("click", ".PostParticipantsKickParticipant");
+	jQuery(document).on("click", ".PostParticipantsKickParticipant", function(e) {
 		var user_id = jQuery(this).attr("data-user_id");
 		var post_id = jQuery(this).attr("data-post_id");
 		jQuery.ajax({
