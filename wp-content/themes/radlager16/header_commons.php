@@ -16,6 +16,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="google-site-verification" content="nF70r7qfX7zntMZneQKWqzGiPuAPYNYIrFkaf_tuiUE" />
 	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="stylesheet" href="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 	<?php if ( is_singular() && pings_open( get_queried_object() ) ) : ?>
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 	<?php endif; ?>
