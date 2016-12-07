@@ -30,7 +30,7 @@
 
 @media screen and (min-width: 1025px) {
 	article.post {
-		width: 33%;
+		width: 33.3%;
 		float: left;
 	}
 }
@@ -120,22 +120,41 @@
 
 article.post {
     padding: 1%;
-	
-	
 
 }
+
+.article-title{
+	position: absolute;
+	bottom: 20px;
+	background-color: rgba(23, 38, 21, 0.63);
+	width: 100%;
+}
+
+
+.category-news.artcont {
+	background-color: rgba(17, 72, 32, 0.26)!important;
+}
+
+.category-fotoblog-trailbau-villach.artcont {
+	background-color: rgba(51, 27, 18, 0.39)!important;
+}
+
+
 
 .artcont{
-background-color: rgba(191, 191, 191, 0.34);
+	background-color: rgba(191, 191, 191, 0.34);
     border-radius: 10px;
     padding: 15px;
 }
 
-#News{
-background-color: rgb(165, 181, 166);
-    border-radius: 10px;
-    padding: 15px;
+.category-news .artcont {
+	background-color: rgb(165, 181, 166);
 }
+
+.category-fotoblog-trailbau-villach .artcont {
+	background-color: rgba(62, 29, 19, 0.35);
+}
+
 
 
 article.post img {
@@ -1963,7 +1982,7 @@ blockquote:after,
 
 .banner {
 	width: 100%;
-	margin-top: 134px;
+	margin-top: 75px;
 	background-size: cover;
 	position: relative;
 	z-index: 2;

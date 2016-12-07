@@ -13,14 +13,18 @@
 			<span class="sticky-post"><?php _e( 'Featured', 'twentysixteen' ); ?></span>
 		<?php endif; ?>
 
-		<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
-		<a class="permalink" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>">permalink</a>
+
+
 
 		<div class="article-meta">
-
-			<?php foreach((get_the_category()) as $category) {echo $category->cat_name . ' ';}?>
-			<?php the_date('F j, Y'); ?>
-
+	
+			<div id="category">
+				<?php foreach((get_the_category()) as $category) {echo $category->cat_name . ' ';}?>
+			</div>
+			
+			<div id="date">
+				<?php the_date('j F, Y'); ?>
+			</div>	
 		</div>
 
 	</header><!-- .entry-header -->
@@ -28,11 +32,23 @@
 	<!-- moved footer forward -->
 	<footer class="entry-footer">
 	</footer><!-- .entry-footer -->
+	
+	
+	<div class="artcont" id="<?php foreach((get_the_category()) as $category){echo $category->cat_name . ' ';}?>">	
+		<div style="position: relative";>
 
-	<?php if (has_post_thumbnail( $post->ID ) ): ?>
-		<?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' ); ?>
-		<img  id="custom-bg" src="<?php echo $image[0]; ?>">
-	<?php endif; ?>
+			<?php if (has_post_thumbnail( $post->ID ) ): ?>
+				<?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' ); ?>
+				<img  id="custom-bg" src="<?php echo $image[0]; ?>">
+		<div class="article-title">  <a class="permalink" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>"><?php the_title( '<h2 class="entry-title">', '</h2></a>' ); ?></div>
+	
+
+			<?php else: the_title( '<h2 class="entry-title">', '</a></h2>' ); 
+			 endif; ?>
+
+
+	</div>	
+	 
 
 
 
@@ -61,6 +77,7 @@
 <?php
 			endif;
 		?>
+		</div>
 	</div><!-- .entry-content -->
 
 	
