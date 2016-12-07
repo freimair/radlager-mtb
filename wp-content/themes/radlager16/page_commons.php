@@ -165,6 +165,10 @@
 
 
 	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		
+		<button id="searchbutton" onclick="togglesearch()"><i class="fa fa-search fa-3x" aria-hidden="true"></i></button>
+		
+		<div class="filter_and_search">
 		<ul>
 		<?php
 		// create the filter controls
@@ -181,7 +185,7 @@
 			</li>
 			<li class="filter" id="permalink" style="display:none;">Permalink</li>
 		</ul>
-
+		</div>
 	</aside><!-- .sidebar .widget-area -->
 
 <?php get_footer(); ?>

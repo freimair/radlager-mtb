@@ -12,3 +12,11 @@ jQuery(window).scroll(function() {
 		jQuery(".RL-Logo_oben").css({"display":"block","opacity":"0"});
 	}
 	});
+
+
+// show and hide for search button menu
+
+  function togglesearch () {
+        jQuery("#searchbutton .fa").toggleClass("fa-window-close-o");
+        jQuery(".filter_and_search").toggle(0);
+	};

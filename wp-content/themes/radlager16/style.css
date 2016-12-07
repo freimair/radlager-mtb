@@ -163,6 +163,26 @@ article.post:hover{
 }
 
 
+.filter_and_search{
+	border-radius: 10px 0 0 10px;	
+	padding: 10px;
+	font-family: "Lato-Regular";
+	font-size: 12pt;
+	text-transform: uppercase;
+	color: #ffffff;
+	letter-spacing: 0.01em;
+	line-height: 1.8em;
+	cursor: pointer;
+	background-color: #3c3d3c;
+	display: none;
+
+}
+
+button#searchbutton {
+	border-radius: 10px 0 0 10px;
+	position: fixed;
+	right: 0px;
+	}
 
 .site-inner {
     margin: 30px auto;
@@ -671,19 +691,10 @@ p {
 
 #secondary{
 	
-	font-family: "Lato-Regular";
-	font-size: 12pt;
-	text-transform: uppercase;
-	color: #ffffff;
-	position: fixed;
-	letter-spacing: 0.01em;
-	line-height: 1.8em;
-	cursor: pointer;
-	background-color: #3c3d3c;;
 	z-index: 7;
 	top: 40%;
 	right: 0px;
-	padding: 10px;
+	position: fixed;
 }
 
 #secondary ul li{
@@ -974,8 +985,8 @@ input[type="reset"][disabled]:focus,
 input[type="submit"],
 input[type="submit"][disabled]:hover,
 input[type="submit"][disabled]:focus {
-	border: solid 1px #47974C;
-	color: #47974C;
+	border: none;
+	color: #ffffff;
 	text-decoration: none;
 	text-transform: uppercase;
 	padding: 4px;
@@ -985,7 +996,7 @@ input[type="submit"][disabled]:focus {
 	margin: 0 0 1.75em;
 	letter-spacing: 0.04em;
 	line-height: 1.5em;
-	background: none;
+	background-color: #3c3d3c;
 }
 
 button:hover,
@@ -996,15 +1007,15 @@ input[type="reset"]:hover,
 input[type="reset"]:focus,
 input[type="submit"]:hover,
 input[type="submit"]:focus {
-	background: #007acc;
+	
 }
 
 button:focus,
 input[type="button"]:focus,
 input[type="reset"]:focus,
 input[type="submit"]:focus {
-	outline: thin dotted;
-	outline-offset: -4px;
+	outline: none;
+
 }
 
 input[type="text"],
