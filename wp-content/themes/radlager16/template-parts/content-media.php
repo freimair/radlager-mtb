@@ -29,7 +29,13 @@
 	<footer class="entry-footer">
 	</footer><!-- .entry-footer -->
 
-	<?php twentysixteen_post_thumbnail(); ?>
+	<?php if (has_post_thumbnail( $post->ID ) ): ?>
+		<?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' ); ?>
+		<img  id="custom-bg" src="<?php echo $image[0]; ?>">
+	<?php endif; ?>
+
+
+
 	<?php twentysixteen_excerpt(); ?>
 
 	<div class="entry-content">
