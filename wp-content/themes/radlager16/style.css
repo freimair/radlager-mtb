@@ -194,7 +194,47 @@ div.entry-content {
 
 .site-footer {
 	transition: margin-bottom 3s;
+	-moz-animation-name:  rise_footer;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: ease-out;
+    -moz-animation-duration: 1.0s;
+
+    -webkit-animation-name: rise_footer;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-out;
+    -webkit-animation-duration: 1.0s;
+
+    animation-name:  rise_footer;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 1.0s;
 }
+
+@-moz-keyframes rise_footer {
+    0% {
+        -moz-transform: translateY(200px);
+    }
+    100% {
+        -moz-transform: translateY(0);
+    }
+}
+@-webkit-keyframes rise_footer {
+    0% {
+        -webkit-transform: translateY(200px);
+    }
+    100% {
+        -webkit-transform: translateY(0);
+    }
+}
+@keyframes rise_footer {
+    0% {
+        transform: translateY(200px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
 
 
 /*
@@ -2152,10 +2192,14 @@ a.post-thumbnail:focus {
 }
 
 #payment_notification{
-	background-color: rgb(138, 15, 15);
+	background-color: rgba(156, 19, 19, 0.76);
 	width: 100%;
 	color: #ffffff;
+	text-transform: uppercase;
+	font-size: 16px;
 	text-align: center;
+	border-radius: 10px 10px 0 0 ;
+	padding-top: 0.5%;
 	
 }
 
