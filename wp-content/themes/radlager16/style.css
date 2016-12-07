@@ -74,6 +74,30 @@
 }
 }
 
+
+
+.enzi-logo,
+.ao-logo {
+	
+	width: 20%;
+	align-self: flex-end;
+	-webkit-align-self: flex-end;
+}
+
+.rl-logo {
+	
+	width: 40%;
+}
+
+.Logos {
+	
+	display: flex;
+	-webkit-display:flex;
+	justify-content: space-around;
+	-webkit-justify-content: space-around;
+}
+
+
 	.menu-toggle {
 		position: fixed;
 		top: 30%;
@@ -1940,53 +1964,20 @@ blockquote:after,
 .banner {
 	width: 100%;
 	margin-top: 134px;
-	height: 390px;
 	background-size: cover;
 	position: relative;
 	z-index: 2;
 	-webkit-transition: margin-top 0.6s; /* Safari */
-        transition: margin-top 0.6s;
+     transition: margin-top 0.6s;
+    /*	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);*/
 }
 
-.banner {
-/*	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);*/
-}
-
-.RL-Logo {
-	margin: -20px auto;
-	width: 200px;
-	height: 95px;
-	position: relative;
-	background-size: cover;
-	z-index:3;
-	
-}
-
-.RL-Logo {
-	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png);
-}
-
-.nav_to_subsite {
-	width: 200px;
-	height: 140px;
-	position: relative;
-	background-size: cover;
-	z-index: 3;
-	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Logos/hiergehtszurareaone.png);
-	left: 75%;
-	top: -450px;
-}
-.nav_to_subsite{
-	
-	margin-top: -187px;
-	
-}
 
 
 
 .FB-Button{
 	
-	margin: 253px auto;
+	margin: 25px auto;
 	width: 250px;
 	height: 30px;
 	position: relative;
