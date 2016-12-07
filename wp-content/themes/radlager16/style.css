@@ -192,6 +192,10 @@ div.entry-content {
 	margin-left: 20px;
 }
 
+.site-footer {
+	transition: margin-bottom 3s;
+}
+
 
 /*
 Theme Name: Twenty Sixteen
@@ -1892,7 +1896,7 @@ blockquote:after,
 }
 
 .site-inner {
-	margin: 30px auto;
+	margin: 0px auto;
 	position: relative;
 	z-index: 1;
 /*	max-width: 1000px;*/
@@ -2139,20 +2143,23 @@ a.post-thumbnail:focus {
 
 .entry-content,
 #payment_notification{
-	float: left !important;
-	margin-bottom: 70px;
-	
 	font-family: "Lato-Regular";
 	font-size: 11pt;
-	margin: 0 0 1.75em;
 	color: #3c3b36;
 	/*letter-spacing: 0.04em;*/
-	line-height: 1.3em;
-	
-	
-	
+	line-height: 1.3em
 	
 }
+
+#payment_notification{
+	background-color: rgb(138, 15, 15);
+	width: 100%;
+	color: #ffffff;
+	text-align: center;
+	
+}
+
+
 
 div.post-thumbnail {
 	width: 100%;
@@ -2955,7 +2962,7 @@ textarea#comment {
  */
 
 .site-footer {
-	padding: 0 7.6923% 1.75em;
+
 }
 
 .site-info {
@@ -3907,14 +3914,15 @@ p > video {
 	}
 
 	.site-footer {
-		background-color: #47974c;
 		display: -webkit-flex;
 		display: -ms-flexbox;
 		display: flex;
 		-webkit-flex-wrap: wrap;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
-		padding: 0 4.5455% 3.5em;
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
 	}
 
 	.site-footer .social-navigation {
