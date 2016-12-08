@@ -49,32 +49,9 @@
 
 				// only check when we are near the date anyways (i.e. +10 days)
 				if(time() + (9 * 24 * 60 * 60) > strtotime(get_field('startdatum'))) {
-					echo '<div id="event_'.get_the_ID().'" class="event_weather"><strong>Wetterbericht:</strong> ';
-?>
+					echo '<div id="event_'.get_the_ID().'" class="event_weather" data-id="'.get_the_ID().'" data-address="'.$location['address'].'"  data-date="'.get_field('startdatum').'"><strong>Wetterbericht:</strong> ';
 
-<script type="text/javascript">
-	var callbackFunction<?php echo get_the_ID(); ?> = function(data) {
-		var eventdate = new Date("<?php echo get_field('startdatum'); ?>");
-		eventdate.setHours(0);
-		eventdate.setMinutes(0);
-		eventdate.setSeconds(0);
-		eventdate.setMilliseconds(0);
-
-		for(i = 0; i < data.query.results.channel.length; i++) {
-			var forecastdate = new Date(data.query.results.channel[i].item.forecast.date);
-			if(0 == eventdate - forecastdate) {
-				var icontext = data.query.results.channel[i].item.forecast.text;
-				icontext = icontext.toLocaleLowerCase().replace(" ", "_");
-				jQuery("div#event_<?php echo get_the_ID(); ?>").append('<div class="weather_icon weather_' + icontext + '"/>');
-				break;
-			}
-		}
-	};
-</script>
-
-<script src="https://query.yahooapis.com/v1/public/yql?q=select item.forecast from weather.forecast where woeid in (select woeid from geo.places(1) where text='<?php echo $location['address']; ?>')&format=json&callback=callbackFunction<?php echo get_the_ID(); ?>"></script>
-
-<?php
+					// the rest is done by yahooweatherforevents.js
 
 					echo "</div>";
 				}

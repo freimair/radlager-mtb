@@ -228,6 +228,8 @@ function twentysixteen_scripts() {
 
 	wp_enqueue_script( 'googlemapsforevents', get_template_directory_uri() . '/js/googlemapsforevents.js', array('jquery'), '20161127');
 
+	wp_enqueue_script( 'yahooweatherforevents', get_template_directory_uri() . '/js/yahooweatherforevents.js', array('jquery'), '20161208');
+
 	wp_enqueue_script( 'headerfunctions', get_template_directory_uri() . '/js/header-functions.js', array('jquery'), '20161127');
 }
 add_action( 'wp_enqueue_scripts', 'twentysixteen_scripts' );
