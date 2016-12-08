@@ -414,6 +414,22 @@ function NotificationCenterFillTemplate($template, $values) {
 <p><a href="%URL%">Hier</a> gehts zu allen Details.</p>
 <p>Deine Radlager-Mtb Website</p>
 ';
+	$notification_templates['membership_reminder'] = '
+<p>Hallo %FIRSTNAME%!</p>
+<p>Laut unseren Aufzeichnung hast du den Mitgliedsbeitrag für das kommende Jahr noch nicht bezahlt.</p>
+<p>Weitere Infos und was genau zu tun ist findest du in deinem <a href="'.site_url("index.php/profil").'">Profil</a>.</p>
+<p>Sobald du bezahlt hast verschwindet auch diese Erinnerung :).</p>
+<p>Wir freuen uns schon dich nächstes Jahr wieder als Mitglied begrüßen zu dürfen!</p>
+<p>Deine Radlager Team</p>
+';
+	$notification_templates['membership_leave'] = '
+<p>Hallo %FIRSTNAME%!</p>
+<p>Es tut uns leid, dass wir dich als Vereinsmitglied verlieren! Schade, dass wir dich wohl zu wenig interessante Themen, Projekte, Beiträge, und Community bieten konnten.</p>
+<p>Aber wir lernen gerne dazu! Wenn du ein paar Minuten Zeit hast, magst du uns ein kurzes Feedback an <a href="mailto:office@radlager-mtb.at?subject=Feedback">die Office-Adresse</a> mailen?</p>
+<p>Wir haben deinen Benutzeraccount zurückgestuft und du wirst keine Mails mehr von uns bekommen. Auch wurden unsere Partner informiert, dass du nicht mehr ein Mitglied des Vereins bist. Sollte das alles ein Versehen gewesen sein kannst du dich jederzeit einloggen, bezahlen, und weiter gehts.</p>
+<p>Wir wünschen dir noch viele wertvolle Erlebnisse mit dem Bike! Ride on!</p>
+<p>Deine Radlager Team</p>
+';
 
 	$filled = $notification_templates[$template];
 	foreach($values as $key => $value)

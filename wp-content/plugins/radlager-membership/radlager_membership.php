@@ -57,13 +57,15 @@ function RadlagerMembershipStatus( $atts ) {
 	// check the payment status
 	$payment_status = get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true);
 	$show_button = true;
-	if('open' !== $payment_status) {
-		echo '<div class="payment_status">'.__("Du hast bereits bezahlt.").'</div>';
-		$show_button = false;
-	}
+
 
 	// start gathering the HTML output
 	ob_start();
+
+	if('open' !== $payment_status) {
+		echo '<div class="payment_status">'.__("Du hast bereits bezahlt. Danke!").'</div>';
+		$show_button = false;
+	}
 
 	if($show_button) :
 ?>
@@ -82,14 +84,25 @@ function RadlagerMembershipStatus( $atts ) {
 
 add_shortcode( 'radlager_membership_status', 'RadlagerMembershipStatus' );
 
-function RadlagerMembershipConfirm() {
+function RadlagerMembershipAdminUpdate() {
 	if(!is_user_logged_in() || !current_user_can('edit_users'))
 		die();
 
-	update_usermeta( $_POST['userid'], 'radlager_membership_fee_status', 'confirmed' );
+	update_usermeta( $_POST['userid'], 'radlager_membership_fee_status', $_POST['newstatus'] );
+
+	if('claim' === $_POST['newstatus']) {
+		$caption = "confirm";
+		$newstatus = "confirmed";
+	} else {
+		$caption = "undo";
+		$newstatus = "claim";
+	}
+
+	echo json_encode($_POST['newstatus'].' '.radlager_membership_admin_button($caption, $_POST['userid'], $newstatus));
+	die();
 }
 
-add_action('wp_ajax_radlager_membership_confirm', 'RadlagerMembershipConfirm');
+add_action('wp_ajax_radlager_membership_confirm', 'RadlagerMembershipAdminUpdate');
 
 function RadlagerMembershipClaim() {
 	if(!is_user_logged_in())
@@ -127,6 +140,10 @@ function radlager_membership_add_columns($columns) {
     return $columns;
 }
 
+function radlager_membership_admin_button($caption, $user_id, $newstatus) {
+	return '<input type="button" value="'.$caption.'" onclick="radlager_membership_confirm(jQuery(this),'.$user_id.",'".$newstatus."'".')" />';
+}
+
 add_action('manage_users_custom_column',  'radlager_membership_show_column_content', 10, 3);
 function radlager_membership_show_column_content($value, $column_name, $user_id) {
 	if ( 'fee_status' == $column_name ) {
@@ -135,8 +152,13 @@ function radlager_membership_show_column_content($value, $column_name, $user_id)
 			update_usermeta( $user_id, 'radlager_membership_fee_status', 'open' );
 			$value = 'open';
 		}
-		if('confirmed' !== $value && current_user_can('edit_users'))
-			$value .= ' <input type="button" value="'.__('confirm').'" onclick="radlager_membership_confirm(jQuery(this),'.$user_id.')" />';
+
+		if(current_user_can('edit_users')) {
+			if('confirmed' !== $value)
+				$value .= ' '.radlager_membership_admin_button('confirm', $user_id, 'confirmed');
+			else
+				$value .= ' '.radlager_membership_admin_button('undo', $user_id, 'claim');
+		}
 	}
     return $value;
 }
@@ -178,18 +200,21 @@ add_filter( 'pre_user_query', 'pre_user_query');
 add_filter( 'query_vars', 'add_query_vars_filter' );
 */
 
+function getTransitions() {
+	return array('11-01' => '01-15', '01-15' => '02-01', '02-01' => '02-14', '02-14' => '03-01', '03-01' => '11-01');
+}
+
 // setup and maintain cron job
 function radlager_membership_notify_users($state) {
-	$transitions = array('11-01' => '01-15', '01-15' => '02-01', '02-01' => '02-14', '02-14' => '03-01', '03-01' => '11-01');
+	$transitions = getTransitions();
 	$action = array('11-01' => 'reset', '01-15' => 'reminder', '02-01' => 'reminder', '02-14' => 'reminder', '03-01' => 'kick');
 
 	// find start state if we just got fired up
 	if(empty($state)) {
 		krsort($transitions);
 		foreach ($transitions as $key => $value) {
-			if(date("m-d") < $key)
-				$state = $key;
-			else
+			$state = $key;
+			if(date("m-d") >= $key)
 				break;
 		}
 	}
@@ -199,37 +224,72 @@ function radlager_membership_notify_users($state) {
 		case 'reset':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				update_user_meta($current->ID, 'radlager_membership_fee_status', 'open');
-				NotificationCenter_NotifyUser(array('administrative'), $current->ID, __('Der Mitgliedbeitrag ist fällig'), __('Mehr Info auf der Website!'));
+
+				$username = get_user_meta($current->ID, 'first_name', true);
+				if(empty($username))
+					$username = $current->user_login;
+
+				$subject = 'Der Mitgliedsbeitrag für '.date("Y", strtotime("next year")).' ist fällig';
+				$message = NotificationCenterFillTemplate('membership_reminder', array('FIRSTNAME' => $username));
+				NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
 			}
 			break;
 		case 'reminder':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				$usermeta = get_user_meta($user_id, 'radlager_membership_fee_status', true);
-				if(!empty($usermeta))
-					NotificationCenter_NotifyUser(array('administrative'), $current->ID, __('Der Mitgliedbeitrag ist fällig'), __('Mehr Info auf der Website!'));
+				if(!empty($usermeta)) {
+
+					$username = get_user_meta($current->ID, 'first_name', true);
+					if(empty($username))
+						$username = $current->user_login;
+
+					$subject = 'Der Mitgliedsbeitrag für '.date("Y", strtotime("next year")).' ist fällig';
+					$message = NotificationCenterFillTemplate('membership_reminder', array('FIRSTNAME' => $username));
+					NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
+				}
 			}
 			break;
 		case 'kick':
 			foreach (get_users(array('who' => 'authors')) as $current) {
 				$usermeta = get_user_meta($user_id, 'radlager_membership_fee_status', true);
-				if(!empty($usermeta) && !in_array('administrator',$current->roles))
+				if(!empty($usermeta) && !in_array('administrator',$current->roles)) {
+
+					$username = get_user_meta($current->ID, 'first_name', true);
+					if(empty($username))
+						$username = $current->user_login;
+
 					$current->set_role('subscriber');
+					$subject = 'Der Mitgliedsbeitrag für '.date("Y", strtotime("next year")).' ist fällig';
+					$message = NotificationCenterFillTemplate('membership_leave', array('FIRSTNAME' => $username));
+					NotificationCenter_NotifyUser(array('administrative'), $current->ID, $subject, $message);
+				}
 			}
 			break;
 	}
 
 	// calculate next execution timestamp
-	$next_date = strtotime(date("Y").'-'.$state);
+	$next_date = strtotime(date("Y").'-'.$transitions[$state]);
 	if(time() > $next_date)
-		$next_date = strtotime(date("Y", strtotime("next year")).'-'.$state);
+		$next_date = strtotime(date("Y", strtotime("next year")).'-'.$transitions[$state]);
 
 	// schedule next execution
-	wp_schedule_single_event($next_date, 'radlager_membership_notify_users', $transition[$state]);
+	wp_schedule_single_event($next_date, 'radlager_membership_notify_users', $transitions[$state]);
 }
 add_action( 'radlager_membership_notify_users','radlager_membership_notify_users' );
 
 // start cron-job on plugin activation
 register_activation_hook(__FILE__, 'radlager_membership_notify_users');
+
+// stop cron-job on plugin deactivation
+function radlager_membership_deactivate_cron() {
+	$transitions = getTransitions();
+
+	foreach($transitions as $key => $value) {
+		$nextrun = wp_next_scheduled('radlager_membership_notify_users', $key);
+		wp_unschedule_event($nextrun, 'radlager_membership_notify_users', $key);
+	}
+}
+register_deactivation_hook(__FILE__, 'radlager_membership_deactivate_cron');
 
 /**
  * Member list utils
