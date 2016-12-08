@@ -84,14 +84,25 @@ function RadlagerMembershipStatus( $atts ) {
 
 add_shortcode( 'radlager_membership_status', 'RadlagerMembershipStatus' );
 
-function RadlagerMembershipConfirm() {
+function RadlagerMembershipAdminUpdate() {
 	if(!is_user_logged_in() || !current_user_can('edit_users'))
 		die();
 
-	update_usermeta( $_POST['userid'], 'radlager_membership_fee_status', 'confirmed' );
+	update_usermeta( $_POST['userid'], 'radlager_membership_fee_status', $_POST['newstatus'] );
+
+	if('claim' === $_POST['newstatus']) {
+		$caption = "confirm";
+		$newstatus = "confirmed";
+	} else {
+		$caption = "undo";
+		$newstatus = "claim";
+	}
+
+	echo json_encode($_POST['newstatus'].' '.radlager_membership_admin_button($caption, $_POST['userid'], $newstatus));
+	die();
 }
 
-add_action('wp_ajax_radlager_membership_confirm', 'RadlagerMembershipConfirm');
+add_action('wp_ajax_radlager_membership_confirm', 'RadlagerMembershipAdminUpdate');
 
 function RadlagerMembershipClaim() {
 	if(!is_user_logged_in())
@@ -129,6 +140,10 @@ function radlager_membership_add_columns($columns) {
     return $columns;
 }
 
+function radlager_membership_admin_button($caption, $user_id, $newstatus) {
+	return '<input type="button" value="'.$caption.'" onclick="radlager_membership_confirm(jQuery(this),'.$user_id.",'".$newstatus."'".')" />';
+}
+
 add_action('manage_users_custom_column',  'radlager_membership_show_column_content', 10, 3);
 function radlager_membership_show_column_content($value, $column_name, $user_id) {
 	if ( 'fee_status' == $column_name ) {
@@ -137,8 +152,13 @@ function radlager_membership_show_column_content($value, $column_name, $user_id)
 			update_usermeta( $user_id, 'radlager_membership_fee_status', 'open' );
 			$value = 'open';
 		}
-		if('confirmed' !== $value && current_user_can('edit_users'))
-			$value .= ' <input type="button" value="'.__('confirm').'" onclick="radlager_membership_confirm(jQuery(this),'.$user_id.')" />';
+
+		if(current_user_can('edit_users')) {
+			if('confirmed' !== $value)
+				$value .= ' '.radlager_membership_admin_button('confirm', $user_id, 'confirmed');
+			else
+				$value .= ' '.radlager_membership_admin_button('undo', $user_id, 'claim');
+		}
 	}
     return $value;
 }
