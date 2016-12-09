@@ -12,7 +12,7 @@ if ( ! function_exists( 'add_action' ) ) {
 
 <div id="poststuff" class="ui-sortable meta-box-sortables">
 	<div class="postbox">
-		<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle' ); ?>"><br /></div>
+		<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'adminimize' ); ?>"><br /></div>
 		<h3 class="hndle" id="config_menu"><?php esc_attr_e( 'Menu Options', 'adminimize' ); ?></h3>
 
 		<div class="inside">
@@ -55,8 +55,8 @@ if ( ! function_exists( 'add_action' ) ) {
 				</thead>
 				<tbody>
 				<?php
-				$wp_menu    = _mw_adminimize_get_option_value( 'mw_adminimize_default_menu' );
-				$wp_submenu = _mw_adminimize_get_option_value( 'mw_adminimize_default_submenu' );
+				$wp_menu    = (array) _mw_adminimize_get_option_value( 'mw_adminimize_default_menu' );
+				$wp_submenu = (array) _mw_adminimize_get_option_value( 'mw_adminimize_default_submenu' );
 
 				// Object to array
 				if ( is_object( $wp_submenu ) ) {
@@ -66,7 +66,7 @@ if ( ! function_exists( 'add_action' ) ) {
 				if ( ! isset( $wp_menu ) || empty( $wp_menu ) ) {
 					global $menu;
 
-					$wp_menu = $menu;
+					$wp_menu = (array) $menu;
 				}
 				if ( ! isset( $wp_submenu ) || empty( $wp_submenu ) ) {
 					global $submenu;
@@ -125,7 +125,7 @@ if ( ! function_exists( 'add_action' ) ) {
 						// non checked items
 						if ( $menu_slug === 'options-general.php' ) {
 							$disabled_item_adm_hint = '<abbr title="' . esc_attr__(
-									'After activate the check box it heavy attitudes will change.', 'adminimize'
+									'After activate the checkbox you will loose its easy access in the menu.', 'adminimize'
 								) . '" style="cursor:pointer;"> ! </acronym>';
 						} else {
 							$disabled_item_adm      = '';
@@ -183,7 +183,7 @@ if ( ! function_exists( 'add_action' ) ) {
 								 */
 								echo "\t" . '<td class="num">' . $disabled_item_adm_hint . '<input id="check_menu'
 								     . $role . $x . '" class="menu_options_'
-								     . preg_replace( '/[^a-z0-9]+/', '', $role ) . '" type="checkbox"'
+								     . preg_replace( '/[^a-z0-9_-]+/', '', $role ) . '" type="checkbox"'
 								     . $disabled_item_adm . $checked_user_role_[ $role ]
 								     . ' name="mw_adminimize_disabled_menu_' . $role . '_items[]" value="'
 								     . $menu_slug . '" />' . $disabled_item_adm_hint . '</td>' . "\n";
@@ -198,7 +198,7 @@ if ( ! function_exists( 'add_action' ) ) {
 								foreach ( $user_roles as $role ) {
 									echo "\t" . '<td class="num"><input disabled="disabled" id="check_menu'
 									     . $role . $x . '" class="menu_options_'
-									     . preg_replace( '/[^a-z0-9]+/', '', $role )
+									     . preg_replace( '/[^a-z0-9_-]+/', '', $role )
 									     . '" type="checkbox"' . $checked_user_role_[ $role ]
 									     . ' name="mw_adminimize_disabled_menu_' . $role
 									     . '_items[]" value="profile.php" /></td>' . "\n";
@@ -221,7 +221,7 @@ if ( ! function_exists( 'add_action' ) ) {
 									//$disabled_subitem_adm = ' disabled="disabled"';
 									$disabled_subitem_adm_hint = '<abbr title="'
 									                             . esc_attr__(
-										                             'After activate the check box it heavy attitudes will change.',
+										                             'After activate the checkbox you will loose its easy access in the menu.',
 										                             'adminimize'
 									                             )
 									                             . '" style="cursor:pointer;"> ! </acronym>';
@@ -313,7 +313,7 @@ if ( ! function_exists( 'add_action' ) ) {
 						<br />
 						<label for="_mw_adminimize_own_menu_slug">
 							<?php esc_attr_e(
-								'String of the custom slug, matched to the the default menu slug, there you see aboive in the list.',
+								'Possible nomination for the slug. Separate multiple nominations through a carriage return.',
 								'adminimize'
 							); ?>
 						</label>
