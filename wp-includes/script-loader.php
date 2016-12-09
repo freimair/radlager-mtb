@@ -330,7 +330,7 @@ function wp_default_scripts( &$scripts ) {
 
 	$scripts->add( 'imgareaselect', "/wp-includes/js/imgareaselect/jquery.imgareaselect$suffix.js", array('jquery'), false, 1 );
 
-	$scripts->add( 'mediaelement', "/wp-includes/js/mediaelement/mediaelement-and-player.min.js", array('jquery'), '2.18.1', 1 );
+	$scripts->add( 'mediaelement', "/wp-includes/js/mediaelement/mediaelement-and-player.min.js", array('jquery'), '2.18.1-a', 1 );
 	did_action( 'init' ) && $scripts->localize( 'mediaelement', 'mejsL10n', array(
 		'language' => get_bloginfo( 'language' ),
 		'strings'  => array(
@@ -709,19 +709,19 @@ function wp_default_styles( &$styles ) {
 	}
 
 	// Register a stylesheet for the selected admin color scheme.
-	$styles->add( 'colors', true, array( 'wp-admin', 'buttons', 'dashicons' ) );
+	$styles->add( 'colors', true, array( 'wp-admin', 'buttons', 'open-sans', 'dashicons' ) );
 
 	$suffix = SCRIPT_DEBUG ? '' : '.min';
 
 	// Admin CSS
-	$styles->add( 'wp-admin',            "/wp-admin/css/wp-admin$suffix.css", array( 'dashicons' ) );
-	$styles->add( 'login',               "/wp-admin/css/login$suffix.css", array( 'buttons', 'dashicons' ) );
-	$styles->add( 'install',             "/wp-admin/css/install$suffix.css", array( 'buttons', ) );
+	$styles->add( 'wp-admin',            "/wp-admin/css/wp-admin$suffix.css", array( 'open-sans', 'dashicons' ) );
+	$styles->add( 'login',               "/wp-admin/css/login$suffix.css", array( 'buttons', 'open-sans', 'dashicons' ) );
+	$styles->add( 'install',             "/wp-admin/css/install$suffix.css", array( 'buttons', 'open-sans' ) );
 	$styles->add( 'wp-color-picker',     "/wp-admin/css/color-picker$suffix.css" );
 	$styles->add( 'customize-controls',  "/wp-admin/css/customize-controls$suffix.css", array( 'wp-admin', 'colors', 'ie', 'imgareaselect' ) );
 	$styles->add( 'customize-widgets',   "/wp-admin/css/customize-widgets$suffix.css", array( 'wp-admin', 'colors' ) );
 	$styles->add( 'customize-nav-menus', "/wp-admin/css/customize-nav-menus$suffix.css", array( 'wp-admin', 'colors' ) );
-	$styles->add( 'press-this',          "/wp-admin/css/press-this$suffix.css", array( 'buttons' ) );
+	$styles->add( 'press-this',          "/wp-admin/css/press-this$suffix.css", array( 'open-sans', 'buttons' ) );
 
 	$styles->add( 'ie', "/wp-admin/css/ie$suffix.css" );
 	$styles->add_data( 'ie', 'conditional', 'lte IE 7' );
@@ -729,9 +729,10 @@ function wp_default_styles( &$styles ) {
 	// Common dependencies
 	$styles->add( 'buttons',   "/wp-includes/css/buttons$suffix.css" );
 	$styles->add( 'dashicons', "/wp-includes/css/dashicons$suffix.css" );
+	$styles->add( 'open-sans', $open_sans_font_url );
 
 	// Includes CSS
-	$styles->add( 'admin-bar',            "/wp-includes/css/admin-bar$suffix.css", array( 'dashicons' ) );
+	$styles->add( 'admin-bar',            "/wp-includes/css/admin-bar$suffix.css", array( 'open-sans', 'dashicons' ) );
 	$styles->add( 'wp-auth-check',        "/wp-includes/css/wp-auth-check$suffix.css", array( 'dashicons' ) );
 	$styles->add( 'editor-buttons',       "/wp-includes/css/editor$suffix.css", array( 'dashicons' ) );
 	$styles->add( 'media-views',          "/wp-includes/css/media-views$suffix.css", array( 'buttons', 'dashicons', 'wp-mediaelement' ) );
