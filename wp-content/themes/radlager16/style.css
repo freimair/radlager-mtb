@@ -114,7 +114,7 @@ div.weather_clear {
 	background-image: url("https://s.yimg.com/os/weather/1.0.1/shadow_icon/60x60/clear_day@2x.png");
 }
 
-div.weather_fair {
+div.weather_mostly_sunny {
 	background-image: url("https://s.yimg.com/os/weather/1.0.1/shadow_icon/60x60/fair_day@2x.png");
 }
 
