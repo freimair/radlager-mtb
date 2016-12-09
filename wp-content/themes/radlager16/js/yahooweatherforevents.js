@@ -29,11 +29,11 @@ jQuery(document).on("ready resize scroll", function() {
 
 	//for each map
 	jQuery(".event_weather").each( function() {
-		var postid = jQuery(this).attr('postid');
+		var postid = jQuery(this).attr('data-id');
 
 		// check if we loaded this specific map already
 		if(-1 === already_loaded_weather.indexOf(postid)) {
-			init_weather(jQuery(this).attr('data-id'), jQuery(this).attr('data-address'), new Date(jQuery(this).attr('data-date')));
+			init_weather(postid, jQuery(this).attr('data-address'), new Date(jQuery(this).attr('data-date')));
 
 			// memorize that we already loaded this specific map
 			already_loaded_weather.push(postid);
