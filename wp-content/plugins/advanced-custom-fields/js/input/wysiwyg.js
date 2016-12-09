@@ -31,9 +31,6 @@
 			
 			// get options
 			this.o = acf.helpers.get_atts( this.$el );
-			
-			
-			// add ID
 			this.o.id = this.$textarea.attr('id');
 			
 			
@@ -473,7 +470,7 @@
 	*  @created: 22/12/12
 	*/
 	
-	$(window).load(function(){
+	$(window).on('load', function(){
 		
 		// validate
 		if( ! _wysiwyg.has_tinymce() )

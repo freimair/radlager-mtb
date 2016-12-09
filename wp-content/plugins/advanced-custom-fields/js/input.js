@@ -884,7 +884,7 @@ var acf = {
 	*  @created: 22/12/12
 	*/
 	
-	$(window).load(function(){
+	$(window).on('load', function(){
 		
 		// init
 		acf.media.init();
@@ -1876,6 +1876,10 @@ var acf = {
 		$input : null,
 		
 		o : {},
+		api: {
+			sensor:		false,
+			libraries:	'places'
+		},
 		
 		ready : false,
 		geocoder : false,
