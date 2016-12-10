@@ -2,7 +2,20 @@ function init_commentbutton(commentform) {
 	commentform.prepend('<div id="comment-status" ></div>'); // add info panel before the form to provide feedback or errors
 	var statusdiv=commentform.find('#comment-status'); // define the infopanel
 
+	textarea = commentform.find('textarea[name=comment]');
+	textarea.on("input", function() {
+			if(3 < jQuery(this).val().length)
+				commentform.find('input.submit').prop('disabled', false);
+			else
+				commentform.find('input.submit').prop('disabled', true);
+	});
+	textarea.trigger("input");
+
 	commentform.submit(function(){
+		// prevent posting an empty comment
+		if('' === commentform.find('textarea[name=comment]').val())
+			return false;
+
 		//serialize and store form data in a variable
 		var formdata=commentform.serialize();
 		//Add a status message
