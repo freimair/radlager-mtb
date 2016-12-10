@@ -21,6 +21,7 @@ function init_commentbutton(commentform) {
 				commentform.parents(".comments-area").find("ol.comment-list").append(data);
 				statusdiv.html('');
 				commentform.find('textarea[name=comment]').val('');
+				jQuery('#masonry-grid').masonry(); // update grid
 			}
 		});
 		return false;
