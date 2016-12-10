@@ -188,7 +188,7 @@
 		<div class="searchmenu">
 			<input class="closebutton" type="button" value="X" onclick="togglesearch()">
 			<span style="color: #47974c; font-weight: bold;">Suche:</span>
-			<span style="display:flex">
+			<span style="display:flex; -webkit-display:flex">
 				<input id="searchbox" type="text" name="searchterm" value="">
 				<input id="clearsearch" type="button" value="X" onclick="jQuery('#searchbox').val(''); updateFilter();">
 			</span>
