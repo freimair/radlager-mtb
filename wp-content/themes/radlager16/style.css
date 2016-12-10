@@ -163,7 +163,8 @@ article.post:hover{
 }
 
 
-.filter_and_search{
+.filtermenu,
+.searchmenu{
 	border-radius: 10px 0 0 10px;	
 	padding: 10px;
 	font-family: "Lato-Regular";
@@ -175,14 +176,43 @@ article.post:hover{
 	cursor: pointer;
 	background-color: #3c3d3c;
 	display: none;
+	margin-bottom: 5px;
+	clear: both;
 
 }
 
-button#searchbutton {
+button#searchbutton,
+button#filterbutton
+{
 	border-radius: 10px 0 0 10px;
-	position: fixed;
-	right: 0px;
+	display: block;
+	width:	110%;
+	margin-bottom: 5px;
+	float: right;
+	clear:both;
+	width: 1.5em;
+	font-size: 2em;
 	}
+	
+input.closebutton{
+	padding: 0px!important;
+	background-color: #ffffff!important;
+	color:#3c3d3c!important;
+	float: right;
+}
+
+.filter:hover{
+	background-color: #47974C;
+}
+
+.selected:hover::after{
+	float: right;
+	content:'X';
+	color:#3c3d3c;
+	margin-left: 5px;
+	background-color: #ffffff;
+}
+	
 
 .site-inner {
     margin: 30px auto;
@@ -993,7 +1023,7 @@ input[type="submit"][disabled]:focus {
 	text-transform: uppercase;
 	font-family: "Lato-Regular";
 	font-size: 14px;
-	margin: 0 0 1.75em;
+	margin: 0 0 0 0;
 	letter-spacing: 0.04em;
 	line-height: 1.5em;
 	background-color: #3c3d3c;
@@ -2034,7 +2064,6 @@ blockquote:after,
 	margin-top: 75px;
 	background-size: cover;
 	position: relative;
-	z-index: 2;
 	-webkit-transition: margin-top 0.6s; /* Safari */
      transition: margin-top 0.6s;
     /*	background-image: url(https://www.radlager-mtb.at/wp-content/themes/radlager16/Pictures/Banner/Banner_1.JPG);*/

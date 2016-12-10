@@ -14,9 +14,16 @@ jQuery(window).scroll(function() {
 	});
 
 
-// show and hide for search button menu
+// show and hide for search and filter menu
 
-  function togglesearch () {
-        jQuery("#searchbutton .fa").toggleClass("fa-window-close-o");
-        jQuery(".filter_and_search").toggle(0);
+  function togglefilter () {
+        if (jQuery(".filter").is(".selected")) {jQuery("#filterbutton").css ({"color" : "#47974C"})} else {jQuery("#filterbutton").css ({"color" : "#ffffff"})};
+        jQuery("#filterbutton").toggle(0);
+        jQuery(".filtermenu").toggle(0);
+	};
+    
+   function togglesearch () {
+        if (jQuery("#searchbox").val() != "") {jQuery("#searchbutton").css ({"color" : "#47974C"})} else {jQuery("#searchbutton").css ({"color" : "#ffffff"})};
+        jQuery("#searchbutton").toggle(0);
+        jQuery(".searchmenu").toggle(0);
 	};

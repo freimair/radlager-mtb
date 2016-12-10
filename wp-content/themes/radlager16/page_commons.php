@@ -166,9 +166,11 @@
 
 	<aside id="secondary" class="sidebar widget-area" role="complementary">
 		
-		<button id="searchbutton" onclick="togglesearch()"><i class="fa fa-search fa-3x" aria-hidden="true"></i></button>
+		<button id="filterbutton" onclick="togglefilter()"><i class="fa fa-filter" aria-hidden="true"></i></button>
 		
-		<div class="filter_and_search">
+		<div class="filtermenu">
+			<input class="closebutton" type="button" value="X" onclick="togglefilter()">
+			<span style="color: #47974c; font-weight: bold;">Filter:</span>
 		<ul>
 		<?php
 		// create the filter controls
@@ -179,12 +181,17 @@
 		<?php
 		endforeach;
 		?>
-			<li class="filter">
+		<li class="filter" id="permalink" style="display:none;">Permalink</li>
+		</ul>
+		</div>
+		<button id="searchbutton" onclick="togglesearch()"><i class="fa fa-search" aria-hidden="true"></i></button>
+		<div class="searchmenu">
+			<input class="closebutton" type="button" value="X" onclick="togglesearch()">
+			<span style="color: #47974c; font-weight: bold;">Suche:</span>
+			<span style="display:flex">
 				<input id="searchbox" type="text" name="searchterm" value="">
 				<input id="clearsearch" type="button" value="X" onclick="jQuery('#searchbox').val(''); updateFilter();">
-			</li>
-			<li class="filter" id="permalink" style="display:none;">Permalink</li>
-		</ul>
+			</span>
 		</div>
 	</aside><!-- .sidebar .widget-area -->
 
