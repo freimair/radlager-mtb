@@ -391,4 +391,9 @@ function clean_post_comment_link( $location, $comment) {
 }
 add_filter( 'comment_post_redirect', 'clean_post_comment_link' );
 
+function cancelRedirect($redirect_url, $requested_url) {
+	return false;
+}
+add_filter( 'redirect_canonical', 'cancelRedirect', 10, 2 );
+
 ?>
