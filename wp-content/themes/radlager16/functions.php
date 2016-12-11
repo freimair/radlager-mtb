@@ -77,6 +77,7 @@ function twentysixteen_setup() {
 		'primary' => __( 'Primary Menu', 'twentysixteen' ),
 		'social'  => __( 'Social Links Menu', 'twentysixteen' ),
 		'area_one' => __( 'Area One Menu', 'twentysixteen' ),
+		'enzi' => __( 'Enzi Menu', 'twentysixteen' ),
 	) );
 
 	/*
