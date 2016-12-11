@@ -182,7 +182,8 @@ article.post:hover{
 }
 
 button#searchbutton,
-button#filterbutton
+button#filterbutton,
+button#closearticlebutton
 {
 	border-radius: 10px 0 0 10px;
 	display: block;
@@ -193,6 +194,11 @@ button#filterbutton
 	width: 1.5em;
 	font-size: 2em;
 	}
+button#closearticlebutton
+{
+	display:none;
+}
+	
 	
 input.closebutton{
 	padding: 0px!important;
@@ -739,7 +745,10 @@ p {
 }
 
 
-
+.slidewindow {
+	width: 80%;
+	margin: 0 auto;
+}
 
 
 

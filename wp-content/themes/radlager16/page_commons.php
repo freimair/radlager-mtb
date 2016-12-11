@@ -1,7 +1,5 @@
-
-
-
 	<main id="main" class="site-main" role="main">
+		<div class="slidewindow"></div>
 		<?php
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
@@ -166,6 +164,7 @@
 
 	<aside id="secondary" class="sidebar widget-area" role="complementary">
 		
+		<button id="closearticlebutton"><i class="fa fa-times" aria-hidden="true"></i></button>
 		<button id="filterbutton" onclick="togglefilter()"><i class="fa fa-filter" aria-hidden="true"></i></button>
 		
 		<div class="filtermenu">
