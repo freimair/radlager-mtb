@@ -93,11 +93,22 @@
 					
 				
 						<div class="Logos">
-								<div class="enzi-logo" ><img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/enzi-logo.png"></div>
-								<div class="rl-logo"><img  src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png"></div>
-							<div class="ao-logo" ><a href="<?php echo get_site_url() ; ?>/index.php/area_one_medien/">
-								<img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/hiergehtszurareaone.png">
-							</a>
+								<div class="enzi-logo" >
+									<a href="<?php echo get_site_url() ; ?>/index.php/enzimedien/">
+										<img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/enzi-logo.png">
+									</a>
+								</div>
+								
+								<div class="rl-logo">
+									<a href="<?php echo get_site_url() ; ?>">
+										<img  src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png">
+									</a>
+								</div>
+								
+								<div class="ao-logo" >
+									<a href="<?php echo get_site_url() ; ?>/index.php/areaonemedien/">
+										<img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/hiergehtszurareaone.png">
+									</a>
 						</div>
 				</div>
 
