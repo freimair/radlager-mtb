@@ -15,41 +15,30 @@ $j(document).on('resize ready', function()
 						var pleft = position.left;
 						var fromtop = $j(document).scrollTop();				
 					
-			
-                $j('#post-' + post_id).clone().css({
-                    top: ptop,
-                    left: pleft,
-			
-                }).appendTo('.slidewindow');
-			
-								
-					$j('.slidewindow #readmoreinline' + post_id).toggle();
-						  $j( '.slidewindow #post-' + post_id).animate({
-												
-							
-							width: '100%',
-							margin : '0 auto',
-							height : $j( window ).height(),
-							},0 );
-						
-						function del() {
-							$j('.banner').css({'display' : 'none'});
+							$j('.banner').css({'display' : 'none'});		
 							$j('#masonry-grid').css({'display' : 'none'});
 							$j('#filterbutton').css({'display' : 'none'});
 							$j('#closearticlebutton').css({'display' : 'block'});
 							$j('#searchbutton').css({'display' : 'none'});
-							
-				
-                        }
-						$j(document).scrollTop(10);
-						$j('.slidewindow #post-' + post_id).css({'top' :'80px', 'position' : 'relative', 'left' : '0px'});
-						setTimeout(del,0)
+			
+                $j('#post-' + post_id).clone().appendTo('.slidewindow');
+			
+								
+					$j('.slidewindow #readmoreinline' + post_id).toggle();
+					
 						
+						$j('.slidewindow #post-' + post_id).css({
+							'top' :'80px',
+							'position' : 'relative',
+							'left' : '0px',
+							'width': '100%',
+							'margin' : '0 auto',
+						});
 					
 
 						$j('#custom-bg').css ({'height' : '300px', 'object-fit' : 'cover' });
 						$j('.slidewindow .more-link').css ({'display' : 'none'});
-							
+						$j(document).scrollTop(0);
 						$j('#closearticlebutton').click(function(e){
 								
 						$j('.banner').css({'display' : 'block'});
@@ -59,12 +48,10 @@ $j(document).on('resize ready', function()
 						$j('#closearticlebutton').css({'display' : 'none'});
 									  		
 						$j(document).scrollTop(fromtop);										
-						$j( '.slidewindow').animate({}, 0 );
 						
 						$j('.slidewindow').empty();
 						loadmore = 'on';
-						
-						
+									
 					});
 				
 				});		
