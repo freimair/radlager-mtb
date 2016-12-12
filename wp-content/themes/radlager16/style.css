@@ -107,7 +107,10 @@
 		top:	25%;
 		right: 0px;
 		z-index: 7;
-		
+		font-family: fontawesome;
+		font-size: 2em;
+		border-radius: 10px 0 0 10px;
+		padding: 0px 8px 0 8px;
 		
 	}
 

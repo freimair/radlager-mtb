@@ -84,7 +84,7 @@
 				}
 
 				// render editor
-				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), ('media' == $type ? 'Selbst etwas berichten!' : 'Selbst etwas veranstalten!'), $type);
+				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), ('media' == $type ? '&#xf040;' : '&#xf040;'), $type);
 			}
 		}
 ?>
