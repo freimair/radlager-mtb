@@ -2,7 +2,7 @@ jQuery(window).scroll(function() {
          
 		 var scrollPos = jQuery(window).scrollTop();
 		
-		if (scrollPos >= 200) {	
+		if ((scrollPos >= 200) || (jQuery('.banner').is(':hidden'))) {	
 			jQuery(".RL-Logo_oben").css({"display":"block","opacity":"1"});	
 	}
 	else
