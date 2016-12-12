@@ -164,8 +164,8 @@
 
 	<aside id="secondary" class="sidebar widget-area" role="complementary">
 		
-		<button id="closearticlebutton"><i class="fa fa-times" aria-hidden="true"></i></button>
-		<button id="filterbutton" onclick="togglefilter()"><i class="fa fa-filter" aria-hidden="true"></i></button>
+		<input id="closearticlebutton" type = "button" value="&#xf00d;">
+		<input id="filterbutton" type="button" value="&#xf0b0;" onclick="togglefilter()">
 		
 		<div class="filtermenu">
 			<input class="closebutton" type="button" value="X" onclick="togglefilter()">
@@ -183,7 +183,7 @@
 		<li class="filter" id="permalink" style="display:none;">Permalink</li>
 		</ul>
 		</div>
-		<button id="searchbutton" onclick="togglesearch()"><i class="fa fa-search" aria-hidden="true"></i></button>
+		<input id="searchbutton" type="button" value="&#xf002;" onclick="togglesearch()" >
 		<div class="searchmenu">
 			<input class="closebutton" type="button" value="X" onclick="togglesearch()">
 			<span style="color: #47974c; font-weight: bold;">Suche:</span>

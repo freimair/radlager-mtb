@@ -107,10 +107,6 @@
 		top:	25%;
 		right: 0px;
 		z-index: 7;
-		font-family: fontawesome;
-		font-size: 2em;
-		border-radius: 10px 0 0 10px;
-		padding: 0px 8px 0 8px;
 		
 	}
 
@@ -184,20 +180,18 @@ article.post:hover{
 
 }
 
-button#searchbutton,
-button#filterbutton,
-button#closearticlebutton
+input#searchbutton,
+input#filterbutton,
+input#closearticlebutton,
+input#edit-post-new
 {
-	border-radius: 10px 0 0 10px;
-	display: block;
-	width:	110%;
-	margin-bottom: 5px;
-	float: right;
-	clear:both;
-	width: 1.5em;
+	font-family: fontawesome;
 	font-size: 2em;
+	border-radius: 10px 0 0 10px;
+	padding: 0px 8px 0 8px;
+		
 	}
-button#closearticlebutton
+input#closearticlebutton
 {
 	display:none;
 }
