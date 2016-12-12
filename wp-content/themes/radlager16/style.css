@@ -286,6 +286,10 @@ div.entry-content {
 }
 
 
+input#pass1 {
+    display: none;
+}
+
 
 /*
 Theme Name: Twenty Sixteen
