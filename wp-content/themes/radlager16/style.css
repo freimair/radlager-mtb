@@ -118,7 +118,7 @@ article.post {
 
 .article-title{
 	position: absolute;
-	bottom: 20px;
+	bottom: 0px;
 	background-color: rgba(23, 38, 21, 0.63);
 	width: 100%;
 }
@@ -140,6 +140,11 @@ article.post {
     padding: 15px;
 }
 
+.picandtitle{
+	position: relative;
+	margin-bottom: 20px;
+}
+
 .category-news .artcont {
 	background-color: rgb(165, 181, 166);
 }
@@ -152,7 +157,7 @@ article.post {
 
 article.post img {
 	width: 100%;
-	padding-bottom: 20px;
+	
 }
 
 article.post:hover{
@@ -368,7 +373,7 @@ div.weather_clear {
 	background-image: url("https://s.yimg.com/os/weather/1.0.1/shadow_icon/60x60/clear_day@2x.png");
 }
 
-div.weather_fair {
+div.weather_mostly_sunny {
 	background-image: url("https://s.yimg.com/os/weather/1.0.1/shadow_icon/60x60/fair_day@2x.png");
 }
 
@@ -3109,11 +3114,9 @@ textarea#comment {
 .gmap_canvas{
 	overflow:hidden;
 	height:250px;
-	width:350px;
-	float: right;
+	width:100%;
 	margin-bottom: 30px;
-	margin-left: 30px;
-	padding-top: -5em;
+
 }
 
 .comment-reply-title,

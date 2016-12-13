@@ -231,6 +231,10 @@ function twentysixteen_scripts() {
 
 	wp_enqueue_script( 'googlemapsforevents', get_template_directory_uri() . '/js/googlemapsforevents.js', array('jquery'), '20161127');
 
+	wp_enqueue_script( 'yahooweatherforevents', get_template_directory_uri() . '/js/yahooweatherforevents.js', array('jquery'), '20161208');
+
+	wp_enqueue_script( 'ajaxcomments', get_template_directory_uri() . '/js/ajaxcomments.js', array('jquery'), '20161210');
+
 	wp_enqueue_script( 'headerfunctions', get_template_directory_uri() . '/js/header-functions.js', array('jquery'), '20161127');
 }
 add_action( 'wp_enqueue_scripts', 'twentysixteen_scripts' );
@@ -391,5 +395,25 @@ function clean_post_comment_link( $location, $comment) {
 	exit();
 }
 add_filter( 'comment_post_redirect', 'clean_post_comment_link' );
+
+function cancelRedirect($redirect_url, $requested_url) {
+	return false;
+}
+add_filter( 'redirect_canonical', 'cancelRedirect', 10, 2 );
+
+function ajaxify_comments($comment_ID, $comment_status){
+	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+		//If AJAX Request Then
+		switch($comment_status){
+		case '1': //Approved comment
+			wp_list_comments(array('per_page' => 1), get_comment($comment_ID, ARRAY_A));
+			break;
+		default:
+			echo "error";
+		}
+		exit;
+	}
+}
+add_action('comment_post', 'ajaxify_comments',20, 2);
 
 ?>

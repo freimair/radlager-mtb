@@ -35,7 +35,7 @@
 	
 	
 	<div class="artcont" id="<?php foreach((get_the_category()) as $category){echo $category->cat_name . ' ';}?>">	
-		<div style="position: relative";>
+		<div class="picandtitle">
 
 			<?php if (has_post_thumbnail( $post->ID ) ): ?>
 				<?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' ); ?>

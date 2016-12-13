@@ -12,16 +12,23 @@
 		<?php if ( is_sticky() && is_home() && ! is_paged() ) : ?>
 			<span class="sticky-post"><?php _e( 'Featured', 'twentysixteen' ); ?></span>
 		<?php endif; ?>
-
-		<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
-		<a class="permalink" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>">permalink</a>
 	</header><!-- .entry-header -->
+	<div class="article-meta">
+	<div id="category">
+				<?php foreach((get_the_category()) as $category) {echo $category->cat_name . ' ';}?>
+	</div>
+		<?php echo '<div class="date">'.strftime("%A, %e. %B %G - %R", strtotime(get_field('startdatum')))."</div>"; ?>
+</div>
+<div class="artcont">
+	
+	
 
 	<?php twentysixteen_excerpt(); ?>
 
 	<?php twentysixteen_post_thumbnail(); ?>
 
 	<div class="entry-content">
+		<div class="picandtitle">
 		<?php
 			// getting location information
 			$location = maybe_unserialize(get_field('ort'));
@@ -31,13 +38,21 @@
 			if(!wp_script_is( "gmaps", 'enqueued' ))
 				wp_enqueue_script("gmaps", "https://maps.googleapis.com/maps/api/js?v=3&sensor=false&_=1480242950508");
 ?>
+
+
 <div class="gmap_canvas" id="gmap_canvas_<?php echo get_the_ID(); ?>" postid="<?php echo get_the_ID();?>" lat="<?php echo $location['lat'];?>" lng="<?php echo $location['lng'];?>" address="<?php echo $location['address']; ?>"><style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
 </div>
+</div>
+	<div class="article-title"><a class="permalink" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>"><?php the_title( '<h2 class="entry-title">', '</h2>' ); ?></a></div>
+
+	</div>
+			<div class="more-link-container"><a data-post_id="<?php echo get_the_ID(); ?>" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>" class="more-link">Weiterlesen…<span class="screen-reader-text"> <?php the_title(); ?></span></a></div>
+			<div class="readmoreinline" id="readmoreinline<?php echo get_the_ID(); ?>" style="display:none">
 <?php
-				echo "</div>";
+			
 			}
 			setlocale(LC_ALL, 'de_DE@euro', 'de_DE', 'de-DE', 'de', 'ge', 'de_DE.UTF8', 'de_DE@UTF8', 'German');
-			echo '<div class="event_start"><strong>Termin:</strong> '.strftime("%A, %e. %B %G - %R", strtotime(get_field('startdatum')))."</div>";
+		
 
 			date("dS F,Y",strtotime(get_field('startdatum')));
 
@@ -49,43 +64,24 @@
 
 				// only check when we are near the date anyways (i.e. +10 days)
 				if(time() + (9 * 24 * 60 * 60) > strtotime(get_field('startdatum'))) {
-					echo '<div id="event_'.get_the_ID().'" class="event_weather"><strong>Wetterbericht:</strong> ';
-?>
+					echo '<div id="event_'.get_the_ID().'" class="event_weather" data-id="'.get_the_ID().'" data-address="'.$location['address'].'"  data-date="'.get_field('startdatum').'"><strong>Wetterbericht:</strong> ';
 
-<script type="text/javascript">
-	var callbackFunction<?php echo get_the_ID(); ?> = function(data) {
-		var eventdate = new Date("<?php echo get_field('startdatum'); ?>");
-		eventdate.setHours(0);
-		eventdate.setMinutes(0);
-		eventdate.setSeconds(0);
-		eventdate.setMilliseconds(0);
-
-		for(i = 0; i < data.query.results.channel.length; i++) {
-			var forecastdate = new Date(data.query.results.channel[i].item.forecast.date);
-			if(0 == eventdate - forecastdate) {
-				var icontext = data.query.results.channel[i].item.forecast.text;
-				icontext = icontext.toLocaleLowerCase().replace(" ", "_");
-				jQuery("div#event_<?php echo get_the_ID(); ?>").append('<div class="weather_icon weather_' + icontext + '"/>');
-				break;
-			}
-		}
-	};
-</script>
-
-<script src="https://query.yahooapis.com/v1/public/yql?q=select item.forecast from weather.forecast where woeid in (select woeid from geo.places(1) where text='<?php echo $location['address']; ?>')&format=json&callback=callbackFunction<?php echo get_the_ID(); ?>"></script>
-
-<?php
+					// the rest is done by yahooweatherforevents.js
 
 					echo "</div>";
 				}
 			}
-			/* translators: %s: Name of current post */
+			?>
+			
+	
+		<?php	/* translators: %s: Name of current post */
 			the_content( sprintf(
 				__( 'Weiterlesen...<span class="screen-reader-text"> "%s"</span>', 'twentysixteen' ),
 				get_the_title()
 			) );
-
-
+		?>
+			
+		<?php
 			// display registration button if applicable
 			// - applicable?
 			$applicable = false;
@@ -126,3 +122,4 @@
 			);
 		?>
 	</footer><!-- .entry-footer -->
+</div>

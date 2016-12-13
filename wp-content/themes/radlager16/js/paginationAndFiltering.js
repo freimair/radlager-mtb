@@ -16,32 +16,22 @@
 					delimiter = "&";
 				else
 					delimiter = "?";
-				result = jQuery('<newContent>').load(window.location + delimiter + "page=" + page + " .post", function() {
+				result = jQuery('<newContent>').load(window.location + delimiter + "page=" + page + " .post", function(content) {
 					page++;
 					loadmore = 'on';
 					jQuery('#spinner').css('visibility', 'hidden');
 					contents = result.children();
 					jQuery('#masonry-grid').append(contents).masonry( 'appended', contents );
-					
-					// init Masonry after all images have loaded
-					var $grid = jQuery('#masonry-grid').imagesLoaded( function() {
-					$grid.masonry({});
-					});
-					
-				});
-			}
-		});
 
-		// also hook the ajaxComplete event in order to clean up after each ajax load
-		jQuery( document ).ajaxComplete(function( event, xhr, options ) {
-updateFilter();
-			// do the funny string concatination because whenever this js gets delivered via ajax, the very same string is found which of course results in an infinite loop
-			if (xhr.responseText.indexOf('<article ') == -1) {
-				// disable ajax loading if there is nothing more to get
-				loadmore = 'off';
-			} else if ('on' == loadmore) {
-				// retrigger the check event. the event will seize creating new ajax events as soon as the spinner is out of sight
-				jQuery(document).trigger("resize");
+					updateFilter();
+					if (content.indexOf('<article ') == -1) {
+						// disable ajax loading if there is nothing more to get
+						loadmore = 'off';
+					} else if ('on' == loadmore) {
+						// retrigger the check event. the event will seize creating new ajax events as soon as the spinner is out of sight
+						jQuery(document).trigger("resize");
+					}
+				});
 			}
 		});
 
@@ -110,9 +100,5 @@ updateFilter();
 		if(3 < searchterms.length) {
 			jQuery("article[class^=filter-]:not(:contains(" + searchterms + "))").hide();
 		}
-		jQuery('#masonry-grid').masonry({
-			columnWidth: 1,
-			percentPosition: true
-										
-		}); // update grid
+		jQuery('#masonry-grid').masonry(); // update grid
 	}

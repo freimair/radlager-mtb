@@ -1,5 +1,4 @@
 	<main id="main" class="site-main" role="main">
-		<div class="slidewindow"></div>
 		<?php
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
@@ -75,7 +74,10 @@
 		array_unique($filters);
 
 		// show create post form if applicable
-		if (function_exists('frontend_edit_posts_form') && $allow_reporting) {
+		
+?>
+<div class="slidewindow">
+	<?php if (function_exists('frontend_edit_posts_form') && $allow_reporting) {
 			if("categories" === $filtermode) {
 				$tmp = '';
 				// assemble categories from filter list
@@ -87,7 +89,8 @@
 				frontend_edit_posts_form('new', get_categories(array('include' => $tmp)), ('media' == $type ? '&#xf040;' : '&#xf040;'), $type);
 			}
 		}
-?>
+	?>
+</div>
 		<div id="masonry-grid" data-masonry='{ "itemSelector": ".post", "percentPosition": "true"}'>
 <?php
 
@@ -163,7 +166,7 @@
 
 
 	<aside id="secondary" class="sidebar widget-area" role="complementary">
-		
+		<input type="button" id="edit-post-new" data-categories="[5,152,6,7]" data-post_id="new" data-type="media" value="" onclick="frontend_create_post_stuff(jQuery(this), false);">
 		<input id="closearticlebutton" type = "button" value="&#xf00d;">
 		<input id="filterbutton" type="button" value="&#xf0b0;" onclick="togglefilter()">
 		

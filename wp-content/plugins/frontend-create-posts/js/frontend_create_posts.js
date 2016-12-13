@@ -65,6 +65,8 @@ function frontend_create_post_stuff(current, copy){
 
 			// replace button action
 			jQuery("input#edit-post-"+post_id+(copy?"-copy":"")).val(fcpdata.cancel);
+			
+			
 		});
 	} else {
 		remove_edit_field(post_id, type, copy);
@@ -81,4 +83,14 @@ function remove_edit_field(post_id, type, copy) {
 		else
 			value = "new" != post_id ? fcpdata.edit_button : ("event" == type ? fcpdata.edit_event : fcpdata.edit_media)
 		jQuery("input#edit-post-"+post_id + (copy?"-copy":"")).val(value);
+		
+			//  no loadmore
+			loadmore = 'on';
+			jQuery('.banner').css({'display' : 'block'});
+			jQuery('#masonry-grid').css({'display' : 'block'});
+			jQuery('#filterbutton').css({'display' : 'block'});
+			jQuery('#searchbutton').css({'display' : 'block'});
+			
+	
+		
 }

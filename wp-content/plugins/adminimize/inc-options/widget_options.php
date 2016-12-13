@@ -12,7 +12,7 @@ if ( ! function_exists( 'add_action' ) ) {
 ?>
 <div id="poststuff" class="ui-sortable meta-box-sortables">
 	<div class="postbox">
-		<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle' ); ?>"><br /></div>
+		<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'adminimize' ); ?>"><br /></div>
 		<h3 class="hndle" id="widget_options"><?php esc_attr_e( 'Widgets', 'adminimize' ); ?></h3>
 
 		<div class="inside">
@@ -120,7 +120,7 @@ if ( ! function_exists( 'add_action' ) ) {
 						foreach ( $user_roles as $role ) {
 							echo '<td class="num">';
 							echo '<input id="check_post' . $role . $x . '" class="widget_options_'
-								. preg_replace( '/[^a-z0-9]+/', '', $role ) . '" type="checkbox"'
+								. preg_replace( '/[^a-z0-9_-]+/', '', $role ) . '" type="checkbox"'
 								. $checked_user_role_[ $role ] . ' name="mw_adminimize_disabled_widget_option_'
 								. $role . '_items[]" value="' . $widget_option . '" />';
 							echo '</td>' . "\n";
