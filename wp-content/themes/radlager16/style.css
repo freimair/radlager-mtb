@@ -187,7 +187,6 @@ article.post:hover{
 
 input#searchbutton,
 input#filterbutton,
-input#closearticlebutton,
 input#edit-post-new
 {
 	font-family: fontawesome;
@@ -200,17 +199,24 @@ input#edit-post-new
 	width: 1.5em;
 		
 	}
-input#closearticlebutton
-{
-	display:none;
-}
-	
+
 	
 input.closebutton{
 	padding: 0px!important;
 	background-color: #ffffff!important;
 	color:#3c3d3c!important;
 	float: right;
+}
+
+input#closewin{
+	font-family: fontawesome;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    font-size: 2em;
+    width: 1.5em;
+    border-radius: 10px;
+	
 }
 
 .filter:hover{
@@ -756,10 +762,23 @@ p {
 
 
 .slidewindow {
-	width: 80%;
 	margin: 0 auto;
+	opacity: 0;
+	transition: opacity 0.2s;
+	-webkit-transition: opacity 0.2s;
 }
 
+.slidewindow article.post {
+	width: 80%
+}
+
+.slidewindow article.post .artcont {
+	background: white;
+	padding: 30px;
+}
+.slidewindow article.post .article-meta {
+	display: none;
+}
 
 
 dfn,
@@ -886,6 +905,7 @@ html {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	height: 100%;		
 }
 
 *,
@@ -2473,7 +2493,9 @@ body:not(.search-results) .entry-summary > :last-child,
 	margin-bottom: 0;
 }
 
-.more-link {
+.more-link,
+input#closearticlebutton
+{
 	white-space: nowrap;
 	color: #ffffff;
 	text-decoration: none;

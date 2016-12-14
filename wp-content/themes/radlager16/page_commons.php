@@ -1,4 +1,62 @@
 	<main id="main" class="site-main" role="main">
+		
+		<div class="banner">
+					<div class="RL-Logo_oben"></div>
+					
+				
+						<div class="Logos">
+								<div class="enzi-logo" >
+									<a href="<?php echo get_site_url() ; ?>/index.php/enzimedien/">
+										<img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/enzi-logo.png">
+									</a>
+								</div>
+								
+								<div class="rl-logo">
+									<a href="<?php echo get_site_url() ; ?>">
+										<img  src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/RLgruen.png">
+									</a>
+								</div>
+								
+								<div class="ao-logo" >
+									<a href="<?php echo get_site_url() ; ?>/index.php/areaonemedien/">
+										<img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/hiergehtszurareaone.png">
+									</a>
+						</div>
+				</div>
+
+					
+					<div class="FB-Button">
+						<a target="_blank" href="https://www.facebook.com/RadlagerMTB">
+						<img style="margin-top:-3px;" src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/SVG/facebook-icon-header.png">&nbsp;&nbsp;Radlager auf Facebook
+						</a>
+					</div>
+					
+		<!--		
+				
+					<div class="nav_to_subsite" ><a href="<?php 
+// TODO that is nasty. fix that someday!
+if("area_one" == $navigation)
+	echo get_site_url() ;
+else
+	echo get_site_url() . "/index.php/area_one_medien/"; ?>" style="display: block; width: 100%; height: 100%"></a></div>
+					
+					
+				-->
+</div>
+				
+				
+				
+				
+				
+				
+				
+			
+		
+		
+		
+		
+		
+		
 		<?php
 		// read the configuration
 		// - fetch the configuration and check for malicious contents
@@ -76,7 +134,7 @@
 		// show create post form if applicable
 		
 ?>
-<div class="slidewindow">
+
 	<?php if (function_exists('frontend_edit_posts_form') && $allow_reporting) {
 			if("categories" === $filtermode) {
 				$tmp = '';
@@ -90,7 +148,7 @@
 			}
 		}
 	?>
-</div>
+
 		<div id="masonry-grid" data-masonry='{ "itemSelector": ".post", "percentPosition": "true"}'>
 <?php
 
@@ -167,7 +225,6 @@
 
 	<aside id="secondary" class="sidebar widget-area" role="complementary">
 		<input type="button" id="edit-post-new" data-categories="[5,152,6,7]" data-post_id="new" data-type="media" value="" onclick="frontend_create_post_stuff(jQuery(this), false);">
-		<input id="closearticlebutton" type = "button" value="&#xf00d;">
 		<input id="filterbutton" type="button" value="&#xf0b0;" onclick="togglefilter()">
 		
 		<div class="filtermenu">
