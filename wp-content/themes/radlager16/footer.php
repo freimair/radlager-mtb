@@ -16,7 +16,7 @@
 
 
 		<?php if('open' === get_user_meta(get_current_user_id(), 'radlager_membership_fee_status', true) && is_user_logged_in()) :?>
-			<div id="payment_notification" > Laut unseren Aufzeichnung hast du noch nicht bezahlt. </br> Weitere Infos hierzu findest du in deinem Profil. Sobald du bezahlt hast verschwindet auch diese Erinnerung. Danke!</br><input type="button" value="<?php _e("Später..."); ?>" onclick="jQuery('div#payment_notification').remove();"/></div>
+			<div id="payment_notification" ></br> Laut unseren Aufzeichnung ist dein Mitgliedbeitrag noch nicht bezahlt. </br> Weitere Infos hierzu findest du in deinem Profil. Sobald du bezahlt hast verschwindet auch diese Erinnerung. Danke! </br></br><input type="button" value="<?php _e("Später..."); ?>" onclick="jQuery('div#payment_notification').remove();"/></br></div>
 		<?php endif; ?>
 
 
