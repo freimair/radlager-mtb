@@ -155,10 +155,22 @@ article.post {
 	background-color: rgba(62, 29, 19, 0.35);
 }
 
+.category-user .artcont
+{
+background-color: rgb(60, 61, 60);
+}
+
+.category-join .artcont
+{
+background-color: rgb(60, 61, 60);
+}
+
 .category-verein .artcont
 {
 background-color: rgb(60, 61, 60);
 }
+
+
 
 .slidewindow .category-verein  h2.entry-title {
 	
@@ -171,11 +183,13 @@ background-color: rgb(60, 61, 60);
 	color: #47974c;
 	padding: 0 0 40px 0;
 }
-
-.category-user .artcont
-{
-background-color: rgb(60, 61, 60);
+.slidewindow .category-join  h2.entry-title {
+	
+	color: #47974c;
+	padding: 0 0 40px 0;
 }
+
+
 
 
 .slidewindow #custom-bg {
@@ -216,6 +230,29 @@ input#edit-post-new
 		
 	}
 
+#userlogin{
+	font-family: fontawesome;
+	font-size: 15px;
+    padding: 0px;
+    line-height: 1em;
+    width: 3.3em;
+	
+}
+
+.slidewindow .login{
+	background-color: white;
+	width: 50%;
+	margin: 80px auto;
+	padding: 30px;
+	border-radius: 10px;
+	display: block;
+	font-family: "Lato-Regular";
+}
+
+.login{
+	display:none;
+}
+	
 	
 input.closebutton{
 	padding: 0px!important;
@@ -1341,7 +1378,7 @@ a:active {
 .main-navigation li:focus a,
 .main-navigation li:hover a,
 .main-navigation li:active a{
-	font-family: "Lato-Bold";
+	font-weight: bold;
 }
 
 

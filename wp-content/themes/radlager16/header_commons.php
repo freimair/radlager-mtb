@@ -87,7 +87,7 @@
 
 				
 				<div class="slidewindow"></div>
-				
+				<div class="login"><h2 style="color: #47974c">Einloggen:</br></br></h2><?php wp_login_form( ); ?> </div>
 				</div><!-- .site-header-main -->
 
 			<?php if ( get_header_image() ) : ?>

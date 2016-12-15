@@ -416,4 +416,17 @@ function ajaxify_comments($comment_ID, $comment_status){
 }
 add_action('comment_post', 'ajaxify_comments',20, 2);
 
+add_filter( 'wp_nav_menu_items', 'add_loginout_link', 10, 2 );
+function add_loginout_link( $items, $args1 ) {
+    if (is_user_logged_in() && $args1->theme_location == 'primary') {
+        $items .= '<li id="userlogin"><a href="'. wp_logout_url(get_home_url()) .'">&#xf235;</a></li>';
+    }
+    elseif (!is_user_logged_in() && $args1->theme_location == 'primary') {
+          $items .= '<li> <a><input type ="button" id="userlogin" value="&#xf007;" onclick="pushlogin()"></a></li>';
+    }
+    return $items;
+}
+
+
+
 ?>
