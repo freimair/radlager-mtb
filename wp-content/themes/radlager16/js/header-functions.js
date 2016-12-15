@@ -93,6 +93,6 @@ function pushlogin() {
          
          openslidewindow(fromtop);
          jQuery('.login').appendTo ('.slidewindow');
-         jQuery('.login').append('<input id="closewin" type = "button" value="&#xf00d;">');		
+         jQuery('.login').append('</br><input id="closearticlebutton" style="float: right" type = "button" value="Close"></br>');
          closeslidewindow(fromtop);
 }

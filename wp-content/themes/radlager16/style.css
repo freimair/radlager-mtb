@@ -261,16 +261,7 @@ input.closebutton{
 	float: right;
 }
 
-input#closewin{
-	font-family: fontawesome;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    font-size: 2em;
-    width: 1.5em;
-    border-radius: 10px;
-	
-}
+
 
 .filter:hover{
 	background-color: #47974C;
