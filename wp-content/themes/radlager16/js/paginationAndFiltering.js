@@ -22,6 +22,12 @@
 					jQuery('#spinner').css('visibility', 'hidden');
 					contents = result.children();
 					jQuery('#masonry-grid').append(contents).masonry( 'appended', contents );
+					
+					// init Masonry after all images have loaded
+                    var $grid = jQuery('#masonry-grid').imagesLoaded( function() {
+						$grid.masonry({});
+                    });
+
 
 					updateFilter();
 					if (content.indexOf('<article ') == -1) {
@@ -100,5 +106,9 @@
 		if(3 < searchterms.length) {
 			jQuery("article[class^=filter-]:not(:contains(" + searchterms + "))").hide();
 		}
-		jQuery('#masonry-grid').masonry(); // update grid
+		    jQuery('#masonry-grid').masonry({
+				columnWidth: 1,
+				percentPosition: true
+			}); // update grid
+
 	}
