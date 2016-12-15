@@ -219,7 +219,7 @@ else
 		
 		<div class="filtermenu">
 			<input class="closebutton" type="button" value="X" onclick="togglefilter()">
-			<span style="color: #47974c; font-weight: bold;">Filter:</span>
+			<span style="font-weight: bold;margin-bottom: 10px">Filter:</br></span>
 		<ul>
 		<?php
 		// create the filter controls
@@ -236,7 +236,7 @@ else
 		<input id="searchbutton" type="button" value="&#xf002;" onclick="togglesearch()" >
 		<div class="searchmenu">
 			<input class="closebutton" type="button" value="X" onclick="togglesearch()">
-			<span style="color: #47974c; font-weight: bold;">Suche:</span>
+			<span style="font-weight: bold;">Suche:</span>
 			<span style="display:flex; -webkit-display:flex">
 				<input id="searchbox" type="text" name="searchterm" value="">
 				<input id="clearsearch" type="button" value="X" onclick="jQuery('#searchbox').val(''); updateFilter();">
