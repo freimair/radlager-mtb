@@ -19,7 +19,7 @@
 	</div>
 		<?php echo '<div class="date">'.strftime("%A, %e. %B %G - %R", strtotime(get_field('startdatum')))."</div>"; ?>
 </div>
-<div class="artcont">
+<div class="artcont" id="<?php foreach((get_the_category()) as $category){echo $category->cat_name . ' ';}?>">	
 	
 	
 

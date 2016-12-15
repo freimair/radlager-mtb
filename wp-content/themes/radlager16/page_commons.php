@@ -19,7 +19,7 @@
 								
 								<div class="ao-logo" >
 									<a href="<?php echo get_site_url() ; ?>/index.php/areaonemedien/">
-										<img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/hiergehtszurareaone.png">
+										<img src="<?php echo get_site_url(); ?>/wp-content/themes/radlager16/Pictures/Logos/areaone.png">
 									</a>
 						</div>
 				</div>
@@ -46,16 +46,6 @@ else
 				
 				
 				
-				
-				
-				
-				
-			
-		
-		
-		
-		
-		
 		
 		<?php
 		// read the configuration

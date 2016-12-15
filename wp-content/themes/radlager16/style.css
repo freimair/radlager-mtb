@@ -140,6 +140,8 @@ article.post {
     padding: 15px;
 }
 
+
+
 .picandtitle{
 	position: relative;
 	margin-bottom: 20px;
@@ -153,17 +155,31 @@ article.post {
 	background-color: rgba(62, 29, 19, 0.35);
 }
 
-
-
-article.post img {
-	width: 100%;
-	
+.category-verein .artcont
+{
+background-color: rgb(60, 61, 60);
 }
 
-article.post:hover{
+.slidewindow .category-verein  h2.entry-title {
+	
+	color: #47974c;
+	padding: 0 0 40px 0;
+}
+
+.slidewindow .category-user  h2.entry-title {
+	
+	color: #47974c;
+	padding: 0 0 40px 0;
+}
+
+.category-user .artcont
+{
+background-color: rgb(60, 61, 60);
+}
 
 
-
+.slidewindow #custom-bg {
+	width: 100%;
 }
 
 
@@ -252,6 +268,19 @@ div.entry-content {
 
 .more-link {
 	margin-left: 20px;
+}
+
+
+.usertile {
+   
+    margin: 5px 5px!important;
+	min-height: 190px;
+    /* width: 96px; */
+    float: left;
+    background: #e6e6e6;
+    padding: 11px;
+    border-radius: 10px;
+	width: 48%!important;
 }
 
 .site-footer {
@@ -2101,6 +2130,7 @@ blockquote:after,
 .banner {
 	width: 100%;
 	margin-top: 75px;
+	margin-bottom: 75px;
 	background-size: cover;
 	position: relative;
 	-webkit-transition: margin-top 0.6s; /* Safari */

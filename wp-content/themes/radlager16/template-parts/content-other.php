@@ -8,14 +8,29 @@
  */
 ?>
 
+<div class="artcont" id="<?php foreach((get_the_category()) as $category){echo $category->cat_name . '';}?>">	
+
+
+
 	<header class="entry-header">
 		<?php if ( is_sticky() && is_home() && ! is_paged() ) : ?>
 			<span class="sticky-post"><?php _e( 'Featured', 'twentysixteen' ); ?></span>
 		<?php endif; ?>
 
-		<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
-		<a class="permalink" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>">permalink</a>
+
+		
+		
 	</header><!-- .entry-header -->
+	
+	
+	
+	<a data-post_id="<?php echo get_the_ID(); ?>"  class="more-link" style="background-color: black; float:none; margin: 0px; padding: 0px;" href="<?php echo get_site_url()."/index.php/".$wp->request."?post-".get_the_ID(); ?>" ><?php the_title( '<h2 class="entry-title">', '</h2>' ); ?><span class="screen-reader-text"> <?php the_title(); ?></span></a>
+
+	<div class="readmoreinline" id="readmoreinline<?php echo get_the_ID(); ?>" style="display:none">
+	
+	
+
+	<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
 
 	<?php twentysixteen_excerpt(); ?>
 
@@ -60,3 +75,5 @@
 			);
 		?>
 	</footer><!-- .entry-footer -->
+	</div><!-- readmore -->
+</div><!-- .artcont -->

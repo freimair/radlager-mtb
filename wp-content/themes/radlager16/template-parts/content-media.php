@@ -51,7 +51,6 @@
 	 
 
 
-
 	<?php twentysixteen_excerpt(); ?>
 
 	<div class="entry-content">
@@ -77,8 +76,8 @@
 <?php
 			endif;
 		?>
-		</div>
-	</div><!-- .entry-content -->
+		</div><!-- .entry-content -->
+	</div>
 
 	
 	
