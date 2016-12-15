@@ -2,9 +2,9 @@ jQuery(window).scroll(function() {
          
 		 var scrollPos = jQuery(window).scrollTop();
 		
-		if ((scrollPos >= 200) || (jQuery('.banner').is(':hidden'))) {	
+		if ((scrollPos >= 200) || (jQuery(".slidewindow").find(".artcont").length != 0 )){
 			jQuery(".RL-Logo_oben").css({"display":"block","opacity":"1"});	
-	}
+    }
 	else
 	{
 		jQuery(".RL-Logo_oben").css({"display":"block","opacity":"0"});
