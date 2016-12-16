@@ -22,7 +22,7 @@ $j(document).on('resize ready', function()
 						'top' :'0px',
 						'position' : 'relative',
 						'left' : '0px',
-						'margin' : '80px auto',
+						'margin' : '5% auto',
 						'float' : 'none'				
 					});
 				

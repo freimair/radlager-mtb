@@ -50,7 +50,7 @@ function openslidewindow(fromtop) {
 						   'z-index' : '2',
 						   'background-color' : 'rgba(0, 0, 0, 0.60)',
 						   'opacity' : '1',
-						   'min-height' : $j('html').height()	
+						   'min-height' : $j('html').height() + 900 	
 						   });
     
          jQuery('#closearticlebutton').css({
@@ -90,9 +90,11 @@ function closeslidewindow(fromtop) {
 function pushlogin() {
          
          var fromtop = $j(document).scrollTop();
-         
+         jQuery('.slidewindow').empty();
          openslidewindow(fromtop);
          jQuery('.login').clone().appendTo('.slidewindow');
+         jQuery('.slidewindow').css({'z-index' : '300'});
          jQuery('.slidewindow .login').append('</br><input id="closearticlebutton" style="float: right" type = "button" value="Close"></br>');
          closeslidewindow(fromtop);
+      
 }
